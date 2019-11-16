@@ -20,6 +20,10 @@ def parse_bin(data):
     # File Header
     fields = struct.unpack("cchii", data[:12])
     file_header = tuples.FileHeader(*fields)
+    
+    if (file_header.sig_a != b'A' or file_header.sig_g != b'G'):
+        print("UNEXPECTED FILE SIGNATURE\nExiting...\n")
+        exit(1)
 
 
 def parse_args():
