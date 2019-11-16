@@ -1,2 +1,2 @@
 # wavebin
-Keysight/Agilent oscilloscope waveform (.bin) format converter.
+Keysight/Agilent oscilloscope waveform file (.bin) converter.

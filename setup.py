@@ -9,7 +9,7 @@ setuptools.setup(
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Keysight/Agilent oscilloscope waveform format converter",
+    description="Keysight/Agilent oscilloscope waveform file converter",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
