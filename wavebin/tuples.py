@@ -5,10 +5,8 @@ class FileHeader(NamedTuple):
     File header struct
     """
 
-    sig_a:          str     # File signature byte 1 (A)
-    sig_g:          str     # File signature byte 2 (G)
-    v_maj:          str     # File version byte 1 (major)
-    v_min:          str     # File version byte 2 (minor)
+    signature:      str     # File signature
+    ver:            str     # File version
     size:           int     # File size (bytes)
     waveforms:      int     # Number of waveforms
 
@@ -31,6 +29,7 @@ class WaveHeader(NamedTuple):
     y_units:        int     # Y axis measurement units (see enums.Units)
     data:           str     # Acquisition date (zero on InfiniiVision scopes)
     time:           str     # Acquisition timestamp (zero on InfiniiVision scopes)
+    hardware:       str     # Acquisition hardware type
     label:          str     # Waveform label
     time_tags:      float   # Time since first trigger (seconds, requires segmented memory)
     segment:        int     # Segment number (requires segmented memory)
