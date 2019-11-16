@@ -16,7 +16,8 @@ setuptools.setup(
     install_requires = [
         'numpy',
         'pyqt5',
-        'pyqtgraph'
+        'pyqtgraph',
+        'magnitude'
     ],
     classifiers=[
         "Programming Language :: Python :: 3",

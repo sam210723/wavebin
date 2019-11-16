@@ -2,6 +2,7 @@ from . import enums, tuples
 
 import argparse
 import struct
+from magnitude import mg
 
 args = None
 file_header = None
@@ -35,9 +36,32 @@ def parse_wave_header(data):
     header_len = data[0]
     header = data[:header_len]
 
+    # Unpack header fields
     fields = struct.unpack("5if3d2i16s16s24s16sdI", data[:header_len])
     wave_header = tuples.WaveHeader(*fields)
-    print(wave_header)
+
+    # Print waveform info
+    print("Waveform {}:".format(wave_header.label.decode().rstrip('\0')))
+    print("  - Wave Type:           {}".format(enums.WaveType(wave_header.wave_type).name))
+    print("  - Wave Buffers:        {}".format(wave_header.buffers))
+    print("  - Sample Points:       {}".format(wave_header.points))
+    print("  - Average Count:       {}".format(wave_header.count))
+    rng = mg(wave_header.x_d_range, unit="s", ounit="us")
+    print("  - X Display Range:     {}".format(rng))
+    print("  - X Display Origin:    {}".format(wave_header.x_d_origin))
+    inc = mg(wave_header.x_increment, unit="s", ounit="ns")
+    print("  - X Increment:         {}".format(inc))
+    print("  - X Origin:            {}".format(wave_header.x_origin))
+    print("  - X Units:             {}".format(enums.Units(wave_header.x_units).name))
+    print("  - Y Units:             {}".format(enums.Units(wave_header.y_units).name))
+    print("  - Date:                {}".format(wave_header.date.decode()))
+    print("  - Time:                {}".format(wave_header.time.decode()))
+    frame = wave_header.frame.decode().split(":")
+    print("  - Frame Type:          {}".format(frame[0]))
+    print("  - Frame Serial:        {}".format(frame[1]))
+    print("  - Waveform Label:      {}".format(wave_header.label.decode()))
+    print("  - Time Tags:           {}".format(wave_header.time_tags))
+    print("  - Segment Number:      {}".format(wave_header.segment))
 
     return wave_header
 
@@ -58,8 +82,8 @@ def parse_file_header(data):
     
     # Print file info
     size = round(file_header.size / 1024, 2)
-    print("File Size:       {} KB".format(size))
-    print("Waveforms:       {}\n".format(file_header.waveforms))
+    print("File Size:           {} KB".format(size))
+    print("Waveforms:           {}\n".format(file_header.waveforms))
 
     return file_header
 
