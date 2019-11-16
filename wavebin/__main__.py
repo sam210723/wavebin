@@ -1,4 +1,7 @@
-from argparse import ArgumentParser
+from . import tuples
+
+import argparse
+import struct
 
 def init():
     args = parse_args()
@@ -15,7 +18,8 @@ def parse_bin(data):
     """
 
     # File Header
-    
+    fields = struct.unpack("cchii", data[:12])
+    file_header = tuples.FileHeader(*fields)
 
 
 def parse_args():
@@ -23,7 +27,7 @@ def parse_args():
     Parses command line arguments
     """
 
-    argp = ArgumentParser()
+    argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
     argp.description = "Keysight/Agilent oscilloscope waveform file converter"
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
@@ -34,4 +38,5 @@ def parse_args():
 try:
     init()
 except KeyboardInterrupt:
-    print("Exiting...")
+    print("Exiting...\n")
+    exit()
