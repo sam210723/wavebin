@@ -42,7 +42,7 @@
         {
             "label": "Run Module",
             "type": "shell",
-            "command": "python -m wavebin samples/sample_1.bin",
+            "command": "python -m wavebin samples/sample.bin",
             "problemMatcher": []
         },
         {
