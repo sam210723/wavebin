@@ -2,7 +2,20 @@ from argparse import ArgumentParser
 
 def init():
     args = parse_args()
-    print(args)
+
+    # Read BIN file
+    print("Opening \"{}\"...\n".format(args.BIN))
+    bin_bytes = open(args.BIN, mode="rb").read()
+    parse_bin(bin_bytes)
+
+
+def parse_bin(data):
+    """
+    Parse BIN file
+    """
+
+    # File Header
+    
 
 
 def parse_args():
