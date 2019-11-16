@@ -1,6 +1,6 @@
 ANALOG
-Ch 1 Scale 2.00V/, Pos 0.0V, Coup AC, BW Limit On, Inv Off, Imp 1M Ohm
-     Probe 10.000000 : 1, Skew 0.0s
+Ch 1 Scale 200mV/, Pos 0.0V, Coup AC, BW Limit On, Inv Off, Imp 1M Ohm
+     Probe 1.0000000 : 1, Skew 0.0s
 
 TRIGGER
 Sweep Mode Auto, Coup DC, Noise Rej Off, HF Rej Off, Holdoff 60.0ns
@@ -13,7 +13,6 @@ ACQUISITION
 Mode Normal, Realtime On, Vectors On, Persistence Off
 
 MEASUREMENTS
-Frequency(1), Cur 999.68Hz
-Pk-Pk(1), Cur 10.3V
-Counter(1), Cur 999.99Hz
-
+Frequency(1), Cur 1.0000kHz
+Pk-Pk(1), Cur 1.00V
+Counter(1), Cur 1.0000kHz
