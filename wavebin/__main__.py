@@ -34,7 +34,6 @@ def parse_wave_header(data):
     
     # Get header length
     header_len = data[0]
-    header = data[:header_len]
 
     # Unpack header fields
     fields = struct.unpack("5if3d2i16s16s24s16sdI", data[:header_len])
@@ -48,10 +47,12 @@ def parse_wave_header(data):
     print("  - Average Count:       {}".format(wave_header.count))
     rng = mg(wave_header.x_d_range, unit="s", ounit="us")
     print("  - X Display Range:     {}".format(rng))
-    print("  - X Display Origin:    {}".format(wave_header.x_d_origin))
-    inc = mg(wave_header.x_increment, unit="s", ounit="ns")
-    print("  - X Increment:         {}".format(inc))
-    print("  - X Origin:            {}".format(wave_header.x_origin))
+    dorigin = mg(wave_header.x_d_origin, unit="s", ounit="us")
+    print("  - X Display Origin:    {}".format(dorigin))
+    increment = mg(wave_header.x_increment, unit="s", ounit="ns")
+    print("  - X Increment:         {}".format(increment))
+    origin = mg(wave_header.x_origin, unit="s", ounit="us")
+    print("  - X Origin:            {}".format(origin))
     print("  - X Units:             {}".format(enums.Units(wave_header.x_units).name))
     print("  - Y Units:             {}".format(enums.Units(wave_header.y_units).name))
     print("  - Date:                {}".format(wave_header.date.decode()))
