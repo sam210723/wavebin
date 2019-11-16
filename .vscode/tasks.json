@@ -1,0 +1,61 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Package (source + wheel)",
+            "type": "shell",
+            "command": "python setup.py sdist bdist_wheel",
+            "problemMatcher": []
+        },
+        {
+            "label": "Install Package (local)",
+            "type": "shell",
+            "command": "python setup.py install",
+            "problemMatcher": []
+        },
+        {
+            "label": "Install Package (TestPyPI)",
+            "type": "shell",
+            "command": "pip3 install -i https://test.pypi.org/simple/ --no-cache-dir wavebin",
+            "problemMatcher": []
+        },
+        {
+            "label": "Develop Package",
+            "type": "shell",
+            "command": "python setup.py develop",
+            "problemMatcher": []
+        },
+        {
+            "label": "Uninstall Package",
+            "type": "shell",
+            "command": "pip3 uninstall -y wavebin",
+            "problemMatcher": []
+        },
+        {
+            "label": "Upload Package (TestPyPI)",
+            "type": "shell",
+            "command": "twine upload --repository-url https://test.pypi.org/legacy/ dist/*",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Module",
+            "type": "shell",
+            "command": "python -m wavebin",
+            "problemMatcher": []
+        },
+        {
+            "label": "Clean (Windows)",
+            "type": "shell",
+            "command": "rmdir /S /Q wavebin.egg-info && rmdir /S /Q build && rmdir /S /Q dist",
+            "problemMatcher": []
+        },
+        {
+            "label": "pip show",
+            "type": "shell",
+            "command": "pip3 show wavebin",
+            "problemMatcher": []
+        }
+    ]
+}
