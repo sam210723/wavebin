@@ -9,11 +9,15 @@ setuptools.setup(
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Keysight/Agilent oscilloscope waveform file converter",
+    description="Keysight/Agilent oscilloscope waveform file viewer and converter",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
-    install_requires = [],
+    install_requires = [
+        'numpy',
+        'pyqt5',
+        'pyqtgraph'
+    ],
     classifiers=[
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
