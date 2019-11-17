@@ -25,7 +25,7 @@ def init():
 
     # Parse Waveform Header
     wave_header = parse_wave_header(bin_bytes[12:])
-    
+
 
 def parse_wave_header(data):
     """
@@ -96,7 +96,7 @@ def parse_args():
 
     argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
-    argp.description = "Keysight/Agilent oscilloscope waveform file converter"
+    argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
     return argp.parse_args()
