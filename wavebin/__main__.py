@@ -7,11 +7,13 @@ from magnitude import mg
 args = None
 file_header = None
 wave_header = None
+data_header = None
 
 def init():
     global args
     global file_header
     global wave_header
+    global data_header
 
     # Parse CLI arguments
     args = parse_args()
@@ -20,13 +22,17 @@ def init():
     print("Opening \"{}\"\n".format(args.BIN))
     bin_bytes = open(args.BIN, mode="rb").read()
     
-    # Parse file header
+    # Parse File Header
     file_header = parse_file_header(bin_bytes[:12])
     print_file_header(file_header)
 
     # Parse Waveform Header
     wave_header = parse_wave_header(bin_bytes[12:])
     print_wave_header(wave_header)
+
+    # Parse Data Header
+    data_header = parse_data_header(bin_bytes[152:])
+    print_data_header(data_header)
 
 
 def parse_file_header(data):
@@ -35,7 +41,7 @@ def parse_file_header(data):
     """
 
     # Unpack header fields
-    fields = struct.unpack("2s2sii", data)
+    fields = struct.unpack("2s2s2i", data)
     file_header = tuples.FileHeader(*fields)
     
     # Check file signature
@@ -58,6 +64,20 @@ def parse_wave_header(data):
     wave_header = tuples.WaveHeader(*fields)
 
     return wave_header
+
+def parse_data_header(data):
+    """
+    Parses data header into Named Tuple
+    """
+
+    # Get header length
+    header_len = data[0]
+
+    # Unpack header fields
+    fields = struct.unpack("i2hi", data[:header_len])
+    data_header = tuples.DataHeader(*fields)
+
+    return data_header
 
 
 def print_file_header(header):
@@ -89,7 +109,11 @@ def print_wave_header(header):
     print("  - Frame Serial:        {}".format(frame[1]))
     print("  - Waveform Label:      {}".format(header.label.decode()))
     print("  - Time Tags:           {}".format(header.time_tags))
-    print("  - Segment Number:      {}".format(header.segment))
+    print("  - Segment Number:      {}\n".format(header.segment))
+
+def print_data_header(header):
+    data_type = enums.DataType(header.type).name
+    print("[DATA] Type: {}   Points: {}   Length: {}".format(data_type, header.points, header.length))
 
 
 def parse_args():

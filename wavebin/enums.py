@@ -24,3 +24,15 @@ class Units(Enum):
     AMPS        = 4
     DECIBELS    = 5
     HERTZ       = 6
+
+
+class DataType(Enum):
+    """
+    Data types
+    """
+
+    UNKNOWN     = 0
+    FLOAT32     = 1
+    FLOATMAX    = 2
+    FLOATMIN    = 3
+    UCHAR8      = 6

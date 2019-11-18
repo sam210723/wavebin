@@ -33,3 +33,14 @@ class WaveHeader(NamedTuple):
     label:          str     # Waveform label
     time_tags:      float   # Time since first trigger (seconds, requires segmented memory)
     segment:        int     # Segment number (requires segmented memory)
+
+
+class DataHeader(NamedTuple):
+    """
+    Data header struct
+    """
+
+    size:           int     # Header size
+    type:           int     # Data type
+    points:         int     # Number of waveform points
+    length:         int     # Buffer length
