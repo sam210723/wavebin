@@ -42,5 +42,5 @@ class DataHeader(NamedTuple):
 
     size:           int     # Header size
     type:           int     # Data type
-    points:         int     # Number of waveform points
+    bpp:            int     # Bytes per point
     length:         int     # Buffer length

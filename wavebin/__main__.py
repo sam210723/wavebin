@@ -113,7 +113,7 @@ def print_wave_header(header):
 
 def print_data_header(header):
     data_type = enums.DataType(header.type).name
-    print("[DATA] Type: {}   Points: {}   Length: {}".format(data_type, header.points, header.length))
+    print("[DATA] Type: {}    Depth: {} bits    Length: {} bits".format(data_type, header.bpp*8, header.length))
 
 
 def parse_args():
