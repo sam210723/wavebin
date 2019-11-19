@@ -3,8 +3,9 @@ from . import enums, tuples
 import argparse
 import struct
 from magnitude import mg
+from pyqtgraph.Qt import QtGui, QtCore
 import numpy as np
-import pyqtgraph
+import pyqtgraph as pg
 
 ### Globals ###
 args = None
@@ -47,6 +48,25 @@ def init():
 
     # Close bin file
     bin_file.close()
+
+    # Render plots
+    render()
+
+
+### Render Functions ###
+def render():
+    """
+    Renders waveform data using PyQtGraph
+    """
+    
+    print(f"Rendering {len(waveforms)} waveform", end="")
+    if len(waveforms) > 1: print("s", end="")
+    print("...")
+
+    # Setup PyQtGraph
+    app = QtGui.QApplication([])
+    pg.plot(waveforms[0])
+    app.exec_()
 
 
 ### Parse Functions ###
