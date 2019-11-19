@@ -67,11 +67,12 @@ def render():
 
     # Create Qt app
     app = qt.QApplication([])
-    win = qt.QWidget()
+    win = pg.GraphicsLayoutWidget()
 
     # Set window properties
     fname = ntpath.basename(args.BIN)
-    win.setWindowTitle(f"wavebin - \"{fname}\"")
+    win.setWindowTitle(f"{fname} - wavebin")
+    win.resize(1100, 700)
 
     # Loop through waveforms
     for i, w in enumerate(waveforms):
@@ -82,6 +83,21 @@ def render():
         stop = header.x_d_origin + header.x_d_range
         num = header.x_d_range / header.x_increment
         x = np.linspace(start, stop, num)
+
+        # Build plot
+        p = win.addPlot()
+        p.setLabel('bottom', "Time", units='s')
+        p.setLabel('left', enums.Units(header.y_units).name, units='V')
+        p.showGrid(x=True, y=True, alpha=1.0)
+        title = pg.TextItem(
+            text = f"{header.frame.decode().split(':')[0]}",
+            anchor = (0,0),
+            color = (255, 255, 255)
+        )
+        #p.addItem(title)
+
+        # Add data to plot
+        p.plot(x, w)
     
     # Run Qt app
     win.showMaximized()
