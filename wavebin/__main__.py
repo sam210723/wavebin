@@ -14,7 +14,7 @@ file_header = None
 wave_headers = []
 data_header = None
 waveforms = []
-version = "1.0"
+version = "1.1"
 
 
 def init():
@@ -78,6 +78,7 @@ def render():
     win.setWindowTitle(f"{fname} - wavebin")
     win.resize(1100, 700)
 
+
     # Loop through waveforms
     for i, w in enumerate(waveforms):
         header = wave_headers[i]
@@ -93,6 +94,7 @@ def render():
         p.setLabel('bottom', "Time", units='s')
         p.setLabel('left', enums.Units(header.y_units).name, units='V')
         p.showGrid(x=True, y=True, alpha=1.0)
+        p.setMouseEnabled(x=True, y=False)
         title = pg.TextItem(
             text = f"{header.frame.decode().split(':')[0]}",
             anchor = (0,0),
