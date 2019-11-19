@@ -6,7 +6,7 @@
 Currently **wavebin** has been tested with files from a [**DSO-X 1102G**](https://www.keysight.com/en/pdx-2766207-pn-DSOX1102G/oscilloscope-70-100-mhz-2-analog-channels). If you have access to waveform files from other Keysight oscilloscopes, please submit them for testing through the [Sample Waveforms issue](https://github.com/sam210723/wavebin/issues/1).
 
 ## Getting Started
-**wavebin** is available through the [Python Package Index](https://pypi.org). To install **wavebin** and its dependencies ([magnitude](https://pypi.org/project/magnitude/), [numpy](https://numpy.org/), [pyqt5](https://pypi.org/project/PyQt5/), [pyqtgraph](http://www.pyqtgraph.org/)), run the following command:
+**wavebin** is available through the [Python Package Index](https://pypi.org/project/wavebin/). To install **wavebin** and its dependencies ([magnitude](https://pypi.org/project/magnitude/), [numpy](https://numpy.org/), [pyqt5](https://pypi.org/project/PyQt5/), [pyqtgraph](http://www.pyqtgraph.org/)), run the following command:
 
 ```
 pip install wavebin
