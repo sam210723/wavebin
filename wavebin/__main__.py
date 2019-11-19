@@ -3,7 +3,7 @@ from . import enums, tuples
 import argparse
 import struct
 from magnitude import mg
-from pyqtgraph.Qt import QtGui, QtCore
+from PyQt5 import QtWidgets as qt
 import numpy as np
 import pyqtgraph as pg
 
@@ -63,10 +63,17 @@ def render():
     if len(waveforms) > 1: print("s", end="")
     print("...")
 
-    # Setup PyQtGraph
-    app = QtGui.QApplication([])
-    pg.plot(waveforms[0])
-    app.exec_()
+    # Loop through waveforms
+    for i, w in enumerate(waveforms):
+        header = wave_headers[i]
+
+        # Generate X points
+        start = header.x_d_origin
+        stop = header.x_d_origin + header.x_d_range
+        num = header.x_d_range / header.x_increment
+        x = np.linspace(start, stop, num)
+
+        pg.plot(x, w)
 
 
 ### Parse Functions ###
@@ -178,8 +185,8 @@ def parse_args():
     argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
     argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
-    argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
+    argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
     return argp.parse_args()
 
