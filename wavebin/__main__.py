@@ -4,8 +4,9 @@ import argparse
 import struct
 from magnitude import mg
 from PyQt5 import QtWidgets as qt
-import numpy as np
 import pyqtgraph as pg
+import ntpath
+import numpy as np
 
 ### Globals ###
 args = None
@@ -49,6 +50,11 @@ def init():
     # Close bin file
     bin_file.close()
 
+    # Show number of waveforms
+    print(f"Rendering {len(waveforms)} waveform", end="")
+    if len(waveforms) > 1: print("s", end="")
+    print("...")
+
     # Render plots
     render()
 
@@ -58,10 +64,14 @@ def render():
     """
     Renders waveform data using PyQtGraph
     """
-    
-    print(f"Rendering {len(waveforms)} waveform", end="")
-    if len(waveforms) > 1: print("s", end="")
-    print("...")
+
+    # Create Qt app
+    app = qt.QApplication([])
+    win = qt.QWidget()
+
+    # Set window properties
+    fname = ntpath.basename(args.BIN)
+    win.setWindowTitle(f"wavebin - \"{fname}\"")
 
     # Loop through waveforms
     for i, w in enumerate(waveforms):
@@ -72,8 +82,10 @@ def render():
         stop = header.x_d_origin + header.x_d_range
         num = header.x_d_range / header.x_increment
         x = np.linspace(start, stop, num)
-
-        pg.plot(x, w)
+    
+    # Run Qt app
+    win.showMaximized()
+    app.exec_()
 
 
 ### Parse Functions ###
