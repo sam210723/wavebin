@@ -7,34 +7,37 @@ from magnitude import mg
 ### Globals ###
 args = None
 file_header = None
-wave_header = None
+wave_headers = []
 data_header = None
 
 
 def init():
     global args
     global file_header
-    global wave_header
+    global wave_headers
     global data_header
 
     # Parse CLI arguments
     args = parse_args()
 
     # Open bin file
-    print(f"Opening \"{args.BIN}\"")
+    print(f"Loading \"{args.BIN}\"...")
     bin_file = open(args.BIN, mode="rb")
     
-    # Rad and parse File Header
+    # Read and parse File Header
     file_header = parse_file_header( bin_file.read(0x0C) )
-    print_file_header(file_header)
+    if args.v: print_file_header(file_header)
 
-    # Read and parse Waveform Header
-    wave_header = parse_wave_header( bin_file.read(0x8C) )
-    print_wave_header(wave_header)
+    # Read and parse Waveform Headers
+    for i in range(file_header.waveforms):
+        data = bin_file.read(0x8C)
+        wave_header = parse_wave_header(data)
+        wave_headers.append(wave_header)
+        if args.v: print_wave_header(wave_header)
 
     # Read and parse Data Header
     data_header = parse_data_header( bin_file.read(0x0C) )
-    print_data_header(data_header)
+    if args.v: print_data_header(data_header)
 
     # Close bin file
     bin_file.close()
@@ -142,6 +145,7 @@ def parse_args():
     argp.prog = "wavebin"
     argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
+    argp.add_argument("-v", action="store_true", help="Enable verbose output")
 
     return argp.parse_args()
 
