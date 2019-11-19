@@ -3,12 +3,15 @@ from . import enums, tuples
 import argparse
 import struct
 from magnitude import mg
+import numpy as np
+import pyqtgraph
 
 ### Globals ###
 args = None
 file_header = None
 wave_headers = []
 data_header = None
+waveforms = []
 
 
 def init():
@@ -38,6 +41,9 @@ def init():
     # Read and parse Data Header
     data_header = parse_data_header( bin_file.read(0x0C) )
     if args.v: print_data_header(data_header)
+
+    # Parse Waveform Data
+    parse_data(data_header, bin_file.read(data_header.length))
 
     # Close bin file
     bin_file.close()
@@ -88,6 +94,14 @@ def parse_data_header(data):
 
     return data_header
 
+def parse_data(header, data):
+    """
+    Parse waveform data field
+    """
+
+    arr = np.frombuffer(data, dtype=np.float32)
+    waveforms.append(arr)
+
 
 ### Print Functions ###
 def print_file_header(header):
@@ -133,7 +147,7 @@ def print_wave_header(header):
 
 def print_data_header(header):
     data_type = enums.DataType(header.type).name
-    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bits")
+    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bytes")
 
 
 def parse_args():
