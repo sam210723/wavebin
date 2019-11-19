@@ -14,6 +14,7 @@ file_header = None
 wave_headers = []
 data_header = None
 waveforms = []
+version = "1.0"
 
 
 def init():
@@ -24,6 +25,9 @@ def init():
 
     # Parse CLI arguments
     args = parse_args()
+
+    # Print version
+    print(f"wavebin v{version}\n")
 
     # Open bin file
     print(f"Loading \"{args.BIN}\"...")
