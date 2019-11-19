@@ -19,7 +19,7 @@ def init():
     args = parse_args()
 
     # Read bin file
-    print("Opening \"{}\"\n".format(args.BIN))
+    print(f"Opening \"{args.BIN}\"")
     bin_bytes = open(args.BIN, mode="rb").read()
     
     # Parse File Header
@@ -83,37 +83,47 @@ def parse_data_header(data):
 def print_file_header(header):
     # Print file info
     size = round(header.size / 1024, 2)
-    print("File Size:           {} KB".format(size))
-    print("Waveforms:           {}\n".format(header.waveforms))
+    print(f"File Size:\t\t{size} KB")
+    print(f"Waveforms:\t\t{header.waveforms}\n")
 
 def print_wave_header(header):
-    print("Waveform {}:".format(header.label.decode().rstrip('\0')))
-    print("  - Wave Type:           {}".format(enums.WaveType(header.wave_type).name))
-    print("  - Wave Buffers:        {}".format(header.buffers))
-    print("  - Sample Points:       {}".format(header.points))
-    print("  - Average Count:       {}".format(header.count))
+    label = header.label.decode().rstrip('\0')
+    print(f"Waveform {label}:")
+
+    t = enums.WaveType(header.wave_type).name
+    print(f"  - Wave Type:\t\t{t}")
+    print(f"  - Wave Buffers:\t{header.buffers}")
+    print(f"  - Sample Points:\t{header.points}")
+    print(f"  - Average Count:\t{header.count}")
+
     rng = mg(header.x_d_range, unit="s", ounit="us")
-    print("  - X Display Range:     {}".format(rng))
+    print(f"  - X Display Range:\t{rng}")
+
     dorigin = mg(header.x_d_origin, unit="s", ounit="us")
-    print("  - X Display Origin:    {}".format(dorigin))
+    print(f"  - X Display Origin:\t{dorigin}")
+
     increment = mg(header.x_increment, unit="s", ounit="ns")
-    print("  - X Increment:         {}".format(increment))
+    print(f"  - X Increment:\t{increment}")
+    
     origin = mg(header.x_origin, unit="s", ounit="us")
-    print("  - X Origin:            {}".format(origin))
-    print("  - X Units:             {}".format(enums.Units(header.x_units).name))
-    print("  - Y Units:             {}".format(enums.Units(header.y_units).name))
-    print("  - Date:                {}".format(header.date.decode()))
-    print("  - Time:                {}".format(header.time.decode()))
+    print(f"  - X Origin:\t\t{origin}")
+    
+    print(f"  - X Units:\t\t{enums.Units(header.x_units).name}")
+    print(f"  - Y Units:\t\t{enums.Units(header.y_units).name}")
+    print(f"  - Date:\t\t{header.date.decode()}")
+    print(f"  - Time:\t\t{header.time.decode()}")
+    
     frame = header.frame.decode().split(":")
-    print("  - Frame Type:          {}".format(frame[0]))
-    print("  - Frame Serial:        {}".format(frame[1]))
-    print("  - Waveform Label:      {}".format(header.label.decode()))
-    print("  - Time Tags:           {}".format(header.time_tags))
-    print("  - Segment Number:      {}\n".format(header.segment))
+    print(f"  - Frame Type:\t\t{frame[0]}")
+    print(f"  - Frame Serial:\t{frame[1]}")
+    
+    print(f"  - Waveform Label:\t{header.label.decode()}")
+    print(f"  - Time Tags:\t\t{header.time_tags}")
+    print(f"  - Segment Number:\t{header.segment}\n")
 
 def print_data_header(header):
     data_type = enums.DataType(header.type).name
-    print("[DATA] Type: {}    Depth: {} bits    Length: {} bits".format(data_type, header.bpp*8, header.length))
+    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bits")
 
 
 def parse_args():
@@ -134,3 +144,4 @@ try:
 except KeyboardInterrupt:
     print("Exiting...\n")
     exit()
+ 
