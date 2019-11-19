@@ -4,10 +4,12 @@ import argparse
 import struct
 from magnitude import mg
 
+### Globals ###
 args = None
 file_header = None
 wave_header = None
 data_header = None
+
 
 def init():
     global args
@@ -18,23 +20,27 @@ def init():
     # Parse CLI arguments
     args = parse_args()
 
-    # Read bin file
+    # Open bin file
     print(f"Opening \"{args.BIN}\"")
-    bin_bytes = open(args.BIN, mode="rb").read()
+    bin_file = open(args.BIN, mode="rb")
     
-    # Parse File Header
-    file_header = parse_file_header(bin_bytes[:12])
+    # Rad and parse File Header
+    file_header = parse_file_header( bin_file.read(0x0C) )
     print_file_header(file_header)
 
-    # Parse Waveform Header
-    wave_header = parse_wave_header(bin_bytes[12:])
+    # Read and parse Waveform Header
+    wave_header = parse_wave_header( bin_file.read(0x8C) )
     print_wave_header(wave_header)
 
-    # Parse Data Header
-    data_header = parse_data_header(bin_bytes[152:])
+    # Read and parse Data Header
+    data_header = parse_data_header( bin_file.read(0x0C) )
     print_data_header(data_header)
 
+    # Close bin file
+    bin_file.close()
 
+
+### Parse Functions ###
 def parse_file_header(data):
     """
     Parses file header into Named Tuple
@@ -80,6 +86,7 @@ def parse_data_header(data):
     return data_header
 
 
+### Print Functions ###
 def print_file_header(header):
     # Print file info
     size = round(header.size / 1024, 2)
@@ -144,4 +151,3 @@ try:
 except KeyboardInterrupt:
     print("Exiting...\n")
     exit()
- 
