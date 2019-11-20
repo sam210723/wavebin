@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
   - Disable Y axis zooming by default
+  - Title-case unit names
 
 ### Fixed
   - 

@@ -18,12 +18,12 @@ class Units(Enum):
     """
 
     UNKNOWN     = 0
-    VOLTS       = 1
-    SECONDS     = 2
-    CONSTANT    = 3
-    AMPS        = 4
-    DECIBELS    = 5
-    HERTZ       = 6
+    Volts       = 1
+    Seconds     = 2
+    Constant    = 3
+    Amps        = 4
+    Decibels    = 5
+    Hertz       = 6
 
 
 class DataType(Enum):
