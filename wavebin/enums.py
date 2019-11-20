@@ -6,10 +6,10 @@ class WaveType(Enum):
     """
 
     UNKNOWN     = 0
-    NORMAL      = 1
-    PEAK_DETECT = 2
-    AVERAGE     = 3
-    LOGIC       = 6
+    Normal      = 1
+    Peak        = 2
+    Average     = 3
+    Logic       = 6
 
 
 class Units(Enum):
@@ -18,12 +18,12 @@ class Units(Enum):
     """
 
     UNKNOWN     = 0
-    VOLTS       = 1
-    SECONDS     = 2
-    CONSTANT    = 3
-    AMPS        = 4
-    DECIBELS    = 5
-    HERTZ       = 6
+    Volts       = 1
+    Seconds     = 2
+    Constant    = 3
+    Amps        = 4
+    Decibels    = 5
+    Hertz       = 6
 
 
 class DataType(Enum):
@@ -32,7 +32,7 @@ class DataType(Enum):
     """
 
     UNKNOWN     = 0
-    FLOAT32     = 1
-    FLOATMAX    = 2
-    FLOATMIN    = 3
-    UCHAR8      = 6
+    float32     = 1
+    floatMax    = 2
+    floatMin    = 3
+    uchar8      = 6

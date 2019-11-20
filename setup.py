@@ -5,11 +5,11 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='wavebin',
-    version='1.0',
+    version='1.1',
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Keysight oscilloscope waveform file viewer",
+    description="Waveform capture viewer for Keysight oscilloscopes",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",

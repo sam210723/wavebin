@@ -4,6 +4,8 @@ import argparse
 import struct
 from magnitude import mg
 from PyQt5 import QtWidgets as qt
+from PyQt5 import QtCore as qtc
+from PyQt5 import QtGui as qtg
 import pyqtgraph as pg
 import ntpath
 import numpy as np
@@ -14,8 +16,10 @@ file_header = None
 wave_headers = []
 data_header = None
 waveforms = []
-version = "1.0"
-
+version = "1.1"
+width = 1400
+height = 600
+bg = "black"
 
 def init():
     global args
@@ -71,12 +75,38 @@ def render():
 
     # Create Qt app
     app = qt.QApplication([])
-    win = pg.GraphicsLayoutWidget()
+    
+    # Create Qt widgets
+    window = qt.QWidget()
+    layout = qt.QHBoxLayout()
+    pgplot = pg.PlotWidget()
+    detail = qt.QTableWidget()
 
-    # Set window properties
-    fname = ntpath.basename(args.BIN)
-    win.setWindowTitle(f"{fname} - wavebin")
-    win.resize(1100, 700)
+    # Setup window
+    window.setWindowTitle(f"{ntpath.basename(args.BIN)} - wavebin v{version}")
+    window.resize(width, height)
+    window.setLayout(layout)
+    window.setStyleSheet(f"background-color: {bg};")
+
+    # Setup layout
+    layout.addWidget(pgplot)
+    layout.addWidget(detail)
+    layout.setContentsMargins(10, 0, 0, 10)
+    layout.setSpacing(15)
+    detail.setFixedWidth(300)
+
+    # Setup detail table
+    detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #777;"\
+                         "color: white; font-weight: normal; font-size: 17px;")
+    detail.setRowCount(12)
+    detail.setColumnCount(2)
+    detail.verticalHeader().setVisible(False)
+    detail.horizontalHeader().setVisible(False)
+    detail.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
+    detail.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
+    detail.setFocusPolicy(qtc.Qt.NoFocus)
+    detail.setSelectionMode(qt.QAbstractItemView.NoSelection)
+
 
     # Loop through waveforms
     for i, w in enumerate(waveforms):
@@ -89,22 +119,53 @@ def render():
         x = np.linspace(start, stop, num)
 
         # Build plot
-        p = win.addPlot()
-        p.setLabel('bottom', "Time", units='s')
-        p.setLabel('left', enums.Units(header.y_units).name, units='V')
-        p.showGrid(x=True, y=True, alpha=1.0)
-        title = pg.TextItem(
-            text = f"{header.frame.decode().split(':')[0]}",
-            anchor = (0,0),
-            color = (255, 255, 255)
-        )
-        #p.addItem(title)
+        pgplot.setLabel('bottom', "Time", units='s')
+        pgplot.setLabel('left', enums.Units(header.y_units).name, units='V')
+        pgplot.showGrid(x=True, y=True, alpha=1.0)
+        pgplot.setMouseEnabled(x=True, y=False)
 
         # Add data to plot
-        p.plot(x, w)
+        pgplot.plot(x, w, pen=pg.mkPen((242, 242, 0), width=3))
+
+        # Add detail to table
+        detail.setItem(0, 0, qt.QTableWidgetItem(" Waveform Type"))
+        detail.setItem(0, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
+        detail.setItem(1, 0, qt.QTableWidgetItem(" Sample Points"))
+        detail.setItem(1, 1, qt.QTableWidgetItem(f" {header.points}"))
+        detail.setItem(2, 0, qt.QTableWidgetItem(" Averaging"))
+        detail.setItem(2, 1, qt.QTableWidgetItem(f" {header.count}"))
+        detail.setItem(3, 0, qt.QTableWidgetItem(" Display Range"))
+        rng = mg(header.x_d_range, unit="s", ounit="us")
+        detail.setItem(3, 1, qt.QTableWidgetItem(f" {rng}"))
+        detail.setItem(4, 0, qt.QTableWidgetItem(" Display Origin"))
+        dorigin = mg(header.x_d_origin, unit="s", ounit="us")
+        detail.setItem(4, 1, qt.QTableWidgetItem(f" {dorigin}"))
+        detail.setItem(5, 0, qt.QTableWidgetItem(" Increment"))
+        increment = mg(header.x_increment, unit="s", ounit="ns")
+        detail.setItem(5, 1, qt.QTableWidgetItem(f" {increment}"))
+        detail.setItem(6, 0, qt.QTableWidgetItem(" X Units"))
+        detail.setItem(6, 1, qt.QTableWidgetItem(f" {enums.Units(header.x_units).name}"))
+        detail.setItem(7, 0, qt.QTableWidgetItem(" Y Units"))
+        detail.setItem(7, 1, qt.QTableWidgetItem(f" {enums.Units(header.y_units).name}"))
+        detail.setItem(8, 0, qt.QTableWidgetItem(" Date"))
+        detail.setItem(8, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
+        detail.setItem(9, 0, qt.QTableWidgetItem(" Time"))
+        detail.setItem(9, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
+        frame = header.frame.decode().split(":")
+        detail.setItem(10, 0, qt.QTableWidgetItem(" Frame"))
+        detail.setItem(10, 1, qt.QTableWidgetItem(f" {frame[0]}"))
+        detail.setItem(11, 0, qt.QTableWidgetItem(" Serial"))
+        detail.setItem(11, 1, qt.QTableWidgetItem(f" {frame[1]}"))
+
+        # Bold left column
+        for i in range(12):
+            f = qtg.QFont()
+            f.setBold(True)
+            detail.item(i, 0).setFont(f)
+
     
     # Run Qt app
-    win.showMaximized()
+    window.show()
     app.exec_()
 
 
