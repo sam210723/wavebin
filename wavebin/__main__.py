@@ -15,7 +15,9 @@ wave_headers = []
 data_header = None
 waveforms = []
 version = "1.1"
-
+width = 1100
+height = 700
+bg = "black"
 
 def init():
     global args
@@ -71,13 +73,25 @@ def render():
 
     # Create Qt app
     app = qt.QApplication([])
-    win = pg.GraphicsLayoutWidget()
+    
+    # Create Qt widgets
+    window = qt.QWidget()
+    layout = qt.QHBoxLayout()
+    pgplot = pg.PlotWidget()
+    detail = qt.QTabWidget()
 
-    # Set window properties
-    fname = ntpath.basename(args.BIN)
-    win.setWindowTitle(f"{fname} - wavebin")
-    win.resize(1100, 700)
+    # Setup window
+    window.setWindowTitle(f"{ntpath.basename(args.BIN)} - wavebin")
+    window.resize(width, height)
+    window.setLayout(layout)
+    window.setStyleSheet(f"background-color: {bg};")
 
+    # Setup layout
+    layout.addWidget(pgplot)
+    layout.addWidget(detail)
+    layout.setContentsMargins(10, 0, 0, 10)
+    layout.setSpacing(0)
+    detail.setFixedWidth(300)
 
     # Loop through waveforms
     for i, w in enumerate(waveforms):
@@ -90,23 +104,16 @@ def render():
         x = np.linspace(start, stop, num)
 
         # Build plot
-        p = win.addPlot()
-        p.setLabel('bottom', "Time", units='s')
-        p.setLabel('left', enums.Units(header.y_units).name, units='V')
-        p.showGrid(x=True, y=True, alpha=1.0)
-        p.setMouseEnabled(x=True, y=False)
-        title = pg.TextItem(
-            text = f"{header.frame.decode().split(':')[0]}",
-            anchor = (0,0),
-            color = (255, 255, 255)
-        )
-        #p.addItem(title)
+        pgplot.setLabel('bottom', "Time", units='s')
+        pgplot.setLabel('left', enums.Units(header.y_units).name, units='V')
+        pgplot.showGrid(x=True, y=True, alpha=1.0)
+        pgplot.setMouseEnabled(x=True, y=False)
 
         # Add data to plot
-        p.plot(x, w)
+        pgplot.plot(x, w, pen=pg.mkPen((242, 242, 0), width=3))
     
     # Run Qt app
-    win.showMaximized()
+    window.showMaximized()
     app.exec_()
 
 
