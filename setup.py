@@ -9,7 +9,7 @@ setuptools.setup(
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Keysight oscilloscope waveform file viewer",
+    description="Waveform capture viewer for Keysight oscilloscopes",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
