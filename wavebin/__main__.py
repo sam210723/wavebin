@@ -83,7 +83,7 @@ def render():
     detail = qt.QTableWidget()
 
     # Setup window
-    window.setWindowTitle(f"{ntpath.basename(args.BIN)} - wavebin")
+    window.setWindowTitle(f"{ntpath.basename(args.BIN)} - wavebin v{version}")
     window.resize(width, height)
     window.setLayout(layout)
     window.setStyleSheet(f"background-color: {bg};")
