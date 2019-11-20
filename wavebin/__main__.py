@@ -4,6 +4,7 @@ import argparse
 import struct
 from magnitude import mg
 from PyQt5 import QtWidgets as qt
+from PyQt5 import QtCore as qtc
 import pyqtgraph as pg
 import ntpath
 import numpy as np
@@ -15,7 +16,7 @@ wave_headers = []
 data_header = None
 waveforms = []
 version = "1.1"
-width = 1100
+width = 1400
 height = 700
 bg = "black"
 
@@ -78,7 +79,7 @@ def render():
     window = qt.QWidget()
     layout = qt.QHBoxLayout()
     pgplot = pg.PlotWidget()
-    detail = qt.QTabWidget()
+    detail = qt.QTableWidget()
 
     # Setup window
     window.setWindowTitle(f"{ntpath.basename(args.BIN)} - wavebin")
@@ -92,6 +93,19 @@ def render():
     layout.setContentsMargins(10, 0, 0, 10)
     layout.setSpacing(0)
     detail.setFixedWidth(300)
+
+    # Setup detail table
+    detail.setStyleSheet("border: 1px solid #777; background-color: black; gridline-color: #777;"\
+                          "color: white; font-weight: bold; font-size: 17px;")
+    detail.setRowCount(16)
+    detail.setColumnCount(2)
+    detail.verticalHeader().setVisible(False)
+    detail.horizontalHeader().setVisible(False)
+    detail.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
+    detail.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
+    detail.setFocusPolicy(qtc.Qt.NoFocus)
+    detail.setSelectionMode(qt.QAbstractItemView.NoSelection)
+
 
     # Loop through waveforms
     for i, w in enumerate(waveforms):
@@ -111,9 +125,12 @@ def render():
 
         # Add data to plot
         pgplot.plot(x, w, pen=pg.mkPen((242, 242, 0), width=3))
+
+        # Add detail to table
+        detail.setItem(0, 0, qt.QTableWidgetItem(" TEXT"))
     
     # Run Qt app
-    window.showMaximized()
+    window.show()
     app.exec_()
 
 
