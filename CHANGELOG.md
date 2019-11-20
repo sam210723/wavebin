@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
-  - 
+  - Waveform detail sidebar
 
 ### Changed
   - Disable Y axis zooming by default
