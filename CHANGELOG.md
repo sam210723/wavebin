@@ -6,8 +6,9 @@ All notable changes to this project will be documented in this file.
 
 ### Added
   - Multi-waveform support
-  - Multi-waveform sample
+  - Waveform low-pass filter (Savitzky-Golay)
   - Waveform colours
+  - Multi-waveform sample
   - Data waveform sample
 
 ### Changed

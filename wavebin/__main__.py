@@ -25,7 +25,8 @@ detail_items = [
     "Display Range",
     "Device",
     "Date",
-    "Time"
+    "Time",
+    "Filtering"
 ]
 
 def init():
@@ -127,6 +128,7 @@ def render():
     detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
     detail.setItem(4, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
     detail.setItem(5, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
+    detail.setItem(6, 1, qt.QTableWidgetItem(" {}".format("Enabled" if args.f else "None")))
 
     # Bold left column
     f = qtg.QFont()
