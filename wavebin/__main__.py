@@ -1,4 +1,4 @@
-from . import enums, tuples
+from . import enums, tuples, filters
 
 import argparse
 import struct
@@ -219,7 +219,18 @@ def parse_data(header, data):
     """
 
     arr = np.frombuffer(data, dtype=np.float32)
-    waveforms.append(arr)
+
+    # Waveform filtering
+    if args.f:
+        # Calculate window length
+        window_len = round(wave_headers[0].points * 0.025)
+        if window_len % 2 == 0: window_len += 1
+
+        # Filter waveform points
+        filtered = filters.savitzky_golay(arr, window_len, 2)
+        waveforms.append(filtered)
+    else:
+        waveforms.append(arr)
 
 
 ### Print Functions ###
@@ -277,6 +288,7 @@ def parse_args():
     argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
     argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
+    argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
