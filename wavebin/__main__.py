@@ -2,7 +2,6 @@ from . import enums, tuples
 
 import argparse
 import struct
-from magnitude import mg
 from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
@@ -21,7 +20,6 @@ width = 1500
 height = 600
 bg = "black"
 detail_items = [
-    "Waveform Type",
     "Sample Points",
     "Averaging",
     "Display Range",
@@ -117,6 +115,26 @@ def render():
     detail.setSelectionMode(qt.QAbstractItemView.NoSelection)
 
 
+    # Set detail names
+    for i, s in enumerate(detail_items):
+        detail.setItem(i, 0, qt.QTableWidgetItem(f" {s}"))
+
+    # Set detail values
+    header = wave_headers[0]
+    detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points}"))
+    detail.setItem(1, 1, qt.QTableWidgetItem(" {}".format("None" if header.count == 1 else header.count)))
+    detail.setItem(2, 1, qt.QTableWidgetItem(f" {round(header.x_d_range * float(10**6), 3)} μs"))
+    detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
+    detail.setItem(4, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
+    detail.setItem(5, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
+
+    # Bold left column
+    f = qtg.QFont()
+    f.setBold(True)
+    for i in range(len(detail_items)):
+        detail.item(i, 0).setFont(f)
+
+
     # Loop through waveforms
     for i, w in enumerate(waveforms):
         header = wave_headers[i]
@@ -136,24 +154,13 @@ def render():
         # Add data to plot
         pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=2))
 
-        # Set detail names
-        for i, s in enumerate(detail_items):
-            detail.setItem(i, 0, qt.QTableWidgetItem(f" {s}"))
-
-        # Set detail values
-        detail.setItem(0, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
-        detail.setItem(1, 1, qt.QTableWidgetItem(f" {header.points}"))
-        detail.setItem(2, 1, qt.QTableWidgetItem(" {}".format("None" if header.count == 1 else header.count)))
-        detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(mg(header.x_d_range, unit="s", ounit="us"))))
-        detail.setItem(4, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
-        detail.setItem(5, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
-        detail.setItem(6, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
-
-        # Bold left column
-        f = qtg.QFont()
-        f.setBold(True)
-        for i in range(len(detail_items)):
-            detail.item(i, 0).setFont(f)
+        # Add waveform specific details
+        r = detail.rowCount()
+        detail.insertRow(r)
+        detail.setItem(r, 0, qt.QTableWidgetItem(f" Waveform {header.label.decode()}"))
+        detail.setItem(r, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
+        detail.item(r, 0).setForeground(qtg.QBrush(qtg.QColor(*wave_colours[i])))
+        detail.item(r, 0).setFont(f)
 
     
     # Run Qt app
@@ -232,17 +239,17 @@ def print_wave_header(header):
     print(f"  - Sample Points:\t{header.points}")
     print(f"  - Average Count:\t{header.count}")
 
-    rng = mg(header.x_d_range, unit="s", ounit="us")
-    print(f"  - X Display Range:\t{rng}")
+    rng = round(header.x_d_range * float(10**6), 3)
+    print(f"  - X Display Range:\t{rng} μs")
 
-    dorigin = mg(header.x_d_origin, unit="s", ounit="us")
-    print(f"  - X Display Origin:\t{dorigin}")
+    dorigin = round(header.x_d_origin * float(10**6), 3)
+    print(f"  - X Display Origin:\t{dorigin} μs")
 
-    increment = mg(header.x_increment, unit="s", ounit="ns")
-    print(f"  - X Increment:\t{increment}")
+    increment = round(header.x_increment * float(10**9), 3)
+    print(f"  - X Increment:\t{increment} ns")
     
-    origin = mg(header.x_origin, unit="s", ounit="us")
-    print(f"  - X Origin:\t\t{origin}")
+    origin = round(header.x_origin * float(10**6), 3)
+    print(f"  - X Origin:\t\t{origin} μs")
     
     print(f"  - X Units:\t\t{enums.Units(header.x_units).name}")
     print(f"  - Y Units:\t\t{enums.Units(header.y_units).name}")

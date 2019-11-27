@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
   - Refactor detail sidebar
+  - Remove ``magnitude`` dependency
 
 ### Fixed
   - np.linspace float deprecation warning

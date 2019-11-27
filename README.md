@@ -8,7 +8,7 @@ Currently **wavebin** has been tested with files from a [**DSO-X 1102G**](https:
 
 ## Getting Started
 
-**wavebin** is available through the [Python Package Index](https://pypi.org/project/wavebin/). To install **wavebin** and its dependencies ([magnitude](https://pypi.org/project/magnitude/), [numpy](https://numpy.org/), [pyqt5](https://pypi.org/project/PyQt5/), [pyqtgraph](http://www.pyqtgraph.org/)), run the following command:
+**wavebin** is available through the [Python Package Index](https://pypi.org/project/wavebin/). To install **wavebin** and its dependencies ([numpy](https://numpy.org/), [pyqt5](https://pypi.org/project/PyQt5/), [pyqtgraph](http://www.pyqtgraph.org/)), run the following command:
 
 ```
 pip install wavebin
@@ -23,32 +23,34 @@ python -m wavebin [PATH TO BIN FILE]
 Use the ``-v`` option to see detailed information about the waveform file:
 
 ```
-wavebin v1.0
+wavebin v1.2
 
-Loading "samples\sample.bin"...
+Loading "single.bin"...
 File Size:              7.79 KB
 Waveforms:              1
 
 Waveform 1:
-  - Wave Type:          NORMAL
+  - Wave Type:          Normal
   - Wave Buffers:       1
   - Sample Points:      1953
   - Average Count:      1
-  - X Display Range:    2000.0001 us
-  - X Display Origin:   -1000.0000 us
-  - X Increment:        1024.0000 ns
-  - X Origin:           -1000.0000 us
-  - X Units:            SECONDS
-  - Y Units:            VOLTS
+  - X Display Range:    2000.0 μs
+  - X Display Origin:   -1000.0 μs
+  - X Increment:        1024.0 ns
+  - X Origin:           -1000.0 μs
+  - X Units:            Seconds
+  - Y Units:            Volts
   - Date:
   - Time:
   - Frame Type:         DSO-X 1102G
-  - Frame Serial:       CN12345678
+  - Frame Serial:       CN00000000
   - Waveform Label:     1
   - Time Tags:          0.0
   - Segment Number:     0
 
-[DATA] Type: FLOAT32    Depth: 32 bits    Length: 7812 bytes
+[DATA] Type: float32    Depth: 32 bits    Length: 7812 bytes
+
+
 Rendering 1 waveform...
 ```
 
