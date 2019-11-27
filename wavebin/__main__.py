@@ -15,7 +15,7 @@ args = None
 file_header = None
 wave_headers = []
 waveforms = []
-
+wave_colours = [(242, 242, 0), (135, 206, 235)]
 version = "1.2"
 width = 1400
 height = 600
@@ -124,7 +124,7 @@ def render():
         pgplot.setMouseEnabled(x=True, y=False)
 
         # Add data to plot
-        pgplot.plot(x, w, pen=pg.mkPen((242, 242, 0), width=3))
+        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=3))
 
         # Add detail to table
         detail.setItem(0, 0, qt.QTableWidgetItem(" Waveform Type"))
