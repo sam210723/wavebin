@@ -14,8 +14,8 @@ import numpy as np
 args = None
 file_header = None
 wave_headers = []
-data_header = None
 waveforms = []
+
 version = "1.2"
 width = 1400
 height = 600
@@ -25,7 +25,6 @@ def init():
     global args
     global file_header
     global wave_headers
-    global data_header
 
     # Parse CLI arguments
     args = parse_args()
@@ -48,12 +47,12 @@ def init():
         wave_headers.append(wave_header)
         if args.v: print_wave_header(wave_header)
 
-    # Read and parse Data Header
-    data_header = parse_data_header( bin_file.read(0x0C) )
-    if args.v: print_data_header(data_header)
+        # Read and parse Data Header
+        data_header = parse_data_header( bin_file.read(0x0C) )
+        if args.v: print_data_header(data_header)
 
-    # Parse Waveform Data
-    parse_data(data_header, bin_file.read(data_header.length))
+        # Parse Waveform Data
+        parse_data(data_header, bin_file.read(data_header.length))
 
     # Close bin file
     bin_file.close()
@@ -115,7 +114,6 @@ def render():
         # Generate X points
         start = header.x_d_origin
         stop = header.x_d_origin + header.x_d_range
-        #num = int(header.x_d_range // header.x_increment)
         num = header.points
         x = np.linspace(start, stop, num)
 
