@@ -115,7 +115,8 @@ def render():
         # Generate X points
         start = header.x_d_origin
         stop = header.x_d_origin + header.x_d_range
-        num = header.x_d_range / header.x_increment
+        #num = int(header.x_d_range // header.x_increment)
+        num = header.points
         x = np.linspace(start, stop, num)
 
         # Build plot
