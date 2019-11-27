@@ -20,6 +20,15 @@ version = "1.2"
 width = 1400
 height = 600
 bg = "black"
+detail_items = [
+    "Waveform Type",
+    "Sample Points",
+    "Averaging",
+    "Display Range",
+    "Frame",
+    "Date",
+    "Time"
+]
 
 def init():
     global args
@@ -97,7 +106,7 @@ def render():
     # Setup detail table
     detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #777;"\
                          "color: white; font-weight: normal; font-size: 17px;")
-    detail.setRowCount(12)
+    detail.setRowCount(len(detail_items))
     detail.setColumnCount(2)
     detail.verticalHeader().setVisible(False)
     detail.horizontalHeader().setVisible(False)
@@ -124,40 +133,23 @@ def render():
         pgplot.setMouseEnabled(x=True, y=False)
 
         # Add data to plot
-        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=3))
+        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=2))
 
-        # Add detail to table
-        detail.setItem(0, 0, qt.QTableWidgetItem(" Waveform Type"))
+        # Set detail names
+        for i, s in enumerate(detail_items):
+            detail.setItem(i, 0, qt.QTableWidgetItem(f" {s}"))
+
+        # Set detail values
         detail.setItem(0, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
-        detail.setItem(1, 0, qt.QTableWidgetItem(" Sample Points"))
         detail.setItem(1, 1, qt.QTableWidgetItem(f" {header.points}"))
-        detail.setItem(2, 0, qt.QTableWidgetItem(" Averaging"))
-        detail.setItem(2, 1, qt.QTableWidgetItem(f" {header.count}"))
-        detail.setItem(3, 0, qt.QTableWidgetItem(" Display Range"))
-        rng = mg(header.x_d_range, unit="s", ounit="us")
-        detail.setItem(3, 1, qt.QTableWidgetItem(f" {rng}"))
-        detail.setItem(4, 0, qt.QTableWidgetItem(" Display Origin"))
-        dorigin = mg(header.x_d_origin, unit="s", ounit="us")
-        detail.setItem(4, 1, qt.QTableWidgetItem(f" {dorigin}"))
-        detail.setItem(5, 0, qt.QTableWidgetItem(" Increment"))
-        increment = mg(header.x_increment, unit="s", ounit="ns")
-        detail.setItem(5, 1, qt.QTableWidgetItem(f" {increment}"))
-        detail.setItem(6, 0, qt.QTableWidgetItem(" X Units"))
-        detail.setItem(6, 1, qt.QTableWidgetItem(f" {enums.Units(header.x_units).name}"))
-        detail.setItem(7, 0, qt.QTableWidgetItem(" Y Units"))
-        detail.setItem(7, 1, qt.QTableWidgetItem(f" {enums.Units(header.y_units).name}"))
-        detail.setItem(8, 0, qt.QTableWidgetItem(" Date"))
-        detail.setItem(8, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
-        detail.setItem(9, 0, qt.QTableWidgetItem(" Time"))
-        detail.setItem(9, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
-        frame = header.frame.decode().split(":")
-        detail.setItem(10, 0, qt.QTableWidgetItem(" Frame"))
-        detail.setItem(10, 1, qt.QTableWidgetItem(f" {frame[0]}"))
-        detail.setItem(11, 0, qt.QTableWidgetItem(" Serial"))
-        detail.setItem(11, 1, qt.QTableWidgetItem(f" {frame[1]}"))
+        detail.setItem(2, 1, qt.QTableWidgetItem(" {}".format("None" if header.count == 1 else header.count)))
+        detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(mg(header.x_d_range, unit="s", ounit="us"))))
+        detail.setItem(4, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
+        detail.setItem(5, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
+        detail.setItem(6, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
 
         # Bold left column
-        for i in range(12):
+        for i in range(len(detail_items)):
             f = qtg.QFont()
             f.setBold(True)
             detail.item(i, 0).setFont(f)

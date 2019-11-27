@@ -5,13 +5,16 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
-  - 
+  - Multi-waveform support
+  - Multi-waveform sample
+  - Waveform colours
+  - Data waveform sample
 
 ### Changed
-  - 
+  - Refactor detail sidebar
 
 ### Fixed
-  - 
+  - np.linspace float deprecation warning
 </details>
 
 
