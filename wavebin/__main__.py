@@ -1,8 +1,7 @@
-from . import enums, tuples
+from . import enums, tuples, filters
 
 import argparse
 import struct
-from magnitude import mg
 from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
@@ -14,18 +13,26 @@ import numpy as np
 args = None
 file_header = None
 wave_headers = []
-data_header = None
 waveforms = []
-version = "1.1"
-width = 1400
+wave_colours = [(242, 242, 0), (135, 206, 235)]
+version = "1.2"
+width = 1500
 height = 600
 bg = "black"
+detail_items = [
+    "Sample Points",
+    "Averaging",
+    "Display Range",
+    "Device",
+    "Date",
+    "Time",
+    "Filtering"
+]
 
 def init():
     global args
     global file_header
     global wave_headers
-    global data_header
 
     # Parse CLI arguments
     args = parse_args()
@@ -48,12 +55,12 @@ def init():
         wave_headers.append(wave_header)
         if args.v: print_wave_header(wave_header)
 
-    # Read and parse Data Header
-    data_header = parse_data_header( bin_file.read(0x0C) )
-    if args.v: print_data_header(data_header)
+        # Read and parse Data Header
+        data_header = parse_data_header( bin_file.read(0x0C) )
+        if args.v: print_data_header(data_header)
 
-    # Parse Waveform Data
-    parse_data(data_header, bin_file.read(data_header.length))
+        # Parse Waveform Data
+        parse_data(data_header, bin_file.read(data_header.length))
 
     # Close bin file
     bin_file.close()
@@ -87,18 +94,19 @@ def render():
     window.resize(width, height)
     window.setLayout(layout)
     window.setStyleSheet(f"background-color: {bg};")
+    window.setWindowIcon(qtg.QIcon('icon.ico'))
 
     # Setup layout
     layout.addWidget(pgplot)
     layout.addWidget(detail)
     layout.setContentsMargins(10, 0, 0, 10)
-    layout.setSpacing(15)
+    layout.setSpacing(30)
     detail.setFixedWidth(300)
 
     # Setup detail table
-    detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #777;"\
+    detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #555;"\
                          "color: white; font-weight: normal; font-size: 17px;")
-    detail.setRowCount(12)
+    detail.setRowCount(len(detail_items))
     detail.setColumnCount(2)
     detail.verticalHeader().setVisible(False)
     detail.horizontalHeader().setVisible(False)
@@ -108,6 +116,27 @@ def render():
     detail.setSelectionMode(qt.QAbstractItemView.NoSelection)
 
 
+    # Set detail names
+    for i, s in enumerate(detail_items):
+        detail.setItem(i, 0, qt.QTableWidgetItem(f" {s}"))
+
+    # Set detail values
+    header = wave_headers[0]
+    detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points}"))
+    detail.setItem(1, 1, qt.QTableWidgetItem(" {}".format("None" if header.count == 1 else header.count)))
+    detail.setItem(2, 1, qt.QTableWidgetItem(f" {round(header.x_d_range * float(10**6), 3)} μs"))
+    detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
+    detail.setItem(4, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
+    detail.setItem(5, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
+    detail.setItem(6, 1, qt.QTableWidgetItem(" {}".format("Enabled" if args.f else "None")))
+
+    # Bold left column
+    f = qtg.QFont()
+    f.setBold(True)
+    for i in range(len(detail_items)):
+        detail.item(i, 0).setFont(f)
+
+
     # Loop through waveforms
     for i, w in enumerate(waveforms):
         header = wave_headers[i]
@@ -115,7 +144,7 @@ def render():
         # Generate X points
         start = header.x_d_origin
         stop = header.x_d_origin + header.x_d_range
-        num = header.x_d_range / header.x_increment
+        num = header.points
         x = np.linspace(start, stop, num)
 
         # Build plot
@@ -125,43 +154,15 @@ def render():
         pgplot.setMouseEnabled(x=True, y=False)
 
         # Add data to plot
-        pgplot.plot(x, w, pen=pg.mkPen((242, 242, 0), width=3))
+        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=2))
 
-        # Add detail to table
-        detail.setItem(0, 0, qt.QTableWidgetItem(" Waveform Type"))
-        detail.setItem(0, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
-        detail.setItem(1, 0, qt.QTableWidgetItem(" Sample Points"))
-        detail.setItem(1, 1, qt.QTableWidgetItem(f" {header.points}"))
-        detail.setItem(2, 0, qt.QTableWidgetItem(" Averaging"))
-        detail.setItem(2, 1, qt.QTableWidgetItem(f" {header.count}"))
-        detail.setItem(3, 0, qt.QTableWidgetItem(" Display Range"))
-        rng = mg(header.x_d_range, unit="s", ounit="us")
-        detail.setItem(3, 1, qt.QTableWidgetItem(f" {rng}"))
-        detail.setItem(4, 0, qt.QTableWidgetItem(" Display Origin"))
-        dorigin = mg(header.x_d_origin, unit="s", ounit="us")
-        detail.setItem(4, 1, qt.QTableWidgetItem(f" {dorigin}"))
-        detail.setItem(5, 0, qt.QTableWidgetItem(" Increment"))
-        increment = mg(header.x_increment, unit="s", ounit="ns")
-        detail.setItem(5, 1, qt.QTableWidgetItem(f" {increment}"))
-        detail.setItem(6, 0, qt.QTableWidgetItem(" X Units"))
-        detail.setItem(6, 1, qt.QTableWidgetItem(f" {enums.Units(header.x_units).name}"))
-        detail.setItem(7, 0, qt.QTableWidgetItem(" Y Units"))
-        detail.setItem(7, 1, qt.QTableWidgetItem(f" {enums.Units(header.y_units).name}"))
-        detail.setItem(8, 0, qt.QTableWidgetItem(" Date"))
-        detail.setItem(8, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
-        detail.setItem(9, 0, qt.QTableWidgetItem(" Time"))
-        detail.setItem(9, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
-        frame = header.frame.decode().split(":")
-        detail.setItem(10, 0, qt.QTableWidgetItem(" Frame"))
-        detail.setItem(10, 1, qt.QTableWidgetItem(f" {frame[0]}"))
-        detail.setItem(11, 0, qt.QTableWidgetItem(" Serial"))
-        detail.setItem(11, 1, qt.QTableWidgetItem(f" {frame[1]}"))
-
-        # Bold left column
-        for i in range(12):
-            f = qtg.QFont()
-            f.setBold(True)
-            detail.item(i, 0).setFont(f)
+        # Add waveform specific details
+        r = detail.rowCount()
+        detail.insertRow(r)
+        detail.setItem(r, 0, qt.QTableWidgetItem(f" Waveform {header.label.decode()}"))
+        detail.setItem(r, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
+        detail.item(r, 0).setForeground(qtg.QBrush(qtg.QColor(*wave_colours[i])))
+        detail.item(r, 0).setFont(f)
 
     
     # Run Qt app
@@ -220,7 +221,18 @@ def parse_data(header, data):
     """
 
     arr = np.frombuffer(data, dtype=np.float32)
-    waveforms.append(arr)
+
+    # Waveform filtering
+    if args.f:
+        # Calculate window length
+        window_len = round(wave_headers[0].points * 0.025)
+        if window_len % 2 == 0: window_len += 1
+
+        # Filter waveform points
+        filtered = filters.savitzky_golay(arr, window_len, 2)
+        waveforms.append(filtered)
+    else:
+        waveforms.append(arr)
 
 
 ### Print Functions ###
@@ -240,17 +252,17 @@ def print_wave_header(header):
     print(f"  - Sample Points:\t{header.points}")
     print(f"  - Average Count:\t{header.count}")
 
-    rng = mg(header.x_d_range, unit="s", ounit="us")
-    print(f"  - X Display Range:\t{rng}")
+    rng = round(header.x_d_range * float(10**6), 3)
+    print(f"  - X Display Range:\t{rng} μs")
 
-    dorigin = mg(header.x_d_origin, unit="s", ounit="us")
-    print(f"  - X Display Origin:\t{dorigin}")
+    dorigin = round(header.x_d_origin * float(10**6), 3)
+    print(f"  - X Display Origin:\t{dorigin} μs")
 
-    increment = mg(header.x_increment, unit="s", ounit="ns")
-    print(f"  - X Increment:\t{increment}")
+    increment = round(header.x_increment * float(10**9), 3)
+    print(f"  - X Increment:\t{increment} ns")
     
-    origin = mg(header.x_origin, unit="s", ounit="us")
-    print(f"  - X Origin:\t\t{origin}")
+    origin = round(header.x_origin * float(10**6), 3)
+    print(f"  - X Origin:\t\t{origin} μs")
     
     print(f"  - X Units:\t\t{enums.Units(header.x_units).name}")
     print(f"  - Y Units:\t\t{enums.Units(header.y_units).name}")
@@ -267,7 +279,7 @@ def print_wave_header(header):
 
 def print_data_header(header):
     data_type = enums.DataType(header.type).name
-    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bytes")
+    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bytes\n\n")
 
 
 def parse_args():
@@ -278,6 +290,7 @@ def parse_args():
     argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
     argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
+    argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
