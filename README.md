@@ -22,7 +22,7 @@ python -m wavebin [PATH TO BIN FILE]
 
 The ``-f`` option enables a [Savitzky-Golay](https://web.archive.org/web/20150710002613/http://wiki.scipy.org:80/Cookbook/SavitzkyGolay) low-pass filter which smooths out waveforms. This option is not useful for all waveforms (e.g. high-frequency square waves) as it will create distortion.
 
-![Filter Screenshot](filter.png)
+![Filter Screenshot](https://github.com/sam210723/wavebin/raw/master/filter.png)
 
 Use the ``-v`` option to see detailed information about the waveform file:
 
