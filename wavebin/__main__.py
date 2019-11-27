@@ -17,7 +17,7 @@ wave_headers = []
 waveforms = []
 wave_colours = [(242, 242, 0), (135, 206, 235)]
 version = "1.2"
-width = 1400
+width = 1500
 height = 600
 bg = "black"
 detail_items = [
@@ -25,7 +25,7 @@ detail_items = [
     "Sample Points",
     "Averaging",
     "Display Range",
-    "Frame",
+    "Device",
     "Date",
     "Time"
 ]
@@ -95,16 +95,17 @@ def render():
     window.resize(width, height)
     window.setLayout(layout)
     window.setStyleSheet(f"background-color: {bg};")
+    window.setWindowIcon(qtg.QIcon('icon.ico'))
 
     # Setup layout
     layout.addWidget(pgplot)
     layout.addWidget(detail)
     layout.setContentsMargins(10, 0, 0, 10)
-    layout.setSpacing(15)
+    layout.setSpacing(30)
     detail.setFixedWidth(300)
 
     # Setup detail table
-    detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #777;"\
+    detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #555;"\
                          "color: white; font-weight: normal; font-size: 17px;")
     detail.setRowCount(len(detail_items))
     detail.setColumnCount(2)
@@ -149,9 +150,9 @@ def render():
         detail.setItem(6, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
 
         # Bold left column
+        f = qtg.QFont()
+        f.setBold(True)
         for i in range(len(detail_items)):
-            f = qtg.QFont()
-            f.setBold(True)
             detail.item(i, 0).setFont(f)
 
     
@@ -258,7 +259,7 @@ def print_wave_header(header):
 
 def print_data_header(header):
     data_type = enums.DataType(header.type).name
-    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bytes")
+    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bytes\n\n")
 
 
 def parse_args():
