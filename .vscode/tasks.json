@@ -40,9 +40,15 @@
             "problemMatcher": []
         },
         {
-            "label": "Run Module",
+            "label": "Run Module (single)",
             "type": "shell",
-            "command": "python -m wavebin samples/sample.bin",
+            "command": "python -m wavebin samples/single.bin",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Module (dual)",
+            "type": "shell",
+            "command": "python -m wavebin samples/dual.bin",
             "problemMatcher": []
         },
         {
