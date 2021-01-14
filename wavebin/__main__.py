@@ -137,6 +137,11 @@ def render():
     for i in range(len(detail_items)):
         detail.item(i, 0).setFont(f)
 
+    pgplot.setLabel(
+        'left',
+        enums.Units(wave_headers[0].y_units).name,
+        units=enums.UnitAbbr(wave_headers[0].y_units).name
+    )
 
     # Loop through waveforms
     for i, w in enumerate(waveforms):
@@ -149,7 +154,6 @@ def render():
 
         # Build plot
         pgplot.setLabel('bottom', "Time", units='s')
-        pgplot.setLabel('left', enums.Units(header.y_units).name, units=enums.UnitAbbr(header.y_units).name)
         pgplot.showGrid(x=True, y=True, alpha=1.0)
         pgplot.setMouseEnabled(x=True, y=False)
 

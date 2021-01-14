@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 ### Changed
   - Show filter name when enabled
   - Waveform data type retrieved from header
+  - Left axis label always from channel 0
 
 ### Fixed
   - Unit abbreviations in axis labels
