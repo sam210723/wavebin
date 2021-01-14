@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
   - Show filter name when enabled
+  - Waveform data type retrieved from header
 
 ### Fixed
   - Unit abbreviations in axis labels

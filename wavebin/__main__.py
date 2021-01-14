@@ -220,7 +220,15 @@ def parse_data(header, data):
     Parse waveform data field
     """
 
-    arr = np.frombuffer(data, dtype=np.float32)
+    # Get waveform data type
+    if header.type in [1, 2, 3]:
+        data_type = np.float32
+    elif header.type == 6:
+        data_type = np.uint8
+    else:
+        data_type = np.float32
+
+    arr = np.frombuffer(data, dtype=data_type)
 
     # Subsample waveform points for large captures
     if (len(arr) > int(args.s)):
