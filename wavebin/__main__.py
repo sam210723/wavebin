@@ -149,7 +149,7 @@ def render():
 
         # Build plot
         pgplot.setLabel('bottom', "Time", units='s')
-        pgplot.setLabel('left', enums.Units(header.y_units).name, units='V')
+        pgplot.setLabel('left', enums.Units(header.y_units).name, units=enums.UnitAbbr(header.y_units).name)
         pgplot.showGrid(x=True, y=True, alpha=1.0)
         pgplot.setMouseEnabled(x=True, y=False)
 

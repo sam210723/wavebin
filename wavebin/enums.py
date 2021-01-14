@@ -26,6 +26,20 @@ class Units(Enum):
     Hertz       = 6
 
 
+class UnitAbbr(Enum):
+    """
+    Unit abbreviations
+    """
+
+    UNKNOWN     = 0
+    V           = 1
+    s           = 2
+    C           = 3
+    A           = 4
+    dB          = 5
+    Hz          = 6
+
+
 class DataType(Enum):
     """
     Data types
