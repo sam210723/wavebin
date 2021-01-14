@@ -15,6 +15,7 @@ file_header = None
 wave_headers = []
 waveforms = []
 wave_colours = [(242, 242, 0), (100, 149, 237), (255, 0, 0), (255, 165, 0)]
+x_limit = 50000
 version = "1.2"
 width = 1500
 height = 600
@@ -144,8 +145,7 @@ def render():
         # Generate X points
         start = header.x_d_origin
         stop = header.x_d_origin + header.x_d_range
-        num = header.points
-        x = np.linspace(start, stop, num)
+        x = np.linspace(start, stop, len(w))
 
         # Build plot
         pgplot.setLabel('bottom', "Time", units='s')
@@ -222,6 +222,11 @@ def parse_data(header, data):
 
     arr = np.frombuffer(data, dtype=np.float32)
 
+    # Subsample waveform points for large captures
+    if (len(arr) > int(args.s)):
+        print("Subsampling large waveform capture ({} -> {} points)".format(len(arr), int(args.s)))
+        arr = arr[::int(len(arr) / int(args.s))]
+    
     # Waveform filtering
     if args.f:
         # Calculate window length
@@ -292,6 +297,7 @@ def parse_args():
     argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
     argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
+    argp.add_argument("-s", action="store", help="Waveform subsampling threshold", default=x_limit)
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
     return argp.parse_args()
