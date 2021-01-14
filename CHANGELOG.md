@@ -13,6 +13,7 @@ All notable changes to this project will be documented in this file.
 
 ### Fixed
   - Unit abbreviations in axis labels
+  - Savitzky-Golay filter window calculation
 </details>
 
 

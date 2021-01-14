@@ -224,13 +224,15 @@ def parse_data(header, data):
 
     # Subsample waveform points for large captures
     if (len(arr) > int(args.s)):
-        print("Subsampling large waveform capture ({} -> {} points)".format(len(arr), int(args.s)))
+        print("Subsampling large waveform capture ({} -> {} points)...".format(len(arr), int(args.s)))
         arr = arr[::int(len(arr) / int(args.s))]
     
     # Waveform filtering
     if args.f:
+        print("Applying Savitzky-Golay low-pass filter...")
+
         # Calculate window length
-        window_len = round(wave_headers[0].points * 0.025)
+        window_len = round(len(arr) * 0.025)
         if window_len % 2 == 0: window_len += 1
 
         # Filter waveform points
