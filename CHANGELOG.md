@@ -5,7 +5,8 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
-  - 
+  - Colours for channels 3 and 4
+  - Adjustable subsampling for large waveform captures
 
 ### Changed
   - 
