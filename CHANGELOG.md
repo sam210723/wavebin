@@ -9,7 +9,7 @@ All notable changes to this project will be documented in this file.
   - Adjustable subsampling for large waveform captures
 
 ### Changed
-  - 
+  - Show filter name when enabled
 
 ### Fixed
   - Unit abbreviations in axis labels
