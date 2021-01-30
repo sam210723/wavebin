@@ -12,11 +12,11 @@ from PyQt5 import QtGui as qtg
 class QtApp():
     def __init__(self, config):
         self.config = config
-        self.app = qt.QApplication([])
+        self.name = f"wavebin v{self.config['version']}"
         
-        # Set application properties
-        name = f"wavebin v{self.config['version']}"
-        self.app.setApplicationDisplayName(name)
+        # Create main Qt application
+        self.app = qt.QApplication([])
+        self.app.setApplicationDisplayName(self.name)
         self.app.setApplicationVersion(str(self.config['version']))
 
         # Create main Qt window
