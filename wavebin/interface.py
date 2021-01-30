@@ -36,9 +36,12 @@ class QtApp():
         # Create widget layout
         self.log("Creating widget layout")
         self.layout = qt.QGridLayout()
+        self.layout.setContentsMargins(10, 10, 10, 10)
+        self.layout.setSpacing(30)
         self.widget.setLayout(self.layout)
 
-        # Run Qt app
+
+    def run(self):
         self.log("Starting Qt application")
         self.window.show()
         self.app.exec_()
@@ -119,6 +122,11 @@ class QtApp():
 
     def menu_help_github(self):
         webbrowser.open("https://github.com/sam210723/wavebin", new=2)
+
+
+    def add_plot(self, plot):
+        self.log("Adding plot widget to layout")
+        self.layout.addWidget(plot, 1, 0)
 
 
     def log(self, msg):

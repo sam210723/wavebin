@@ -10,6 +10,7 @@ from pathlib import Path
 import sys
 
 from wavebin.interface import QtApp
+from wavebin.plot import QtPlot
 
 __version__ = 2.0
 
@@ -30,8 +31,10 @@ def init():
     # Print startup info
     print_info(args)
 
+    #TODO: Parse waveform and push data to app and plot classes
+
     # Create Qt application
-    QtApp({
+    app = QtApp({
         "version": __version__,
         "verbose": args.v,
         "file":    args.file,
@@ -39,6 +42,18 @@ def init():
         "height":  700,
         "opengl":  not args.no_opengl
     })
+
+    # Create Qt waveform plot
+    plot = QtPlot({
+        "verbose": args.v,
+        "opengl":  not args.no_opengl
+    })
+
+    # Add plot to main window
+    app.add_plot(plot)
+
+    # Run application
+    app.run()
 
     # Gracefully exit application
     safe_exit()
