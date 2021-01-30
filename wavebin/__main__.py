@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 import sys
 
-from wavebin.qt.app import QtApp
+from wavebin.interface import QtApp
 
 __version__ = 2.0
 
@@ -54,8 +54,7 @@ def parse_args():
 
 
 def print_info(args):
-    if args.file: print(f"Opening \"{args.file.name}\"...")
-    print()
+    if args.file: print(f"Opening \"{args.file.name}\"")
 
 
 def safe_exit(msg=True, code=0):
