@@ -20,6 +20,9 @@ def init():
     print("        github.com/sam210723/wavebin\n\n")
 
     args = parse_args()
+    
+    # Print startup info
+    print_info(args)
 
     safe_exit()
 
@@ -32,6 +35,11 @@ def parse_args():
     argp.add_argument("-v", action="store_true", help="Enable verbose logging mode", default=None)
 
     return argp.parse_args()
+
+
+def print_info(args):
+    if args.o: print(f"Opening \"{args.o.name}\"...")
+    print()
 
 
 def safe_exit(msg=True, code=0):
