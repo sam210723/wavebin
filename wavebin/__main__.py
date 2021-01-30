@@ -123,7 +123,10 @@ def render():
 
     # Set detail values
     header = wave_headers[0]
-    detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points}"))
+    if header.points > int(args.s):
+        detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points} -> {args.s}"))
+    else:
+        detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points}"))
     detail.setItem(1, 1, qt.QTableWidgetItem(" {}".format("None" if header.count == 1 else header.count)))
     detail.setItem(2, 1, qt.QTableWidgetItem(f" {round(header.x_d_range * float(10**6), 3)} μs"))
     detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
@@ -312,6 +315,7 @@ def parse_args():
     argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
     argp.add_argument("-s", action="store", help="Waveform subsampling threshold", default=x_limit)
+    argp.add_argument("-d", action="store_true", help="Convert analog waveform to ditigal logic waveform (1-bit ADC)",)
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
     return argp.parse_args()
