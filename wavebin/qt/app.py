@@ -21,6 +21,7 @@ class QtApp():
 
         # Create main Qt window
         self.window = qt.QMainWindow()
+        self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Run Qt app
         self.window.show()

@@ -31,7 +31,8 @@ def init():
 
     # Create Qt application
     config = {
-        "version": __version__
+        "version": __version__,
+        "file":    args.file
     }
     QtApp(config)
 
@@ -57,6 +58,7 @@ def print_info(args):
 def safe_exit(msg=True, code=0):
     if msg: print("Exiting...")
     exit(code)
+
 
 try:
     init()
