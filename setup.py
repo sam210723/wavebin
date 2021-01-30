@@ -27,5 +27,5 @@ setuptools.setup(
         "Programming Language :: Python :: 3.9",
         "Topic :: Scientific/Engineering :: Visualization",
         "Topic :: Utilities"
-    ],
+    ]
 )
