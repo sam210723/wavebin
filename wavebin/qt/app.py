@@ -15,11 +15,13 @@ class QtApp():
         self.name = f"wavebin v{self.config['version']}"
         
         # Create main Qt application
+        self.log("Initialising Qt application...")
         self.app = qt.QApplication([])
         self.app.setApplicationDisplayName(self.name)
         self.app.setApplicationVersion(str(self.config['version']))
 
         # Create main Qt window
+        self.log("Creating main Qt window...")
         self.window = qt.QMainWindow()
         self.window.setWindowIcon(qtg.QIcon("icon.ico"))
         self.window.setStyleSheet(f"background-color: black;")
@@ -27,5 +29,10 @@ class QtApp():
         if self.config['file']: self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Run Qt app
+        self.log("Starting Qt application...")
         self.window.show()
         self.app.exec_()
+
+
+    def log(self, msg):
+        if self.config['verbose']: print(msg)
