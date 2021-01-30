@@ -257,11 +257,27 @@ def parse_data(header, data):
         if window_len % 2 == 0: window_len += 1
 
         # Filter waveform points
-        filtered = filters.savitzky_golay(arr, window_len, 2)
-        waveforms.append(filtered)
-    else:
-        waveforms.append(arr)
+        try:
+            arr = filters.savitzky_golay(arr, window_len, 2)
+        except TypeError:
+            print("Not enough points to apply filter\nExiting...")
+            exit(1)
+    
+    # Clipping
+    if args.c:
+        print("Clipping waveform...")
 
+        # Find waveform median
+        wave_cen = (np.amax(arr) - abs(np.amin(arr))) / 2   # Waveform median
+        
+        # Shift waveform to be centered around zero
+        arr = arr - wave_cen
+
+        # Apply threshold to waveform values
+        arr[arr > 0] = 1
+        arr[arr < 0] = -1
+
+    waveforms.append(arr)
 
 ### Print Functions ###
 def print_file_header(header):
@@ -321,6 +337,7 @@ def parse_args():
     argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
     argp.add_argument("-s", action="store", help="Waveform subsampling threshold", default=x_limit)
+    argp.add_argument("-c", action="store_true", help="Clip analog waveform to create digital logic waveform")
     argp.add_argument("--no-opengl", action="store_true", help="Disable use of OpenGL for rendering waveform")
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
