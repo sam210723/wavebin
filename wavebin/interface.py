@@ -40,6 +40,8 @@ class QtApp():
         self.layout.setSpacing(30)
         self.widget.setLayout(self.layout)
 
+        #TODO: Build sidebar
+
 
     def run(self):
         self.log("Starting Qt application")
@@ -75,7 +77,7 @@ class QtApp():
             "file_open":    qt.QAction("&Open...", self.window),
             "file_exit":    qt.QAction("&Exit", self.window),
             "view_sidebar": qt.QAction("&Sidebar", self.window),
-            "help_github":  qt.QAction("&GitHub repository...", self.window),
+            "help_website": qt.QAction("&Website...", self.window),
         }
 
         # Customise menu actions
@@ -120,8 +122,9 @@ class QtApp():
         return
 
 
-    def menu_help_github(self):
-        webbrowser.open("https://github.com/sam210723/wavebin", new=2)
+    def menu_help_website(self):
+        self.log("Opening site in default browser")
+        webbrowser.open("https://vksdr.com/wavebin", new=2)
 
 
     def add_plot(self, plot):
