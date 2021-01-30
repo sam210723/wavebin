@@ -83,6 +83,12 @@ def render():
 
     # Create Qt app
     app = qt.QApplication([])
+    if not args.no_opengl:
+        pg.setConfigOptions(useOpenGL=True)
+        line_width = 2
+    else:
+        pg.setConfigOptions(useOpenGL=False)
+        line_width = 1
     
     # Create Qt widgets
     window = qt.QWidget()
@@ -161,7 +167,7 @@ def render():
         pgplot.setMouseEnabled(x=True, y=False)
 
         # Add data to plot
-        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=2))
+        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=line_width))
 
         # Add waveform specific details
         r = detail.rowCount()
@@ -242,7 +248,7 @@ def parse_data(header, data):
         print("Subsampling large waveform capture ({} -> {} points)...".format(len(arr), int(args.s)))
         arr = arr[::int(len(arr) / int(args.s))]
     
-    # Waveform filtering
+    # Filtering
     if args.f:
         print("Applying Savitzky-Golay low-pass filter...")
 
@@ -315,7 +321,7 @@ def parse_args():
     argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
     argp.add_argument("-v", action="store_true", help="Enable verbose output")
     argp.add_argument("-s", action="store", help="Waveform subsampling threshold", default=x_limit)
-    argp.add_argument("-d", action="store_true", help="Convert analog waveform to ditigal logic waveform (1-bit ADC)",)
+    argp.add_argument("--no-opengl", action="store_true", help="Disable use of OpenGL for rendering waveform")
     argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
 
     return argp.parse_args()
@@ -324,5 +330,5 @@ def parse_args():
 try:
     init()
 except KeyboardInterrupt:
-    print("Exiting...\n")
+    print("Exiting...")
     exit()

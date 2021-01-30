@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
   - Colours for channels 3 and 4
   - Adjustable subsampling for large waveform captures
+  - Hardware graphics acceleration with OpenGL
 
 ### Changed
   - Show filter name when enabled
@@ -16,6 +17,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
   - Unit abbreviations in axis labels
   - Savitzky-Golay filter window calculation
+  - Slow waveform rendering (see [pyqtgraph#533](https://github.com/pyqtgraph/pyqtgraph/issues/533))
 </details>
 
 
