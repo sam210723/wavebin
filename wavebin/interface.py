@@ -89,12 +89,18 @@ class QtApp():
         self.log("Creating Open File dialog")
         ofd = qt.QFileDialog()
         
+        # Show open file dialog
         file_path = ofd.getOpenFileName(
             self.window,
             "Open waveform capture",
             str(Path().home()),
             "Waveform files (*.bin)"
         )[0]
+
+        # Handle cancelled dialog
+        if file_path == "":
+            self.log("Open file dialog cancelled")
+            return
         
         # Parse file path
         file_path = Path(file_path)
