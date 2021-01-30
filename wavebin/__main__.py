@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
-import argparse
+from argparse import ArgumentParser
 
 __version__ = 2.0
 
@@ -19,7 +19,7 @@ def init():
 
 
 def parse_args():
-    argp = argparse.ArgumentParser(description="Waveform capture viewer for Keysight oscilloscopes.")
+    argp = ArgumentParser(description="Waveform capture viewer for Keysight oscilloscopes.")
     argp.prog = "wavebin"
 
     argp.add_argument("-o", action="store", help="Path to Keysight waveform capture file (.bin)", default=None)
