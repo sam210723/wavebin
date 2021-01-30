@@ -22,6 +22,7 @@ class QtApp():
         # Create main Qt window
         self.window = qt.QMainWindow()
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
+        self.window.setWindowIcon(qtg.QIcon("icon.ico"))
 
         # Run Qt app
         self.window.show()
