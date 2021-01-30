@@ -27,6 +27,17 @@ class QtApp():
         self.window = qt.QMainWindow()
         self.setup_window()
 
+        # Create main widget
+        self.log("Creating main Qt widget")
+        self.widget = qt.QWidget()
+        self.widget.setStyleSheet("background-color: black;")
+        self.window.setCentralWidget(self.widget)
+        
+        # Create widget layout
+        self.log("Creating widget layout")
+        self.layout = qt.QGridLayout()
+        self.widget.setLayout(self.layout)
+
         # Run Qt app
         self.log("Starting Qt application")
         self.window.show()
@@ -42,7 +53,7 @@ class QtApp():
         if self.config['file']: self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Menu bar
-        self.log("Building menus")
+        self.log("Building menu bar ")
         self.menu_bar = self.window.menuBar()
         self.window.setMenuBar(self.menu_bar)
 
