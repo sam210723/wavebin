@@ -22,7 +22,7 @@ def init():
 
     # Parse CLI arguments
     args = parse_args()
-    if args.o: args.o = Path(args.o)
+    if args.file: args.file = Path(args.file)
     
     # Print startup info
     print_info(args)
@@ -35,14 +35,14 @@ def parse_args():
     argp = ArgumentParser(description="Waveform capture viewer for Keysight oscilloscopes.")
     argp.prog = "wavebin"
 
-    argp.add_argument("-o", action="store", help="Path to Keysight waveform capture file (.bin)", default=None)
+    argp.add_argument("-i", action="store", help="Path to Keysight waveform capture file (.bin)", default=None, dest="file")
     argp.add_argument("-v", action="store_true", help="Enable verbose logging mode", default=None)
 
     return argp.parse_args()
 
 
 def print_info(args):
-    if args.o: print(f"Opening \"{args.o.name}\"...")
+    if args.file: print(f"Opening \"{args.file.name}\"...")
     print()
 
 
