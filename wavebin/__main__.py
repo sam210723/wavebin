@@ -11,7 +11,13 @@ __version__ = 2.0
 
 
 def init():
-    print(f"wavebin v{__version__}\n")
+    # Banner
+    print("                              __    _        ")
+    print("   _      ______ __   _____  / /_  (_)___    ")
+    print("  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
+    print("  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   ")
+    print(f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n")
+    print("        github.com/sam210723/wavebin\n\n")
 
     args = parse_args()
 
