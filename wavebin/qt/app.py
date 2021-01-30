@@ -21,8 +21,9 @@ class QtApp():
 
         # Create main Qt window
         self.window = qt.QMainWindow()
-        self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
         self.window.setWindowIcon(qtg.QIcon("icon.ico"))
+        self.window.setStyleSheet(f"background-color: black;")
+        if self.config['file']: self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Run Qt app
         self.window.show()
