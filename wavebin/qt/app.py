@@ -14,7 +14,14 @@ class QtApp():
         self.config = config
         self.app = qt.QApplication([])
         
-        # Set application attributes
+        # Set application properties
         name = f"wavebin v{self.config['version']}"
         self.app.setApplicationDisplayName(name)
         self.app.setApplicationVersion(str(self.config['version']))
+
+        # Create main Qt window
+        self.window = qt.QMainWindow()
+
+        # Run Qt app
+        self.window.show()
+        self.app.exec_()
