@@ -8,7 +8,7 @@
 
 **wavebin** is a waveform capture viewer for Keysight oscilloscopes.
 
-# Resources
+## Resources
   - [FaustinCarter/agilent_read_binary](https://github.com/FaustinCarter/agilent_read_binary)
   - [yodalee/keysightBin](https://github.com/yodalee/keysightBin/)
   - [Formats and structures - sigrok](https://sigrok.org/wiki/Formats_and_structures)
