@@ -7,6 +7,7 @@ Waveform capture viewer for Keysight oscilloscopes.
 
 from argparse import ArgumentParser
 from pathlib import Path
+import sys
 
 from wavebin.qt.app import QtApp
 
@@ -40,7 +41,7 @@ def init():
     QtApp(config)
 
     # Gracefully exit application
-    safe_exit(False)
+    safe_exit()
 
 
 def parse_args():
@@ -60,7 +61,7 @@ def print_info(args):
 
 def safe_exit(msg=True, code=0):
     if msg: print("Exiting...")
-    exit(code)
+    sys.exit(code)
 
 
 try:
