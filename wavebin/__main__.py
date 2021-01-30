@@ -8,6 +8,8 @@ Waveform capture viewer for Keysight oscilloscopes.
 from argparse import ArgumentParser
 from pathlib import Path
 
+from wavebin.qt.app import QtApp
+
 __version__ = 2.0
 
 
@@ -26,6 +28,12 @@ def init():
     
     # Print startup info
     print_info(args)
+
+    # Create Qt application
+    config = {
+        "version": __version__
+    }
+    QtApp(config)
 
     # Gracefully exit application
     safe_exit(False)
