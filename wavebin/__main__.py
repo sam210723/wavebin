@@ -32,7 +32,9 @@ def init():
     # Create Qt application
     config = {
         "version": __version__,
-        "file":    args.file
+        "file":    args.file,
+        "width":   1300,
+        "height":  700
     }
     QtApp(config)
 
