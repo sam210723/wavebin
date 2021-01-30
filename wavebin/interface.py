@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+from pathlib import Path
 from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
@@ -74,7 +75,21 @@ class QtApp():
 
 
     def menu_file_open(self):
-        return
+        self.log("Creating Open File dialog")
+        ofd = qt.QFileDialog()
+        
+        file_path = ofd.getOpenFileName(
+            self.window,
+            "Open waveform capture",
+            str(Path().home()),
+            "Waveform files (*.bin)"
+        )[0]
+        
+        # Parse file path
+        file_path = Path(file_path)
+        print(f"Opening \"{file_path.name}\"")
+        self.log(f"Full path \"{file_path}\"")
+        self.window.setWindowTitle(f"\"{file_path.name}\"")
 
 
     def menu_file_exit(self):

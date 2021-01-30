@@ -55,6 +55,7 @@ def parse_args():
 
 def print_info(args):
     if args.file: print(f"Opening \"{args.file.name}\"")
+    if args.file and args.v: print(f"Full path \"{args.file}\"")
 
 
 def safe_exit(msg=True, code=0):
