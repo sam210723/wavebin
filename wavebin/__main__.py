@@ -24,7 +24,8 @@ def init():
     # Print startup info
     print_info(args)
 
-    safe_exit()
+    # Gracefully exit application
+    safe_exit(False)
 
 
 def parse_args():
