@@ -36,7 +36,8 @@ def init():
         "verbose": args.v,
         "file":    args.file,
         "width":   1300,
-        "height":  700
+        "height":  700,
+        "opengl":  not args.no_opengl
     })
 
     # Gracefully exit application
@@ -49,6 +50,7 @@ def parse_args():
 
     argp.add_argument("-i", action="store", help="path to Keysight waveform capturefile (.bin)", default=None, dest="file")
     argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
+    argp.add_argument("--no-opengl", action="store_true", help="disable hardware accelerated rendering with OpenGL")
 
     return argp.parse_args()
 
@@ -56,6 +58,7 @@ def parse_args():
 def print_info(args):
     if args.file: print(f"Opening \"{args.file.name}\"")
     if args.file and args.v: print(f"Full path \"{args.file}\"")
+    if args.no_opengl and args.v: print("OpenGL disabled")
 
 
 def safe_exit(msg=True, code=0):

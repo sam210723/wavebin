@@ -15,7 +15,7 @@ class QtApp():
     def __init__(self, config):
         self.config = config
         self.name = f"wavebin v{self.config['version']}"
-        
+
         # Create main Qt application
         self.log("Initialising Qt application")
         self.app = qt.QApplication([])
@@ -32,7 +32,7 @@ class QtApp():
         self.widget = qt.QWidget()
         self.widget.setStyleSheet("background-color: black;")
         self.window.setCentralWidget(self.widget)
-        
+
         # Create widget layout
         self.log("Creating widget layout")
         self.layout = qt.QGridLayout()
