@@ -8,7 +8,7 @@
 
 **wavebin** is a waveform capture viewer for Keysight oscilloscopes. These capture files are generated on the oscilloscope as ``.bin`` files, which can be saved to a USB Mass Storage device for transfer to a PC.
 
-![Screenshot](https://github.com/sam210723/wavebin/raw/master/screenshot.png)
+![Screenshot](screenshots/wavebin.png)
 
 Currently **wavebin** has been tested with files from a [**DSO-X 1102G**](https://www.keysight.com/en/pdx-2766207-pn-DSOX1102G/oscilloscope-70-100-mhz-2-analog-channels). If you have access to waveform files from other Keysight oscilloscopes, please submit them for testing through the [Sample Waveforms issue](https://github.com/sam210723/wavebin/issues/1).
 
@@ -28,7 +28,7 @@ python -m wavebin [PATH TO BIN FILE]
 
 The ``-f`` option enables a [Savitzky-Golay](https://web.archive.org/web/20150710002613/http://wiki.scipy.org:80/Cookbook/SavitzkyGolay) low-pass filter which smooths out waveforms. This option is not useful for all waveforms (e.g. high-frequency square waves) as it will create distortion.
 
-![Filter Screenshot](https://github.com/sam210723/wavebin/raw/master/filter.png)
+![Filter Screenshot](screenshots/filter.png)
 
 Use the ``-v`` option to see detailed information about the waveform file:
 
