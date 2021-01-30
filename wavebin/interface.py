@@ -8,6 +8,7 @@ Waveform capture viewer for Keysight oscilloscopes.
 from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
+import webbrowser
 
 class QtApp():
     def __init__(self, config):
@@ -29,7 +30,7 @@ class QtApp():
         self.log("Starting Qt application")
         self.window.show()
         self.app.exec_()
-    
+
 
     def setup_window(self):
         # Styling and icon
@@ -63,16 +64,29 @@ class QtApp():
         }
 
         # Customise menu actions
-        self.menu_actions['file_exit'].triggered.connect(self.menu_file_exit)
         self.menu_actions['view_sidebar'].setCheckable(True)
         self.menu_actions['view_sidebar'].setChecked(True)
 
         # Add actions to menu items
-        for a in self.menu_actions: self.menus[a.split("_")[0]].addAction(self.menu_actions[a])
+        for a in self.menu_actions:
+            self.menu_actions[a].triggered.connect(eval(f"self.menu_{a}"))
+            self.menus[a.split("_")[0]].addAction(self.menu_actions[a])
+
+
+    def menu_file_open(self):
+        return
 
 
     def menu_file_exit(self):
         self.app.exit()
+
+
+    def menu_view_sidebar(self):
+        return
+
+
+    def menu_help_github(self):
+        webbrowser.open("https://github.com/sam210723/wavebin", new=2)
 
 
     def log(self, msg):
