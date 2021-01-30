@@ -31,14 +31,13 @@ def init():
     print_info(args)
 
     # Create Qt application
-    config = {
+    QtApp({
         "version": __version__,
         "verbose": args.v,
         "file":    args.file,
         "width":   1300,
         "height":  700
-    }
-    QtApp(config)
+    })
 
     # Gracefully exit application
     safe_exit()
