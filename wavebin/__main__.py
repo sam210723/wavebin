@@ -35,8 +35,8 @@ def parse_args():
     argp = ArgumentParser(description="Waveform capture viewer for Keysight oscilloscopes.")
     argp.prog = "wavebin"
 
-    argp.add_argument("-i", action="store", help="Path to Keysight waveform capture file (.bin)", default=None, dest="file")
-    argp.add_argument("-v", action="store_true", help="Enable verbose logging mode", default=None)
+    argp.add_argument("-i", action="store", help="path to Keysight waveform capture file (.bin)", default=None, dest="file")
+    argp.add_argument("-v", action="store_true", help="enable verbose logging mode", default=None)
 
     return argp.parse_args()
 
