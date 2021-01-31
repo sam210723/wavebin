@@ -60,7 +60,7 @@
         {
             "label": "Clean (Windows)",
             "type": "shell",
-            "command": "rmdir /S /Q wavebin.egg-info && rmdir /S /Q build && rmdir /S /Q dist",
+            "command": "rmdir /S /Q wavebin\\__pycache__ && rmdir /S /Q wavebin.egg-info && rmdir /S /Q build && rmdir /S /Q dist",
             "problemMatcher": []
         },
         {
