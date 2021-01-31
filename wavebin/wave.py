@@ -5,9 +5,10 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+from collections import namedtuple
+import numpy as np
 from pathlib import Path
 import struct
-from collections import namedtuple
 
 class WaveParser():
     def __init__(self, config):
@@ -35,7 +36,7 @@ class WaveParser():
             header = self.parse_waveform_header()
 
             # Parse waveform data header
-            data = self.parse_waveform_data(b'')
+            data = self.parse_waveform_data()
 
             # Add waveform to global list
             self.waveforms.append({
@@ -102,12 +103,22 @@ class WaveParser():
         return header
 
 
-    def parse_waveform_data(self, data):
+    def parse_waveform_data(self):
         header = self.parse_waveform_data_header()
+        data = self.file.read(header.length)
 
-        self.file.read(header.length)
+        # Get waveform data type
+        if header.data_type in [1, 2, 3]:
+            data_type = np.float32
+        elif header.data_type == 6:
+            data_type = np.uint8
+        else:
+            data_type = np.float32
 
-        return b''
+        # Parse buffer into numpy array
+        arr = np.frombuffer(data, dtype=data_type)
+
+        return arr
 
 
     def parse_waveform_data_header(self):
