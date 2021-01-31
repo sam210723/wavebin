@@ -32,9 +32,7 @@ class WaveParser():
             self.log(f"Waveform {i + 1}:")
 
             # Parse waveform header
-            header = self.parse_waveform_header(
-                self.file.read(0x8C)
-            )
+            header = self.parse_waveform_header()
 
             # Parse waveform data header
             data = self.parse_waveform_data(b'')
@@ -77,7 +75,11 @@ class WaveParser():
         return True
 
 
-    def parse_waveform_header(self, data):
+    def parse_waveform_header(self):
+        # Read data from file
+        length = int.from_bytes(self.file.read(1), byteorder="little")
+        data = bytes([length]) + self.file.read(length - 1)
+
         # Unpack waveform header
         waveform_header_tuple = namedtuple(
             "WaveformHeader",
@@ -93,13 +95,15 @@ class WaveParser():
 
 
     def parse_waveform_data(self, data):
-        header = self.parse_waveform_data_header(b'')
+        header = self.parse_waveform_data_header()
 
         return b''
 
 
-    def parse_waveform_data_header(self, data):
-        return  b''
+    def parse_waveform_data_header(self):
+        # Read data from file
+        length = int.from_bytes(self.file.read(1), byteorder="little")
+        data = bytes([length]) + self.file.read(length - 1)
 
 
     def ui(self, app, plot):
