@@ -11,6 +11,7 @@ import sys
 
 from wavebin.interface import QtApp
 from wavebin.plot import QtPlot
+from wavebin.wave import WaveParser
 
 __version__ = 2.0
 
@@ -30,12 +31,16 @@ def init():
     # Print startup info
     print_info(args)
 
-    #TODO: Parse waveform and push data to app and plot classes
+    # Setup waveform capture parser
+    wave = WaveParser({
+        "verbose": args.v
+    })
+    if args.file: wave.parse(args.file)
 
     # Create Qt application
     app = QtApp({
-        "version": __version__,
         "verbose": args.v,
+        "version": __version__,
         "file":    args.file,
         "width":   1500,
         "height":  700,
