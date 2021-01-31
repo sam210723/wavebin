@@ -78,7 +78,8 @@ class QtApp(qt.QApplication):
         # Menu actions
         self.menu_actions = {
             "file_open":    qt.QAction("&Open...", self.window),
-            "file_exit":    qt.QAction("&Exit", self.window),
+            "file_----":    None,
+            "file_exit":    qt.QAction("E&xit", self.window),
             "view_sidebar": qt.QAction("&Sidebar", self.window),
             "help_website": qt.QAction("&Website...", self.window),
         }
@@ -89,6 +90,9 @@ class QtApp(qt.QApplication):
 
         # Add actions to menu items
         for a in self.menu_actions:
+            if a.split("_")[1] == "----":
+                self.menus[a.split("_")[0]].addSeparator()
+                continue
             self.menu_actions[a].triggered.connect(eval(f"self.menu_{a}"))
             self.menus[a.split("_")[0]].addAction(self.menu_actions[a])
 
