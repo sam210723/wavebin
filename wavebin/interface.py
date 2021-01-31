@@ -55,6 +55,8 @@ class QtApp(qt.QApplication):
         self.log("Updating UI")
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
+        #TODO: Update sidebar
+
 
     def setup_window(self):
         # Styling and icon
@@ -140,7 +142,7 @@ class QtApp(qt.QApplication):
             msgbox.setIcon(qt.QMessageBox.Critical)
             msgbox.setStandardButtons(qt.QMessageBox.Ok)
             msgbox.setText(
-                f"Error opening \"{self.config['file'].name}\": Unknown file format"
+                f"Error opening \"{Path(file_path).name}\": Unknown file format"
             )
             msgbox.exec_()
 

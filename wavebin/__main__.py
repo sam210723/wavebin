@@ -58,7 +58,7 @@ def init():
     app.add_plot(plot)
 
     # Parse file if path specified in argument
-    if args.file: wave.parse(args.file)
+    if args.file and not wave.parse(args.file): safe_exit(code=1)
 
     # Run application
     app.run()

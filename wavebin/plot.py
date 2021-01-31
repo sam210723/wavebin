@@ -23,6 +23,7 @@ class QtPlot(PlotWidget):
             qtp.setConfigOptions(useOpenGL=False)
             self.line_width = 1    # See https://github.com/pyqtgraph/pyqtgraph/issues/533
 
+        # Set plot properties
         self.setAntialiasing(True)
         self.setLabel('bottom', "Time", units='s')
         self.showGrid(x=True, y=True, alpha=1.0)
@@ -31,6 +32,8 @@ class QtPlot(PlotWidget):
 
     def update(self):
         self.log("Updating plot")
+
+        #TODO: Update plot with new data
 
 
     def log(self, msg):
