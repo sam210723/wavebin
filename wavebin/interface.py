@@ -13,7 +13,7 @@ import webbrowser
 
 class QtApp(qt.QApplication):
     def __init__(self, config):
-        super().__init__([])
+        super(QtApp, self).__init__([])
         self.config = config
         self.name = f"wavebin v{self.config['version']}"
 
@@ -97,6 +97,18 @@ class QtApp(qt.QApplication):
                 continue
             self.menu_actions[a].triggered.connect(eval(f"self.menu_{a}"))
             self.menus[a.split("_")[0]].addAction(self.menu_actions[a])
+        
+        # Attach keyboard event handler
+        self.window.keyPressEvent = self.keyPressEvent
+
+
+    def keyPressEvent(self, event):
+        key = event.key()
+
+        try:
+            char = chr(key)
+        except ValueError:
+            char = None
 
 
     def menu_file_open(self):
@@ -160,7 +172,7 @@ class QtApp(qt.QApplication):
 
 class QtSidebar(qt.QTableWidget):
     def __init__(self):
-        super().__init__()
+        super(QtSidebar, self).__init__()
 
         self.setFixedWidth(300)
         self.setColumnCount(2)
