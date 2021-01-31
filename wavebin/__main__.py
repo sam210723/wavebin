@@ -36,6 +36,7 @@ def init():
         "verbose": args.v
     })
     if args.file: wave.parse(args.file)
+    #TODO: Parse complete callback
 
     # Create Qt application
     app = QtApp({
@@ -75,8 +76,6 @@ def parse_args():
 
 
 def print_info(args):
-    if args.file: print(f"Opening \"{args.file.name}\"")
-    if args.file and args.v: print(f"Full path \"{args.file}\"")
     if args.no_opengl and args.v: print("OpenGL disabled")
 
 
