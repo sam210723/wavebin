@@ -48,7 +48,13 @@ def init():
     # Create Qt waveform plot
     plot = QtPlot({
         "verbose": args.v,
-        "opengl":  not args.no_opengl
+        "opengl":  not args.no_opengl,
+        "colours": [
+            (242, 242, 0),
+            (100, 149, 237),
+            (255, 0, 0),
+            (255, 165, 0)
+        ]
     })
 
     # Set UI class instances
