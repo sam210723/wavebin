@@ -137,6 +137,9 @@ class QtApp(qt.QApplication):
         self.log(f"Full path \"{file_path}\"")
         self.window.setWindowTitle(f"\"{file_path.name}\"")
 
+        # Parse waveform capture
+        self.config['wave_parse'](file_path)
+
 
     def menu_file_exit(self):
         self.exit()

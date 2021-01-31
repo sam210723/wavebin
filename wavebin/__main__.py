@@ -36,16 +36,17 @@ def init():
         "verbose": args.v
     })
     if args.file: wave.parse(args.file)
-    #TODO: Parse complete callback
+    #TODO: Update UI callback when parse complete
 
     # Create Qt application
     app = QtApp({
-        "verbose": args.v,
-        "version": __version__,
-        "file":    args.file,
-        "width":   1500,
-        "height":  700,
-        "opengl":  not args.no_opengl
+        "verbose":    args.v,
+        "version":    __version__,
+        "file":       args.file,
+        "width":      1500,
+        "height":     700,
+        "opengl":     not args.no_opengl,
+        "wave_parse": wave.parse
     })
 
     # Create Qt waveform plot

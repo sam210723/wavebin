@@ -20,6 +20,15 @@ class WaveParser():
         self.log(f"Full path \"{self.path}\"")
         self.file = open(self.path, mode="rb")
 
+        # Parse capture header
+        file_header = self.file.read(0x0C)
+        self.parse_file_header(file_header)
+    
+
+    def parse_file_header(self, data):
+        self.log("Capture Header:")
+        print(data)
+
 
     def log(self, msg):
         if self.config['verbose']: print(msg)
