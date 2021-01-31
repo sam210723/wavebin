@@ -43,6 +43,14 @@ class WaveParser():
                 "data":   data
             })
 
+            # Print waveform info
+            p = self.waveforms[i]['header'].points
+            self.log(f"  - Sample Points:  {self.human_format(p)}")
+            sr = round(1 / self.waveforms[i]['header'].x_increment)
+            self.log(f"  - Sample Rate:    {sr / 1e9} Gsps")
+            self.log(f"  - Device Model:   {self.waveforms[i]['header'].frame.decode().split(':')[0]}")
+            self.log(f"  - Device Serial:  {self.waveforms[i]['header'].frame.decode().split(':')[1]}\n")
+
         self.file.close()
 
         # Update UI elements
