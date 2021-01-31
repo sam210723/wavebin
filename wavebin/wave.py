@@ -105,6 +105,15 @@ class WaveParser():
         length = int.from_bytes(self.file.read(1), byteorder="little")
         data = bytes([length]) + self.file.read(length - 1)
 
+        # Unpack waveform data header
+        waveform_data_header_tuple = namedtuple(
+            "WaveformDataHeader",
+            "size data_type bpp length"
+        )
+        fields = struct.unpack("i2hi", data)
+        
+        return waveform_data_header_tuple(*fields)
+
 
     def ui(self, app, plot):
         self.config['app'] = app
