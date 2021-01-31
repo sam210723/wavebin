@@ -41,24 +41,7 @@ class QtApp():
         self.widget.setLayout(self.layout)
 
         # Create sidebar widget
-        self.sidebar = qt.QTableWidget()
-        self.sidebar.setFixedWidth(300)
-        self.sidebar.setColumnCount(2)
-        self.sidebar.setRowCount(0)
-        self.sidebar.verticalHeader().setVisible(False)
-        self.sidebar.horizontalHeader().setVisible(False)
-        self.sidebar.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
-        self.sidebar.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
-        self.sidebar.setFocusPolicy(qtc.Qt.NoFocus)
-        self.sidebar.setSelectionMode(qt.QAbstractItemView.NoSelection)
-        self.sidebar.setStyleSheet(
-            "border: 1px solid black;"\
-            "background-color: black;"\
-            "gridline-color: black;"\
-            "color: white;"\
-            "font-weight: normal;"\
-            "font-size: 17px;"
-        )
+        self.sidebar = QtSidebar()
         self.layout.addWidget(self.sidebar, 0, 0)
 
 
@@ -139,10 +122,7 @@ class QtApp():
 
 
     def menu_view_sidebar(self):
-        if self.sidebar.isHidden():
-            self.sidebar.show()
-        else:
-            self.sidebar.hide()
+        self.sidebar.toggle()
 
 
     def menu_help_website(self):
@@ -157,3 +137,33 @@ class QtApp():
 
     def log(self, msg):
         if self.config['verbose']: print(msg)
+
+
+class QtSidebar(qt.QTableWidget):
+    def __init__(self):
+        super().__init__()
+
+        self.setFixedWidth(300)
+        self.setColumnCount(2)
+        self.setRowCount(0)
+        self.verticalHeader().setVisible(False)
+        self.horizontalHeader().setVisible(False)
+        self.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
+        self.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
+        self.setFocusPolicy(qtc.Qt.NoFocus)
+        self.setSelectionMode(qt.QAbstractItemView.NoSelection)
+        self.setStyleSheet(
+            "border: 1px solid black;"\
+            "background-color: black;"\
+            "gridline-color: black;"\
+            "color: white;"\
+            "font-weight: normal;"\
+            "font-size: 17px;"
+        )
+
+
+    def toggle(self):
+        if self.isHidden():
+            self.show()
+        else:
+            self.hide()
