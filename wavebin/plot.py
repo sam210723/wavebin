@@ -29,5 +29,9 @@ class QtPlot(PlotWidget):
         self.setMouseEnabled(x=True, y=False)
 
 
+    def update(self):
+        self.log("Updating plot")
+
+
     def log(self, msg):
         if self.config['verbose']: print(msg)

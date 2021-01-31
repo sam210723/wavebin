@@ -51,6 +51,10 @@ class QtApp(qt.QApplication):
         self.exec_()
 
 
+    def update(self):
+        self.log("Updating UI")
+
+
     def setup_window(self):
         # Styling and icon
         self.window.setWindowIcon(qtg.QIcon("icon.ico"))
