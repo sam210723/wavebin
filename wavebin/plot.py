@@ -5,8 +5,9 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+import numpy as np
 from pyqtgraph import PlotWidget
-import pyqtgraph as qtp
+import pyqtgraph as pg
 
 class QtPlot(PlotWidget):
     def __init__(self, config):
@@ -17,11 +18,11 @@ class QtPlot(PlotWidget):
 
         # Enable/Disable OpenGL
         if self.config['opengl']:
-            qtp.setConfigOptions(useOpenGL=True)
-            self.line_width = 2
+            pg.setConfigOptions(useOpenGL=True)
+            self.config['line_width'] = 2
         else:
-            qtp.setConfigOptions(useOpenGL=False)
-            self.line_width = 1    # See https://github.com/pyqtgraph/pyqtgraph/issues/533
+            pg.setConfigOptions(useOpenGL=False)
+            self.config['line_width'] = 1    # See https://github.com/pyqtgraph/pyqtgraph/issues/533
 
         # Set plot properties
         self.setAntialiasing(True)
@@ -33,7 +34,21 @@ class QtPlot(PlotWidget):
     def update(self):
         self.log("Updating plot")
 
-        #TODO: Update plot with new data
+        # Loop through waveforms and render traces
+        for i, w in enumerate(self.waveforms): 
+            # Generate X points
+            start = w['header'].x_d_origin
+            stop = w['header'].x_d_origin + w['header'].x_d_range
+            x = np.linspace(start, stop, w['header'].points)
+
+            self.plot(
+                x,
+                w['data'],
+                pen=pg.mkPen(
+                    self.config['colours'][i],
+                    width=self.config['line_width']
+                )
+            )
 
 
     def log(self, msg):

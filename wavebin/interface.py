@@ -37,7 +37,7 @@ class QtApp(qt.QApplication):
         self.log("Creating widget layout")
         self.layout = qt.QGridLayout()
         self.layout.setContentsMargins(10, 10, 10, 10)
-        self.layout.setSpacing(10)
+        self.layout.setSpacing(15)
         self.widget.setLayout(self.layout)
 
         # Create sidebar widget
@@ -211,7 +211,7 @@ class QtSidebar(qt.QTableWidget):
         self.setFocusPolicy(qtc.Qt.NoFocus)
         self.setSelectionMode(qt.QAbstractItemView.NoSelection)
         self.setStyleSheet(
-            "border: 1px solid black;"\
+            "border: 1px solid #333;"\
             "background-color: black;"\
             "gridline-color: black;"\
             "color: white;"\
