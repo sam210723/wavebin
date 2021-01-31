@@ -85,7 +85,7 @@ class QtApp(qt.QApplication):
             "file_----":      None,
             "file_exit":      qt.QAction("E&xit", self.window),
             "view_sidebar":   qt.QAction("&Sidebar", self.window),
-            "help_website":   qt.QAction("&Website", self.window),
+            "help_docs":      qt.QAction("&Documentation", self.window),
             "help_shortcuts": qt.QAction("&Keyboard Shortcuts", self.window),
             "help_----":      None,
             "help_about":     qt.QAction("&About", self.window)
@@ -157,8 +157,8 @@ class QtApp(qt.QApplication):
         self.sidebar.toggle()
 
 
-    def menu_help_website(self):
-        self.log("Opening site in default browser")
+    def menu_help_docs(self):
+        self.log("Opening docs in default browser")
         webbrowser.open("https://vksdr.com/wavebin", new=2)
 
 
@@ -181,7 +181,7 @@ class QtApp(qt.QApplication):
         msgbox.setIcon(qt.QMessageBox.Information)
         msgbox.setStandardButtons(qt.QMessageBox.Ok)
         msgbox.setText(
-            "wavebin is a waveform capture viewer for Keysight oscilloscopes.\n\n"\
+            "Waveform capture viewer for Keysight oscilloscopes.\n\n"\
             "Update wavebin by running \"pip install wavebin --upgrade\""
         )
         self.log("About dialog launched")
