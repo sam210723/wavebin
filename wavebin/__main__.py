@@ -58,6 +58,9 @@ def init():
     # Add plot to main window
     app.add_plot(plot)
 
+    # Parse file if path specified in argument
+    if args.file: wave.parse(args.file)
+
     # Run application
     app.run()
 
