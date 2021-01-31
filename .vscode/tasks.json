@@ -48,13 +48,13 @@
         {
             "label": "Run Module (single waveform)",
             "type": "shell",
-            "command": "python -m wavebin -v -i samples/single.bin",
+            "command": "python -m wavebin -v -i \"${workspaceFolder}\\samples\\DSOX1102G\\single.bin\"",
             "problemMatcher": []
         },
         {
             "label": "Run Module (dual waveform)",
             "type": "shell",
-            "command": "python -m wavebin -v -i samples/dual.bin",
+            "command": "python -m wavebin -v -i \"${workspaceFolder}\\samples\\DSOX1102G\\dual.bin\"",
             "problemMatcher": []
         },
         {
