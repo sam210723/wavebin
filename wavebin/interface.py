@@ -77,13 +77,14 @@ class QtApp(qt.QApplication):
 
         # Menu actions
         self.menu_actions = {
-            "file_open":    qt.QAction("&Open...", self.window),
-            "file_----":    None,
-            "file_exit":    qt.QAction("E&xit", self.window),
-            "view_sidebar": qt.QAction("&Sidebar", self.window),
-            "help_website": qt.QAction("&Website...", self.window),
-            "help_----":    None,
-            "help_about":   qt.QAction("&About", self.window)
+            "file_open":      qt.QAction("&Open...", self.window),
+            "file_----":      None,
+            "file_exit":      qt.QAction("E&xit", self.window),
+            "view_sidebar":   qt.QAction("&Sidebar", self.window),
+            "help_website":   qt.QAction("&Website", self.window),
+            "help_shortcuts": qt.QAction("&Keyboard Shortcuts", self.window),
+            "help_----":      None,
+            "help_about":     qt.QAction("&About", self.window)
         }
 
         # Customise menu actions
@@ -109,6 +110,8 @@ class QtApp(qt.QApplication):
             char = chr(key)
         except ValueError:
             char = None
+        
+        if char == 'B': self.sidebar.toggle()
 
 
     def menu_file_open(self):
@@ -146,6 +149,19 @@ class QtApp(qt.QApplication):
     def menu_help_website(self):
         self.log("Opening site in default browser")
         webbrowser.open("https://vksdr.com/wavebin", new=2)
+
+
+    def menu_help_shortcuts(self):
+        msgbox = qt.QMessageBox()
+        msgbox.setWindowTitle("Keyboard Shortcuts")
+        msgbox.setIcon(qt.QMessageBox.Information)
+        msgbox.setStandardButtons(qt.QMessageBox.Ok)
+        msgbox.setText(
+            "B - Toggle sidebar visibility\n"\
+            ""
+        )
+        self.log("Keyboard shortcut dialog launched")
+        msgbox.exec_()
 
 
     def menu_help_about(self):
