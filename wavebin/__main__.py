@@ -26,7 +26,6 @@ def init():
 
     # Parse CLI arguments
     args = parse_args()
-    if args.file: args.file = Path(args.file)
     
     # Print startup info
     print_info(args)

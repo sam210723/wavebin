@@ -28,8 +28,11 @@ class WaveParser():
             return False
         
         # Update UI elements
+        self.config['app'].config['file'] = self.config['file']
         self.config['app'].update()
         self.config['plot'].update()
+
+        return True
 
 
     def parse_file_header(self, data):
