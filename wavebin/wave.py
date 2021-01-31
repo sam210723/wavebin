@@ -56,7 +56,9 @@ class WaveParser():
 
         # Update UI elements
         self.config['app'].config['file'] = self.config['file']
+        self.config['app'].waveforms = self.waveforms
         self.config['app'].update()
+        self.config['plot'].waveforms = self.waveforms
         self.config['plot'].update()
 
         return True
