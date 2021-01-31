@@ -25,6 +25,7 @@ class QtPlot(PlotWidget):
             self.config['line_width'] = 1    # See https://github.com/pyqtgraph/pyqtgraph/issues/533
 
         # Set plot properties
+        self.view = self.getViewBox()
         self.setAntialiasing(True)
         self.setLabel('bottom', "Time", units='s')
         self.showGrid(x=True, y=True, alpha=1.0)
@@ -33,6 +34,9 @@ class QtPlot(PlotWidget):
 
     def update(self):
         self.log("Updating plot")
+
+        # Remove old traces
+        self.clear()
 
         # Loop through waveforms and render traces
         for i, w in enumerate(self.waveforms): 
