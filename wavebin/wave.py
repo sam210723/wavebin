@@ -12,6 +12,7 @@ from collections import namedtuple
 class WaveParser():
     def __init__(self, config):
         self.config = config
+        self.waveforms = []
 
 
     def parse(self, path):
@@ -34,6 +35,15 @@ class WaveParser():
             header = self.parse_waveform_header(
                 self.file.read(0x8C)
             )
+
+            # Parse waveform data header
+            data = self.parse_waveform_data(b'')
+
+            # Add waveform to global list
+            self.waveforms.append({
+                "header": header,
+                "data":   data
+            })
 
         self.file.close()
 
@@ -80,6 +90,16 @@ class WaveParser():
         header = waveform_header_tuple(*fields)
 
         return header
+
+
+    def parse_waveform_data(self, data):
+        header = self.parse_waveform_data_header(b'')
+
+        return b''
+
+
+    def parse_waveform_data_header(self, data):
+        return  b''
 
 
     def ui(self, app, plot):
