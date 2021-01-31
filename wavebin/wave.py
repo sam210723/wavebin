@@ -97,6 +97,8 @@ class WaveParser():
     def parse_waveform_data(self, data):
         header = self.parse_waveform_data_header()
 
+        self.file.read(header.length)
+
         return b''
 
 
