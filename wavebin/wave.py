@@ -13,7 +13,6 @@ import struct
 class WaveParser():
     def __init__(self, config):
         self.config = config
-        self.waveforms = []
 
 
     def parse(self, path):
@@ -29,6 +28,7 @@ class WaveParser():
             return False
         
         # Loop through waveforms
+        self.waveforms = []
         for i in range(self.file_header.waveforms):
             self.log(f"Waveform {i + 1}:")
 
