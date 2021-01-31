@@ -61,8 +61,8 @@ class QtApp(qt.QApplication):
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 400)
 
-        # Title (prepended to application display name by Qt)
-        if self.config['file']: self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
+        #TODO: Move to UI update function
+        #self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Menu bar
         self.log("Building menu bar ")
@@ -139,7 +139,6 @@ class QtApp(qt.QApplication):
         file_path = Path(file_path)
         print(f"Opening \"{file_path.name}\"")
         self.log(f"Full path \"{file_path}\"")
-        self.window.setWindowTitle(f"\"{file_path.name}\"")
 
         # Parse waveform capture
         self.config['wave_parse'](file_path)

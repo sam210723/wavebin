@@ -33,9 +33,11 @@ def init():
 
     # Setup waveform capture parser
     wave = WaveParser({
-        "verbose": args.v
+        "verbose":     args.v,
+        "file":        args.file,
+        "app_update":  app.update,
+        "plot_update": plot.update
     })
-    if args.file: wave.parse(args.file)
     #TODO: Update UI callback when parse complete
 
     # Create Qt application
