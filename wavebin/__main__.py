@@ -16,7 +16,6 @@ __version__ = 2.0
 
 
 def init():
-    # Banner
     print("                              __    _        ")
     print("   _      ______ __   _____  / /_  (_)___    ")
     print("  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
@@ -38,7 +37,7 @@ def init():
         "version": __version__,
         "verbose": args.v,
         "file":    args.file,
-        "width":   1300,
+        "width":   1500,
         "height":  700,
         "opengl":  not args.no_opengl
     })

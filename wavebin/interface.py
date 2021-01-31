@@ -37,10 +37,29 @@ class QtApp():
         self.log("Creating widget layout")
         self.layout = qt.QGridLayout()
         self.layout.setContentsMargins(10, 10, 10, 10)
-        self.layout.setSpacing(30)
+        self.layout.setSpacing(10)
         self.widget.setLayout(self.layout)
 
-        #TODO: Build sidebar
+        # Create sidebar widget
+        self.sidebar = qt.QTableWidget()
+        self.sidebar.setFixedWidth(300)
+        self.sidebar.setColumnCount(2)
+        self.sidebar.setRowCount(0)
+        self.sidebar.verticalHeader().setVisible(False)
+        self.sidebar.horizontalHeader().setVisible(False)
+        self.sidebar.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
+        self.sidebar.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
+        self.sidebar.setFocusPolicy(qtc.Qt.NoFocus)
+        self.sidebar.setSelectionMode(qt.QAbstractItemView.NoSelection)
+        self.sidebar.setStyleSheet(
+            "border: 1px solid black;"\
+            "background-color: black;"\
+            "gridline-color: black;"\
+            "color: white;"\
+            "font-weight: normal;"\
+            "font-size: 17px;"
+        )
+        self.layout.addWidget(self.sidebar, 0, 0)
 
 
     def run(self):
@@ -53,6 +72,7 @@ class QtApp():
         # Styling and icon
         self.window.setWindowIcon(qtg.QIcon("icon.ico"))
         self.window.resize(self.config['width'], self.config['height'])
+        self.window.setMinimumSize(800, 400)
 
         # Title (prepended to application display name by Qt)
         if self.config['file']: self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
@@ -119,7 +139,10 @@ class QtApp():
 
 
     def menu_view_sidebar(self):
-        return
+        if self.sidebar.isHidden():
+            self.sidebar.show()
+        else:
+            self.sidebar.hide()
 
 
     def menu_help_website(self):
@@ -129,7 +152,7 @@ class QtApp():
 
     def add_plot(self, plot):
         self.log("Adding plot widget to layout")
-        self.layout.addWidget(plot, 1, 0)
+        self.layout.addWidget(plot, 0, 1)
 
 
     def log(self, msg):
