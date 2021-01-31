@@ -211,7 +211,8 @@ class QtSidebar(qt.QTableWidget):
         self.setFocusPolicy(qtc.Qt.NoFocus)
         self.setSelectionMode(qt.QAbstractItemView.NoSelection)
         self.setStyleSheet(
-            "border: 1px solid #333;"\
+            "border: none;"\
+            "border-right: 1px solid #333;"\
             "background-color: black;"\
             "gridline-color: black;"\
             "color: white;"\
