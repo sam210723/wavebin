@@ -33,18 +33,13 @@ def init():
 
     # Setup waveform capture parser
     wave = WaveParser({
-        "verbose":     args.v,
-        "file":        args.file,
-        "app_update":  app.update,
-        "plot_update": plot.update
+        "verbose":     args.v
     })
-    #TODO: Update UI callback when parse complete
 
     # Create Qt application
     app = QtApp({
         "verbose":    args.v,
         "version":    __version__,
-        "file":       args.file,
         "width":      1500,
         "height":     700,
         "opengl":     not args.no_opengl,
@@ -56,6 +51,9 @@ def init():
         "verbose": args.v,
         "opengl":  not args.no_opengl
     })
+
+    # Set UI class instances
+    wave.ui(app, plot)
 
     # Add plot to main window
     app.add_plot(plot)

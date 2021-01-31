@@ -13,8 +13,6 @@ class WaveParser():
     def __init__(self, config):
         self.config = config
 
-        if self.config['file']: self.parse(self.config['file'])
-
 
     def parse(self, path):
         self.config['file'] = Path(path)
@@ -29,6 +27,10 @@ class WaveParser():
         if not self.parse_file_header(file_header):
             return False
         
+        # Update UI elements
+        self.config['app'].update()
+        self.config['plot'].update()
+
 
     def parse_file_header(self, data):
         # Unpack file header
@@ -47,6 +49,11 @@ class WaveParser():
         self.log(f"  - File Size: {self.file_header.size} bytes\n")
 
         return True
+
+
+    def ui(self, app, plot):
+        self.config['app'] = app
+        self.config['plot'] = plot
 
 
     def log(self, msg):
