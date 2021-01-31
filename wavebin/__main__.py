@@ -16,12 +16,12 @@ __version__ = 2.0
 
 
 def init():
-    print("                              __    _        ")
-    print("   _      ______ __   _____  / /_  (_)___    ")
-    print("  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
-    print("  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   ")
+    print( "                              __    _        ")
+    print( "   _      ______ __   _____  / /_  (_)___    ")
+    print( "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
+    print( "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   ")
     print(f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n")
-    print("             vksdr.com/wavebin\n\n")
+    print( "             vksdr.com/wavebin\n\n")
 
     # Parse CLI arguments
     args = parse_args()

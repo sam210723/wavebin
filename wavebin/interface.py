@@ -11,16 +11,16 @@ from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 import webbrowser
 
-class QtApp():
+class QtApp(qt.QApplication):
     def __init__(self, config):
+        super().__init__([])
         self.config = config
         self.name = f"wavebin v{self.config['version']}"
 
-        # Create main Qt application
+        # Setup main Qt application
         self.log("Initialising Qt application")
-        self.app = qt.QApplication([])
-        self.app.setApplicationDisplayName(self.name)
-        self.app.setApplicationVersion(str(self.config['version']))
+        self.setApplicationDisplayName(self.name)
+        self.setApplicationVersion(str(self.config['version']))
 
         # Create main Qt window
         self.log("Creating main Qt window")
@@ -48,7 +48,7 @@ class QtApp():
     def run(self):
         self.log("Starting Qt application")
         self.window.show()
-        self.app.exec_()
+        self.exec_()
 
 
     def setup_window(self):
@@ -118,7 +118,7 @@ class QtApp():
 
 
     def menu_file_exit(self):
-        self.app.exit()
+        self.exit()
 
 
     def menu_view_sidebar(self):
