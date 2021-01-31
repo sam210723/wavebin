@@ -82,6 +82,8 @@ class QtApp(qt.QApplication):
             "file_exit":    qt.QAction("E&xit", self.window),
             "view_sidebar": qt.QAction("&Sidebar", self.window),
             "help_website": qt.QAction("&Website...", self.window),
+            "help_----":    None,
+            "help_about":   qt.QAction("&About", self.window)
         }
 
         # Customise menu actions
@@ -132,6 +134,19 @@ class QtApp(qt.QApplication):
     def menu_help_website(self):
         self.log("Opening site in default browser")
         webbrowser.open("https://vksdr.com/wavebin", new=2)
+
+
+    def menu_help_about(self):
+        msgbox = qt.QMessageBox()
+        msgbox.setWindowTitle("About")
+        msgbox.setIcon(qt.QMessageBox.Information)
+        msgbox.setStandardButtons(qt.QMessageBox.Ok)
+        msgbox.setText(
+            "wavebin is a waveform capture viewer for Keysight oscilloscopes.\n\n"\
+            "Update wavebin by running \"pip install wavebin --upgrade\""
+        )
+        self.log("About dialog launched")
+        msgbox.exec_()
 
 
     def add_plot(self, plot):
