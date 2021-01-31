@@ -70,7 +70,7 @@ class WaveParser():
         # Print file header info
         self.log("File Header:")
         self.log(f"  - Waveforms: {self.file_header.waveforms}")
-        self.log(f"  - File Size: {self.human_format(self.file_header.size)}B\n")
+        self.log(f"  - File Size: {self.human_format(self.file_header.size, binary=True)}B\n")
 
         return True
 
@@ -122,13 +122,18 @@ class WaveParser():
         self.config['plot'] = plot
 
 
-    def human_format(self, num):
+    def human_format(self, num, binary=False):
+        if binary:
+            div = 1024.0
+        else:
+            div = 1000.0
+        
         num = float('{:.3g}'.format(num))
         magnitude = 0
-        while abs(num) >= 1000:
+        while abs(num) >= div:
             magnitude += 1
-            num /= 1000.0
-        return '{}{}'.format('{:f}'.format(num).rstrip('0').rstrip('.'), ['', 'k', 'M', 'G', 'T'][magnitude])
+            num /= div
+        return '{}{}'.format('{:f}'.format(round(num, 2)).rstrip('0').rstrip('.'), ['', 'k', 'M', 'G', 'T'][magnitude])
 
 
     def log(self, msg):
