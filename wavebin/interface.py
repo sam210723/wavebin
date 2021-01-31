@@ -115,7 +115,9 @@ class QtApp(qt.QApplication):
         except ValueError:
             char = None
         
-        if char == 'B': self.sidebar.toggle()
+        if char == 'B':
+            self.menu_actions['view_sidebar'].toggle()
+            self.sidebar.toggle()
 
 
     def menu_file_open(self):
