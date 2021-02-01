@@ -85,6 +85,7 @@ class QtApp(qt.QApplication):
             "file_----":      None,
             "file_exit":      qt.QAction("E&xit", self.window),
             "view_sidebar":   qt.QAction("&Sidebar", self.window),
+            "view_wave_info": qt.QAction("Waveform &Info", self.window),
             "help_docs":      qt.QAction("&Documentation", self.window),
             "help_shortcuts": qt.QAction("&Keyboard Shortcuts", self.window),
             "help_----":      None,
@@ -155,6 +156,75 @@ class QtApp(qt.QApplication):
 
     def menu_view_sidebar(self):
         self.sidebar.toggle()
+
+
+    def menu_view_wave_info(self):
+        info = ""
+
+        for i, w in enumerate(self.waveforms):
+            header = w['header']
+
+            label = header.label.decode().rstrip('\0')
+            info += f"Waveform {label}:\n"
+            info += f"  - Wave Buffers:\t\t{header.buffers}\n"
+            info += f"  - Sample Points:\t\t{header.points}\n"
+            info += f"  - Average Count:\t{header.average}\n"
+
+            wave_types = [
+                "UNKNOWN",
+                "Normal",
+                "Peak",
+                "Average",
+                "",
+                "",
+                "Logic"
+            ]
+            info += f"  - Wave Type:\t\t{wave_types[header.wave_type]}\n"
+
+            units = [
+                "UNKNOWN",
+                "Volts",
+                "Seconds",
+                "Constant",
+                "Amps",
+                "Decibels",
+                "Hertz"
+            ]
+            info += f"  - X Units:\t\t{units[header.x_units]}\n"
+            info += f"  - Y Units:\t\t{units[header.y_units]}\n"
+
+            rng = round(header.x_d_range * float(10**6), 3)
+            info += f"  - X Display Range:\t{rng} μs\n"
+
+            dorigin = round(header.x_d_origin * float(10**6), 3)
+            info += f"  - X Display Origin:\t{dorigin} μs\n"
+
+            increment = round(header.x_increment * float(10**9), 3)
+            info += f"  - X Increment:\t\t{increment} ns\n"
+            
+            origin = round(header.x_origin * float(10**6), 3)
+            info += f"  - X Origin:\t\t{origin} μs\n"
+
+            frame = header.frame.decode().split(":")
+            info += f"  - Frame Type:\t\t{frame[0]}\n"
+            info += f"  - Frame Serial:\t\t{frame[1]}\n"
+            info += f"  - Date:\t\t\t{header.date.decode()}\n"
+            info += f"  - Time:\t\t\t{header.time.decode()}\n"
+            
+            info += f"  - Waveform Label:\t{header.label.decode()}\n"
+            info += f"  - Time Tags:\t\t{header.time_tags}\n"
+            info += f"  - Segment Number:\t{header.segment}\n"
+
+            info += "\n"
+
+        # Show messagebox
+        msgbox = qt.QMessageBox()
+        msgbox.setWindowTitle("Waveform Info")
+        msgbox.setIcon(qt.QMessageBox.Information)
+        msgbox.setStandardButtons(qt.QMessageBox.Ok)
+        msgbox.setText(info)
+        self.log("Waveform info dialog launched")
+        msgbox.exec_()
 
 
     def menu_help_docs(self):
