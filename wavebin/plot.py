@@ -47,9 +47,18 @@ class QtPlot(PlotWidget):
             stop = w['header'].x_d_origin + w['header'].x_d_range
             x = np.linspace(start, stop, w['header'].points)
 
+            if self.config['filter'] == 0:
+                y = w['data']
+            elif self.config['filter'] == 1:
+                #TODO: Filter waveform
+                y = w['data']
+            else:
+                self.log(f"Invalid filter selection: {self.config['filter']}")
+                y = w['data']
+
             self.plot(
                 x,
-                w['data'],
+                y,
                 pen=pg.mkPen(
                     self.config['colours'][i],
                     width=self.config['line_width']
@@ -62,6 +71,11 @@ class QtPlot(PlotWidget):
             Units(self.waveforms[0]['header'].y_units).name,
             units=UnitAbbr(self.waveforms[0]['header'].y_units).name
         )
+    
+
+    def savitzky_golay(self, points):
+        #TODO: Implement filter
+        return
 
 
     def log(self, msg):

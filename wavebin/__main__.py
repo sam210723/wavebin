@@ -53,7 +53,8 @@ def init():
             (100, 149, 237),
             (255, 0, 0),
             (255, 165, 0)
-        ]
+        ],
+        "filter": 0
     })
 
     # Set class instances
