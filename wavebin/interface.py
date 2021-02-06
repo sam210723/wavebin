@@ -76,6 +76,10 @@ class QtApp(qt.QApplication):
             subsampling
         )
 
+        # Enable export options
+        self.menu_actions['file_export_pv'].setEnabled(True)
+        self.menu_actions['file_export_wav'].setEnabled(True)
+
 
     def setup_window(self):
         # Styling and icon
@@ -116,6 +120,8 @@ class QtApp(qt.QApplication):
         # Customise menu actions
         self.menu_actions['view_sidebar'].setCheckable(True)
         self.menu_actions['view_sidebar'].setChecked(True)
+        self.menu_actions['file_export_pv'].setEnabled(False)
+        self.menu_actions['file_export_wav'].setEnabled(False)
 
         # Add actions to menu items
         for a in self.menu_actions:
