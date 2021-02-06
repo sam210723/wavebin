@@ -32,6 +32,7 @@ class QtApp(qt.QApplication):
         self.widget = qt.QWidget()
         self.widget.setStyleSheet("background-color: black;")
         self.window.setCentralWidget(self.widget)
+        self.window.setFocus()
 
         # Create widget layout
         self.log("Creating widget layout")
@@ -329,6 +330,10 @@ class QtSidebar(qt.QTableWidget):
         f.setBold(True)
         for i, p in enumerate(self.config['parts']):
             self.item(i, 0).setFont(f)
+        
+        # Remove focus from sidebar widgets
+        self.config['parts'][0]['widget'].clearFocus()
+        self.config['parts'][1]['widget'].clearFocus()
 
 
     def update(self):
@@ -338,6 +343,7 @@ class QtSidebar(qt.QTableWidget):
     def filter_type_changed(self, value):
         self.config['plot'].config['filter_type'] = value
         self.config['plot'].update()
+        self.config['parts'][0]['widget'].clearFocus()
 
 
     def clipping_changed(self, value):
@@ -352,6 +358,7 @@ class QtSidebar(qt.QTableWidget):
         
         self.config['plot'].config['clipping'] = btn.isChecked()
         self.config['plot'].update()
+        btn.clearFocus()
 
 
     def toggle(self):
