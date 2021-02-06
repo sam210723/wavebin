@@ -47,13 +47,17 @@ class QtPlot(PlotWidget):
             stop = w['header'].x_d_origin + w['header'].x_d_range
             x = np.linspace(start, stop, w['header'].points)
 
-            if self.config['filter'] == 0:      # No filtering
+            # Filtering
+            if self.config['filter_type'] == 0:
                 y = w['data']
-            
-            elif self.config['filter'] == 1:    # Savitzky-Golay
+            elif self.config['filter_type'] == 1:
                 self.log(f"Filtering waveform {i + 1} (Savitzky-Golay)")
                 
-                y = Filters().savitzky_golay(w['data'], 111, 2)
+                # Calculate window length
+                window = round(len(w['data']) * 0.025)
+                if window % 2 == 0: window += 1
+
+                y = Filters().savitzky_golay(w['data'], window, 3)
             
             
             # Clipping
