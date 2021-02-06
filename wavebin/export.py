@@ -94,6 +94,24 @@ class WaveFile():
         self.waveforms = waveforms
 
         self.log(f"Exporting WAVE file to \"{self.path}\"")
+
+        # Create WAV file
+        self.wavf = wave.open(path, mode='wb')
+        self.wavf.setnchannels(len(self.waveforms))             # Number of channels
+        self.wavf.setsampwidth(2)                               # Bytes per sample
+        self.wavf.setframerate(self.get_sample_rate())          # Sample rate
+        self.wavf.setnframes(len(self.waveforms[0]['data']))    # Number of samples
+
+        # Write samples to WAV
+        for i, w in enumerate(self.waveforms):
+            # Write samples to WAV file
+            self.wavf.writeframesraw(
+                w['data'].astype(numpy.float16)
+            )
+
+        # Close WAV file
+        self.wavf.close()
+        self.log("Finished exporting")
     
     
     def get_sample_rate(self):
