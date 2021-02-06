@@ -290,8 +290,40 @@ class QtSidebar(qt.QTableWidget):
             "font-size: 17px;"
         )
 
+        self.parts = []
+        self.build()
+    
+
+    def build(self):
+        self.parts.append({"name": "Filter", "widget": qt.QComboBox()})
+        self.parts.append({"name": "Filter Window", "widget": qt.QSlider()})
+
+        # Add filter dropdown options
+        self.parts[0]['widget'].addItem("None")
+        self.parts[0]['widget'].addItem("Savitzky-Golay")
+
+        # Set filter window slider properties
+        self.parts[1]['widget'].setOrientation(qtc.Qt.Horizontal)
         self.parts[1]['widget'].setRange(0, 100)
         self.parts[1]['widget'].valueChanged.connect(self.filter_window_slider_changed)
+
+        for i, p in enumerate(self.parts):
+            # Add new table row
+            self.setRowCount(self.rowCount() + 1)
+
+            # Set row name
+            self.setItem(i, 0, qt.QTableWidgetItem(p['name']))
+            self.setCellWidget(i, 1, p['widget'])
+        
+        # Bold left column
+        f = qtg.QFont()
+        f.setBold(True)
+        for i, p in enumerate(self.parts):
+            self.item(i, 0).setFont(f)
+
+    def update(self):
+        return
+
 
     def filter_window_slider_changed(self):
        value = self.parts[1]['widget'].value()
