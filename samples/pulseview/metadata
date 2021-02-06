@@ -1,0 +1,10 @@
+[global]
+sigrok version=0.5.2
+
+[device 1]
+capturefile=logic-1
+total probes=8
+samplerate=24 MHz
+total analog=0
+probe1=D0
+unitsize=1
