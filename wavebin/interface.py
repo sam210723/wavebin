@@ -10,6 +10,8 @@ from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 import webbrowser
+from wavebin.export import PulseView
+
 
 class QtApp(qt.QApplication):
     def __init__(self, config):
@@ -86,6 +88,7 @@ class QtApp(qt.QApplication):
         # Menu actions
         self.menu_actions = {
             "file_open":      qt.QAction("&Open...", self.window),
+            "file_export":    qt.QAction("&Export to PulseView...", self.window),
             "file_----":      None,
             "file_exit":      qt.QAction("E&xit", self.window),
             "view_sidebar":   qt.QAction("&Sidebar", self.window),
@@ -156,6 +159,15 @@ class QtApp(qt.QApplication):
                 f"Error opening \"{Path(file_path).name}\": Unknown file format"
             )
             msgbox.exec_()
+
+
+    def menu_file_export(self):
+        PulseView(
+            {
+                "verbose": self.config['verbose']
+            },
+            self.config['plot'].waveforms
+        )
 
 
     def menu_file_exit(self):
