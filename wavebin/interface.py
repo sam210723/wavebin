@@ -111,6 +111,8 @@ class QtApp(qt.QApplication):
     def instances(self, wave, plot):
         self.config['wave'] = wave
         self.config['plot'] = plot
+        self.sidebar.config['wave'] = wave
+        self.sidebar.config['plot'] = plot
 
 
     def keyPressEvent(self, event):
@@ -333,7 +335,8 @@ class QtSidebar(qt.QTableWidget):
 
 
     def filter_type_changed(self, value):
-        return
+        self.config['plot'].config['filter'] = value
+        self.config['plot'].update()
 
 
     def filter_window_slider_changed(self, value):
