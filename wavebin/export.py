@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+import numpy
 import wave
 import zipfile
 
@@ -108,6 +109,8 @@ class WaveFile():
             self.wavf.writeframesraw(
                 w['data'].astype(numpy.float16)
             )
+
+        #TODO: Fix data normalisation
 
         # Close WAV file
         self.wavf.close()
