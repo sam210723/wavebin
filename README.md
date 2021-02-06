@@ -8,9 +8,25 @@
 
 **wavebin** is a waveform capture viewer for Keysight oscilloscopes.
 
+![](https://raw.githubusercontent.com/sam210723/wavebin/v2.0/screenshots/wavebin.png)
+
+TODO: Change screenshot branch before release
+
+
+## Export to PulseView
+![](https://raw.githubusercontent.com/sam210723/wavebin/v2.0/screenshots/pulseview.png)
+
+
+## Filtering
+![](https://raw.githubusercontent.com/sam210723/wavebin/v2.0/screenshots/filtering.png)
+
+
+## Clipping
+![](https://raw.githubusercontent.com/sam210723/wavebin/v2.0/screenshots/clipping.png)
+
+
 ## Resources
   - [FaustinCarter/agilent_read_binary](https://github.com/FaustinCarter/agilent_read_binary)
   - [yodalee/keysightBin](https://github.com/yodalee/keysightBin/)
-  - [Formats and structures - sigrok](https://sigrok.org/wiki/Formats_and_structures)
   - [Input output formats - sigrok](https://sigrok.org/wiki/Input_output_formats)
   - [File format:sigrok/v2 - sigrok](https://sigrok.org/wiki/File_format:Sigrok/v2)
