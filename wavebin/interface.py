@@ -45,6 +45,9 @@ class QtApp(qt.QApplication):
         self.sidebar = QtSidebar()
         self.layout.addWidget(self.sidebar, 0, 0)
 
+        # Create Open File dialog
+        self.ofd = qt.QFileDialog()
+
 
     def run(self):
         self.log("Starting Qt application")
@@ -130,14 +133,11 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_open(self):
-        self.log("Creating Open File dialog")
-        ofd = qt.QFileDialog()
-        
         # Show open file dialog
-        file_path = ofd.getOpenFileName(
+        file_path = self.ofd.getOpenFileName(
             self.window,
             "Open waveform capture",
-            str(Path().home()),
+            ".",
             "Waveform files (*.bin)"
         )[0]
 
