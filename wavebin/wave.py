@@ -138,7 +138,7 @@ class WaveParser():
         return waveform_data_header_tuple(*fields)
 
 
-    def ui(self, app, plot):
+    def instances(self, app, plot):
         self.config['app'] = app
         self.config['plot'] = plot
 

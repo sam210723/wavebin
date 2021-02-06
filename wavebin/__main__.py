@@ -41,8 +41,7 @@ def init():
         "version":    __version__,
         "width":      1500,
         "height":     700,
-        "opengl":     not args.no_opengl,
-        "wave_parse": wave.parse
+        "opengl":     not args.no_opengl
     })
 
     # Create Qt waveform plot
@@ -57,8 +56,9 @@ def init():
         ]
     })
 
-    # Set UI class instances
-    wave.ui(app, plot)
+    # Set class instances
+    wave.instances(app, plot)
+    app.instances(wave, plot)
 
     # Add plot to main window
     app.add_plot(plot)

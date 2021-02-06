@@ -108,6 +108,11 @@ class QtApp(qt.QApplication):
         self.window.keyPressEvent = self.keyPressEvent
 
 
+    def instances(self, wave, plot):
+        self.config['wave'] = wave
+        self.config['plot'] = plot
+
+
     def keyPressEvent(self, event):
         key = event.key()
 
@@ -139,7 +144,7 @@ class QtApp(qt.QApplication):
             return
 
         # Parse waveform capture
-        if not self.config['wave_parse'](file_path):
+        if not self.config['wave'].parse(file_path):
             msgbox = qt.QMessageBox()
             msgbox.setWindowTitle("Error")
             msgbox.setIcon(qt.QMessageBox.Critical)
