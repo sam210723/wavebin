@@ -47,8 +47,9 @@ class QtApp(qt.QApplication):
         self.sidebar = QtSidebar()
         self.layout.addWidget(self.sidebar, 0, 0)
 
-        # Create Open File dialog
+        # Create file dialogs
         self.ofd = qt.QFileDialog()
+        self.sfd = qt.QFileDialog()
 
 
     def run(self):
@@ -100,7 +101,7 @@ class QtApp(qt.QApplication):
         # Menu actions
         self.menu_actions = {
             "file_open":      qt.QAction("&Open...", self.window),
-            "file_export":    qt.QAction("&Export to PulseView...", self.window),
+            "file_export":    qt.QAction("Export to &PulseView...", self.window),
             "file_----":      None,
             "file_exit":      qt.QAction("E&xit", self.window),
             "view_sidebar":   qt.QAction("&Sidebar", self.window),
@@ -177,14 +178,18 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_export(self):
+        file_path = self.sfd.getSaveFileName(
+            self.window,
+            "Export to PulseView",
+            ".",
+            "sigrok Sessions (*.sr)"
+        )[0]
+
         PulseView(
-            {
-                "verbose": self.config['verbose']
-            },
+            self.config['verbose'],
+            file_path,
             self.config['plot'].waveforms
         )
-
-        #TODO: Show save dialog
 
 
     def menu_file_exit(self):
