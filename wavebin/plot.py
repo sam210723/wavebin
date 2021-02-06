@@ -111,6 +111,8 @@ class QtPlot(PlotWidget):
             units=UnitAbbr(self.waveforms[0]['header'].y_units).name
         )
 
+        #TODO: Set right axis label based on units for waveforms 2/3/4
+
 
     def log(self, msg):
         if self.config['verbose']: print(msg)
