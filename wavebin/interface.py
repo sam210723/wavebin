@@ -10,7 +10,7 @@ from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 import webbrowser
-from wavebin.export import PulseView
+from wavebin.export import PulseView, WaveFile
 
 
 class QtApp(qt.QApplication):
@@ -100,16 +100,17 @@ class QtApp(qt.QApplication):
 
         # Menu actions
         self.menu_actions = {
-            "file_open":      qt.QAction("&Open...", self.window),
-            "file_export":    qt.QAction("Export to &PulseView...", self.window),
-            "file_----":      None,
-            "file_exit":      qt.QAction("E&xit", self.window),
-            "view_sidebar":   qt.QAction("&Sidebar", self.window),
-            "view_wave_info": qt.QAction("Waveform &Info", self.window),
-            "help_docs":      qt.QAction("&Documentation", self.window),
-            "help_shortcuts": qt.QAction("&Keyboard Shortcuts", self.window),
-            "help_----":      None,
-            "help_about":     qt.QAction("&About", self.window)
+            "file_open":       qt.QAction("&Open...", self.window),
+            "file_export_pv":  qt.QAction("Export to &PulseView...", self.window),
+            "file_export_wav": qt.QAction("Export to &WAV file...", self.window),
+            "file_----":       None,
+            "file_exit":       qt.QAction("E&xit", self.window),
+            "view_sidebar":    qt.QAction("&Sidebar", self.window),
+            "view_wave_info":  qt.QAction("Waveform &Info", self.window),
+            "help_docs":       qt.QAction("&Documentation", self.window),
+            "help_shortcuts":  qt.QAction("&Keyboard Shortcuts", self.window),
+            "help_----":       None,
+            "help_about":      qt.QAction("&About", self.window)
         }
 
         # Customise menu actions
@@ -177,7 +178,7 @@ class QtApp(qt.QApplication):
             msgbox.exec_()
 
 
-    def menu_file_export(self):
+    def menu_file_export_pv(self):
         # Check waveform has been clipped
         if not self.sidebar.config['parts'][1]['widget'].isChecked():
             msgbox = qt.QMessageBox()
@@ -207,6 +208,28 @@ class QtApp(qt.QApplication):
             file_path,
             self.config['plot'].processed_waveforms,
             self.sidebar.config['parts'][1]['widget'].isChecked()
+        )
+    
+
+    def menu_file_export_wav(self):
+        # Show save file dialog
+        file_path = self.sfd.getSaveFileName(
+            self.window,
+            "Export to WAV file",
+            ".",
+            "WAV file (*.wav)"
+        )[0]
+
+        # Handle cancelled dialog
+        if file_path == "":
+            self.log("Save file dialog cancelled")
+            return
+
+        # Create WAVE file
+        WaveFile(
+            self.config['verbose'],
+            file_path,
+            self.config['plot'].processed_waveforms
         )
 
 

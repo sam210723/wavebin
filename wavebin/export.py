@@ -5,7 +5,9 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+import wave
 import zipfile
+
 
 class PulseView():
     def __init__(self, verbose, path, waveforms, clipped):
@@ -80,5 +82,18 @@ class PulseView():
             self.zipf.writestr(f"logic-1-{i + 1}", bytes(arr))
 
 
+    def log(self, msg):
+        if self.verbose: print(msg)
+
+
+class WaveFile():
+    def __init__(self, verbose, path, waveforms):
+        self.verbose = verbose
+        self.path = path
+        self.waveforms = waveforms
+
+        self.log(f"Exporting WAVE file to \"{self.path}\"")
+    
+    
     def log(self, msg):
         if self.verbose: print(msg)
