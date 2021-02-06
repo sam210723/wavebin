@@ -1,4 +1,4 @@
-# Keysight Waveform Capture Viewer
+# <img src="icon.ico" width=24 /> Keysight Waveform Capture Viewer
 
 [![GitHub release](https://img.shields.io/github/release/sam210723/wavebin.svg)](https://pypi.org/project/wavebin/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wavebin)](https://pypi.org/project/wavebin/)
