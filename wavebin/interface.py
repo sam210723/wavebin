@@ -60,6 +60,13 @@ class QtApp(qt.QApplication):
     def update(self):
         self.log("Updating UI")
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
+        
+        # Limit number of points for large captures
+        points = len(self.config['wave'].waveforms[0]['data'])
+        if points > self.config['limit']:
+            subsampling = self.config['limit']
+        else:
+            subsampling = points
 
         # Reset sidebar widgets
         self.sidebar.update(
@@ -382,7 +389,6 @@ class QtSidebar(qt.QTableWidget):
 
     def filter_changed(self, value):
         self.config['plot'].config['filter_type'] = value
-        self.config['plot'].update()
         self.config['parts'][0]['widget'].clearFocus()
 
         try:

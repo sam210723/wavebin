@@ -43,10 +43,9 @@ class QtPlot(PlotWidget):
         # Loop through waveforms and render traces
         for i, w in enumerate(self.waveforms):
             # Subsampling
-            if self.config['subsampling'] == -1 or self.config['subsampling'] == len(w['data']):
+            if self.config['subsampling'] >= len(w['data']) or self.config['subsampling'] == -1:
                 y = w['data']
             else:
-                self.log(f"Subsampling waveform ({len(w['data'])} -> {self.config['subsampling']} points)")
                 y = w['data'][:: int( len(w['data']) / self.config['subsampling'] )]
 
             # Generate X points

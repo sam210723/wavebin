@@ -59,6 +59,7 @@ class WaveParser():
         self.config['app'].waveforms = self.waveforms
         self.config['app'].update()
         self.config['plot'].waveforms = self.waveforms
+        self.config['plot'].subsampling = self.waveforms[0]['header'].points
         self.config['plot'].update()
 
         return True
