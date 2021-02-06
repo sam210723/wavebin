@@ -301,6 +301,7 @@ class QtSidebar(qt.QTableWidget):
         # Add filter dropdown options
         self.parts[0]['widget'].addItem("None")
         self.parts[0]['widget'].addItem("Savitzky-Golay")
+        self.parts[0]['widget'].currentIndexChanged.connect(self.filter_type_changed)
 
         # Set filter window slider properties
         self.parts[1]['widget'].setOrientation(qtc.Qt.Horizontal)
@@ -325,8 +326,12 @@ class QtSidebar(qt.QTableWidget):
         return
 
 
-    def filter_window_slider_changed(self):
-       value = self.parts[1]['widget'].value()
+    def filter_type_changed(self, value):
+        return
+
+
+    def filter_window_slider_changed(self, value):
+        return
 
 
     def toggle(self):
