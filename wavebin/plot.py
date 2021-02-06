@@ -65,10 +65,10 @@ class QtPlot(PlotWidget):
                 self.log(f"Clipping waveform {i + 1}")
 
                 # Find waveform median
-                med = (np.amax(w['data']) - abs(np.amin(w['data']))) / 2   # Waveform median
+                med = (np.amax(y) - abs(np.amin(y))) / 2   # Waveform median
 
                 # Shift waveform to be centered around zero
-                y = (w['data'] - med) + 0
+                y = (y - med) + 0
 
                 # Apply threshold to waveform values
                 y[y > 0] = 1
