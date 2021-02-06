@@ -21,7 +21,8 @@ class QtPlot(PlotWidget):
         # Enable/Disable OpenGL
         if self.config['opengl']:
             pg.setConfigOptions(useOpenGL=True)
-            self.config['line_width'] = 2
+            self.config['line_width'] = 1
+            #TODO: Fix slow render with OpenGL enabled and line width > 1
         else:
             pg.setConfigOptions(useOpenGL=False)
             self.config['line_width'] = 1    # See https://github.com/pyqtgraph/pyqtgraph/issues/533
