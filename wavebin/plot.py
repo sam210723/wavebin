@@ -38,6 +38,7 @@ class QtPlot(PlotWidget):
     def update(self):
         # Remove old traces
         self.clear()
+        self.processed_waveforms = []
 
         # Loop through waveforms and render traces
         for i, w in enumerate(self.waveforms):
@@ -85,6 +86,13 @@ class QtPlot(PlotWidget):
                 y[y > 0] = 1
                 y[y < 0] = -1
             
+
+            # Make processed waveforms available for exporting
+            self.processed_waveforms.append({
+                "header": w['header'],
+                "data": y
+            })
+
 
             # Render data on plot
             self.plot(
