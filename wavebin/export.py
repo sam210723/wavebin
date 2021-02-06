@@ -5,11 +5,23 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+import zipfile
+
+
 class PulseView():
-    def __init__(self, config, waveforms):
-        self.config = config
+    def __init__(self, verbose, path, waveforms):
+        self.verbose = verbose
+        self.path = path
         self.waveforms = waveforms
+
+        self.log(f"Exporting PulseView session to {self.path}")
+
+        # Create ZIP file
+        self.zipf = zipfile.ZipFile(self.path, 'w', zipfile.ZIP_DEFLATED)
+
+        # Close completed ZIP file
+        self.zipf.close()
 
 
     def log(self, msg):
-        if self.config['verbose']: print(msg)
+        if self.verbose: print(msg)
