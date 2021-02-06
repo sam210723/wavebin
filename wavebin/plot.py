@@ -42,22 +42,33 @@ class QtPlot(PlotWidget):
 
         # Loop through waveforms and render traces
         for i, w in enumerate(self.waveforms):
+            # Subsampling
+            if self.config['subsampling'] == -1 or self.config['subsampling'] == len(w['data']):
+                y = w['data']
+            else:
+                self.log(f"Subsampling waveform ({len(w['data'])} -> {self.config['subsampling']} points)")
+                y = w['data'][:: int( len(w['data']) / self.config['subsampling'] )]
+
             # Generate X points
             start = w['header'].x_d_origin
             stop = w['header'].x_d_origin + w['header'].x_d_range
-            x = np.linspace(start, stop, w['header'].points)
+            x = np.linspace(start, stop, len(y))
 
             # Filtering
-            if self.config['filter_type'] == 0:
-                y = w['data']
-            elif self.config['filter_type'] == 1:
+            if self.config['filter_type'] == 1:
                 self.log(f"Filtering waveform {i + 1} (Savitzky-Golay)")
                 
                 # Calculate window length
-                window = round(len(w['data']) * 0.025)
+                window = round(len(y) * 0.025)
                 if window % 2 == 0: window += 1
 
-                y = Filters().savitzky_golay(w['data'], window, 3)
+                # Catch filter exceptions
+                try:
+                    # Applt filter
+                    y = Filters().savitzky_golay(y, window, 3)
+                except TypeError as e:
+                    if str(e) == "window_size is too small for the polynomials order":
+                        self.log("Not enough points to apply filter")
             
             
             # Clipping

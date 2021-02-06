@@ -61,7 +61,9 @@ class QtApp(qt.QApplication):
         self.log("Updating UI")
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
-        self.sidebar.update()
+        self.sidebar.update(
+            len(self.config['wave'].waveforms[0]['data'])
+        )
 
 
     def setup_window(self):
@@ -168,6 +170,8 @@ class QtApp(qt.QApplication):
             },
             self.config['plot'].waveforms
         )
+
+        #TODO: Show save dialog
 
 
     def menu_file_exit(self):
@@ -318,16 +322,21 @@ class QtSidebar(qt.QTableWidget):
     def build(self):
         self.config['parts'].append({"name": "Filter Type", "widget": qt.QComboBox()})
         self.config['parts'].append({"name": "Clipping", "widget": qt.QPushButton("OFF")})
+        self.config['parts'].append({"name": "Subsampling", "widget": qt.QSpinBox()})
 
         # Add filter dropdown options
         self.config['parts'][0]['widget'].addItem("None")
         self.config['parts'][0]['widget'].addItem("Savitzky-Golay")
-        self.config['parts'][0]['widget'].currentIndexChanged.connect(self.filter_type_changed)
+        self.config['parts'][0]['widget'].currentIndexChanged.connect(self.filter_changed)
 
         # Set filter window slider properties
         self.config['parts'][1]['widget'].setCheckable(True)
         self.config['parts'][1]['widget'].setStyleSheet("background: red; color: white;")
         self.config['parts'][1]['widget'].clicked.connect(self.clipping_changed)
+
+        # Set subsampling numeric box properties
+        self.config['parts'][2]['widget'].setMinimum(2)
+        self.config['parts'][2]['widget'].valueChanged.connect(self.subsampling_changed)
 
         for i, p in enumerate(self.config['parts']):
             # Add new table row
@@ -346,13 +355,16 @@ class QtSidebar(qt.QTableWidget):
         # Remove focus from sidebar widgets
         self.config['parts'][0]['widget'].clearFocus()
         self.config['parts'][1]['widget'].clearFocus()
+        self.config['parts'][2]['widget'].clearFocus()
 
 
-    def update(self):
-        return
+    def update(self, points):
+        # Set subsampling spin box maximum
+        self.config['parts'][2]['widget'].setMaximum(points)
+        self.config['parts'][2]['widget'].setValue(points)
 
 
-    def filter_type_changed(self, value):
+    def filter_changed(self, value):
         self.config['plot'].config['filter_type'] = value
         self.config['plot'].update()
         self.config['parts'][0]['widget'].clearFocus()
@@ -371,6 +383,11 @@ class QtSidebar(qt.QTableWidget):
         self.config['plot'].config['clipping'] = btn.isChecked()
         self.config['plot'].update()
         btn.clearFocus()
+
+
+    def subsampling_changed(self, value):
+        self.config['plot'].config['subsampling'] = value
+        self.config['plot'].update()
 
 
     def toggle(self):

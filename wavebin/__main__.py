@@ -54,6 +54,7 @@ def init():
             (255, 0, 0),
             (255, 165, 0)
         ],
+        "subsampling": -1,
         "filter_type": 0,
         "clipping": False
     })
