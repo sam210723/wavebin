@@ -81,7 +81,7 @@ class QtApp(qt.QApplication):
         # Styling and icon
         self.window.setWindowIcon(qtg.QIcon("icon.ico"))
         self.window.resize(self.config['width'], self.config['height'])
-        self.window.setMinimumSize(800, 400)
+        self.window.setMinimumSize(800, 200)
 
         # Menu bar
         self.log("Building menu bar ")

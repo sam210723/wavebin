@@ -39,8 +39,8 @@ def init():
     app = QtApp({
         "verbose": args.v,
         "version": __version__,
-        "width":   1500,
-        "height":  350,
+        "width":   1250,
+        "height":  450,
         "opengl":  not args.no_opengl,
         "limit":   25000,
     })
