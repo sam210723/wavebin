@@ -58,6 +58,12 @@
             "problemMatcher": []
         },
         {
+            "label": "Run Module (UART waveform)",
+            "type": "shell",
+            "command": "python -m wavebin -v -i \"${workspaceFolder}\\samples\\DSOX1102G\\uart.bin\"",
+            "problemMatcher": []
+        },
+        {
             "label": "Clean (Windows)",
             "type": "shell",
             "command": "rmdir /S /Q wavebin\\__pycache__ && rmdir /S /Q wavebin.egg-info && rmdir /S /Q build && rmdir /S /Q dist",
