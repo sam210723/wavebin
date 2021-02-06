@@ -35,6 +35,12 @@ def init():
         "verbose":     args.v
     })
 
+    # Get subsampling limit
+    if args.no_limit:
+        limit = 10e6
+    else:
+        limit = 50e3
+
     # Create Qt application
     app = QtApp({
         "verbose": args.v,
@@ -42,7 +48,7 @@ def init():
         "width":   1250,
         "height":  450,
         "opengl":  not args.no_opengl,
-        "limit":   25000,
+        "limit":   limit,
     })
 
     # Create Qt waveform plot
@@ -84,6 +90,7 @@ def parse_args():
     argp.add_argument("-i", action="store", help="path to Keysight waveform capturefile (.bin)", default=None, dest="file")
     argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
     argp.add_argument("--no-opengl", action="store_true", help="disable hardware accelerated rendering with OpenGL")
+    argp.add_argument("--no-limit", action="store_true", help="disable subsampling limit (may cause slow frame rates with large captures)")
 
     return argp.parse_args()
 
