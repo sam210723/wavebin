@@ -35,8 +35,18 @@ class PulseView():
 
 
     def metadata(self):
-        num = len(self.waveforms)
-        sr  = int(round(1 / self.waveforms[0]['header'].x_increment) / 1e6)
+        # Number of points per waveform
+        num = len(self.waveforms[0]['data'])
+
+        # Check if waveform is subsampled
+        if self.waveforms[0]['header'].points != num:
+            # Calculate new sample increment value
+            dur = self.waveforms[0]['header'].x_increment * self.waveforms[0]['header'].points
+            inc = dur / num
+            sr = (1 / inc) / 1e6
+        else:
+            # Use increment value from waveform header
+            sr  = (1 / self.waveforms[0]['header'].x_increment) / 1e6
 
         meta =   "[global]\r\n"
         meta +=  "sigrok version=0.5.2\r\n"
