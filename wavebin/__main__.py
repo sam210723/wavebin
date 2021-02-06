@@ -40,7 +40,7 @@ def init():
         "verbose": args.v,
         "version": __version__,
         "width":   1500,
-        "height":  700,
+        "height":  350,
         "opengl":  not args.no_opengl,
         "limit":   25000,
     })
