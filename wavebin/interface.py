@@ -55,7 +55,7 @@ class QtApp(qt.QApplication):
         self.log("Updating UI")
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
-        #TODO: Update sidebar
+        self.sidebar.update()
 
 
     def setup_window(self):
@@ -289,6 +289,12 @@ class QtSidebar(qt.QTableWidget):
             "font-weight: normal;"\
             "font-size: 17px;"
         )
+
+        self.parts[1]['widget'].setRange(0, 100)
+        self.parts[1]['widget'].valueChanged.connect(self.filter_window_slider_changed)
+
+    def filter_window_slider_changed(self):
+       value = self.parts[1]['widget'].value()
 
 
     def toggle(self):
