@@ -35,17 +35,17 @@ class QtPlot(PlotWidget):
 
 
     def update(self):
-        self.log("Updating plot")
-
         # Remove old traces
         self.clear()
 
         # Loop through waveforms and render traces
         for i, w in enumerate(self.waveforms):
+            self.log(f"Rendering waveform {i + 1}")
             # Subsampling
             if self.config['subsampling'] >= len(w['data']) or self.config['subsampling'] == -1:
                 y = w['data']
             else:
+                self.log(f"  Subsampling ({len(w['data'])} -> {self.config['subsampling']})")
                 y = w['data'][:: int( len(w['data']) / self.config['subsampling'] )]
 
             # Generate X points
@@ -55,7 +55,7 @@ class QtPlot(PlotWidget):
 
             # Filtering
             if self.config['filter_type'] == 1:
-                self.log(f"Filtering waveform {i + 1} (Savitzky-Golay)")
+                self.log(f"  Filtering (Savitzky-Golay)")
                 
                 # Calculate window length
                 window = round(len(y) * 0.025)
@@ -67,12 +67,12 @@ class QtPlot(PlotWidget):
                     y = Filters().savitzky_golay(y, window, 3)
                 except TypeError as e:
                     if str(e) == "window_size is too small for the polynomials order":
-                        self.log("Not enough points to apply filter")
+                        self.log("  Not enough points to apply filter")
             
             
             # Clipping
             if self.config['clipping']:
-                self.log(f"Clipping waveform {i + 1}")
+                self.log(f"  Clipping")
 
                 # Find waveform median
                 med = (np.amax(y) - abs(np.amin(y))) / 2   # Waveform median
