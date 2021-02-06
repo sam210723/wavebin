@@ -37,26 +37,26 @@ def init():
 
     # Create Qt application
     app = QtApp({
-        "verbose":    args.v,
-        "version":    __version__,
-        "width":      1500,
-        "height":     700,
-        "opengl":     not args.no_opengl
+        "verbose": args.v,
+        "version": __version__,
+        "width":   1500,
+        "height":  700,
+        "opengl":  not args.no_opengl,
     })
 
     # Create Qt waveform plot
     plot = QtPlot({
-        "verbose": args.v,
-        "opengl":  not args.no_opengl,
+        "verbose":     args.v,
+        "opengl":      not args.no_opengl,
+        "subsampling": -1,
+        "filter_type": 0,
+        "clipping":    False,
         "colours": [
             (242, 242, 0),
             (100, 149, 237),
             (255, 0, 0),
             (255, 165, 0)
-        ],
-        "subsampling": -1,
-        "filter_type": 0,
-        "clipping": False
+        ]
     })
 
     # Set class instances
