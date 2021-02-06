@@ -54,7 +54,8 @@ def init():
             (255, 0, 0),
             (255, 165, 0)
         ],
-        "filter": 0
+        "filter_type": 0,
+        "clipping": False
     })
 
     # Set class instances

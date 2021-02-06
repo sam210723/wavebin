@@ -54,6 +54,22 @@ class QtPlot(PlotWidget):
                 self.log(f"Filtering waveform {i + 1} (Savitzky-Golay)")
                 
                 y = Filters().savitzky_golay(w['data'], 111, 2)
+            
+            
+            # Clipping
+            if self.config['clipping']:
+                self.log(f"Clipping waveform {i + 1}")
+
+                # Find waveform median
+                med = (np.amax(w['data']) - abs(np.amin(w['data']))) / 2   # Waveform median
+
+                # Shift waveform to be centered around zero
+                y = (w['data'] - med) + 0
+
+                # Apply threshold to waveform values
+                y[y > 0] = 1
+                y[y < 0] = -1
+            
 
             # Render data on plot
             self.plot(

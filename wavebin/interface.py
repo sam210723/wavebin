@@ -303,8 +303,8 @@ class QtSidebar(qt.QTableWidget):
     
 
     def build(self):
-        self.config['parts'].append({"name": "Filter", "widget": qt.QComboBox()})
-        self.config['parts'].append({"name": "Filter Window", "widget": qt.QSlider()})
+        self.config['parts'].append({"name": "Filter Type", "widget": qt.QComboBox()})
+        self.config['parts'].append({"name": "Clipping", "widget": qt.QPushButton("OFF")})
 
         # Add filter dropdown options
         self.config['parts'][0]['widget'].addItem("None")
@@ -312,9 +312,9 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'][0]['widget'].currentIndexChanged.connect(self.filter_type_changed)
 
         # Set filter window slider properties
-        self.config['parts'][1]['widget'].setOrientation(qtc.Qt.Horizontal)
-        self.config['parts'][1]['widget'].setRange(0, 100)
-        self.config['parts'][1]['widget'].valueChanged.connect(self.filter_window_slider_changed)
+        self.config['parts'][1]['widget'].setCheckable(True)
+        self.config['parts'][1]['widget'].setStyleSheet("background: red; color: white;")
+        self.config['parts'][1]['widget'].clicked.connect(self.clipping_changed)
 
         for i, p in enumerate(self.config['parts']):
             # Add new table row
@@ -330,17 +330,28 @@ class QtSidebar(qt.QTableWidget):
         for i, p in enumerate(self.config['parts']):
             self.item(i, 0).setFont(f)
 
+
     def update(self):
         return
 
 
     def filter_type_changed(self, value):
-        self.config['plot'].config['filter'] = value
+        self.config['plot'].config['filter_type'] = value
         self.config['plot'].update()
 
 
-    def filter_window_slider_changed(self, value):
-        return
+    def clipping_changed(self, value):
+        btn = self.config['parts'][1]['widget']
+
+        if btn.isChecked():
+            btn.setText("ON")
+            btn.setStyleSheet("background: green; color: white;")
+        else:
+            btn.setStyleSheet("background: red; color: white;")
+            btn.setText("OFF")
+        
+        self.config['plot'].config['clipping'] = btn.isChecked()
+        self.config['plot'].update()
 
 
     def toggle(self):
