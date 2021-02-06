@@ -61,8 +61,11 @@ class QtApp(qt.QApplication):
         self.log("Updating UI")
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
+        # Reset sidebar widgets
         self.sidebar.update(
-            len(self.config['wave'].waveforms[0]['data'])
+            None,
+            None,
+            subsampling
         )
 
 
@@ -150,6 +153,9 @@ class QtApp(qt.QApplication):
         if file_path == "":
             self.log("Open file dialog cancelled")
             return
+        
+        # Reset sidebar controls
+        self.sidebar.update(0, False, -1)
 
         # Parse waveform capture
         if not self.config['wave'].parse(file_path):
@@ -358,16 +364,31 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'][2]['widget'].clearFocus()
 
 
-    def update(self, points):
-        # Set subsampling spin box maximum
-        self.config['parts'][2]['widget'].setMaximum(points)
-        self.config['parts'][2]['widget'].setValue(points)
+    def update(self, f, c, p):
+        if f != None:
+            self.config['parts'][0]['widget'].setCurrentIndex(f)
+            self.filter_changed(f)
+        
+        if c != None:
+            self.config['parts'][1]['widget'].setChecked(c)
+            self.clipping_changed(c)
+        
+        if p != None:
+            # Set subsampling spin box maximum
+            self.config['parts'][2]['widget'].setMaximum(p)
+            self.config['parts'][2]['widget'].setValue(p)
+            self.subsampling_changed(p)
 
 
     def filter_changed(self, value):
         self.config['plot'].config['filter_type'] = value
         self.config['plot'].update()
         self.config['parts'][0]['widget'].clearFocus()
+
+        try:
+            self.config['plot'].update()
+        except AttributeError:
+            return
 
 
     def clipping_changed(self, value):
@@ -381,13 +402,21 @@ class QtSidebar(qt.QTableWidget):
             btn.setText("OFF")
         
         self.config['plot'].config['clipping'] = btn.isChecked()
-        self.config['plot'].update()
         btn.clearFocus()
+
+        try:
+            self.config['plot'].update()
+        except AttributeError:
+            return
 
 
     def subsampling_changed(self, value):
         self.config['plot'].config['subsampling'] = value
-        self.config['plot'].update()
+        
+        try:
+            self.config['plot'].update()
+        except AttributeError:
+            return
 
 
     def toggle(self):

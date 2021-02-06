@@ -42,6 +42,7 @@ def init():
         "width":   1500,
         "height":  700,
         "opengl":  not args.no_opengl,
+        "limit":   25000,
     })
 
     # Create Qt waveform plot
