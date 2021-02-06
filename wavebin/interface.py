@@ -153,7 +153,7 @@ class QtApp(qt.QApplication):
             self.window,
             "Open waveform capture",
             ".",
-            "Waveform files (*.bin)"
+            "Waveform files (*.bin);;All files (*.*)"
         )[0]
 
         # Handle cancelled dialog
