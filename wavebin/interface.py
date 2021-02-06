@@ -178,6 +178,7 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_export(self):
+        # Show save file dialog
         file_path = self.sfd.getSaveFileName(
             self.window,
             "Export to PulseView",
@@ -185,10 +186,17 @@ class QtApp(qt.QApplication):
             "sigrok Sessions (*.sr)"
         )[0]
 
+        # Handle cancelled dialog
+        if file_path == "":
+            self.log("Save file dialog cancelled")
+            return
+
+        # Create PulseView session file
         PulseView(
             self.config['verbose'],
             file_path,
-            self.config['plot'].waveforms
+            self.config['plot'].processed_waveforms,
+            self.sidebar.config['parts'][1]['widget'].isChecked()
         )
 
 
