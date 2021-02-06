@@ -19,6 +19,9 @@ class PulseView():
         # Create ZIP file
         self.zipf = zipfile.ZipFile(self.path, 'w', zipfile.ZIP_DEFLATED)
 
+        # Create version file
+        self.zipf.writestr('version', '2'.encode('utf-8'))
+
         # Close completed ZIP file
         self.zipf.close()
 
