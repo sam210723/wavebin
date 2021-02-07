@@ -45,7 +45,7 @@ class PulseView():
         meta +=  "[device 1]\r\n"
         meta +=  "capturefile=logic-1\r\n"
         meta += f"total probes={len(self.waveforms)}\r\n"
-        meta += f"samplerate={self.get_sample_rate() / 1e6} MHz\r\n"
+        meta += f"samplerate={round(self.get_sample_rate(), 4) / 1e6} MHz\r\n"
         meta +=  "total analog=0\r\n"       #TODO: Use 'clipped' flag to export analog waveforms
         
         for i in range(len(self.waveforms)):
