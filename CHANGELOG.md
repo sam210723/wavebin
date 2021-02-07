@@ -5,10 +5,31 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
+  - 
+
+### Changed
+  - 
+
+### Fixed
+  - 
+</details>
+
+
+## [v2.0](https://github.com/sam210723/wavebin/releases/tag/v2.0) - 2021-02-07
+Complete re-write of the project with various new features.
+
+<details>
+<summary>Details</summary>
+
+### Added
+  - Export waveforms to PulseView srzip file
+  - Export waveforms to WAV files
   - Waveform clipping option for digital signals
-  - Colours for channels 3 and 4
   - Adjustable subsampling for large waveform captures
   - Hardware graphics acceleration with OpenGL
+  - Colours for channels 3 and 4
+  - GUI controls to repace CLI arguments
+  - Hotkey support
 
 ### Changed
   - Show filter name when enabled
@@ -19,6 +40,7 @@ All notable changes to this project will be documented in this file.
   - Unit abbreviations in axis labels
   - Savitzky-Golay filter window calculation
   - Slow waveform rendering (see [pyqtgraph#533](https://github.com/pyqtgraph/pyqtgraph/issues/533))
+  - Cleaner verbose console output formatting
 </details>
 
 
