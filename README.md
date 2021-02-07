@@ -16,7 +16,7 @@
 
 
 ## Getting Started
-**wavebin** is available on the [Python Package Index (PyPI)](https://pypi.org/project/wavebin/) and is installed using [pip](https://pip.pypa.io/en/stable/).
+**wavebin** is available via the [Python Package Index (PyPI)](https://pypi.org/project/wavebin/) and is installed using [pip](https://pip.pypa.io/en/stable/).
 
 ```
 > pip3 install wavebin
@@ -67,7 +67,7 @@ optional arguments:
 ### Export to PulseView
 [PulseView](https://sigrok.org/wiki/PulseView) by [sigrok](https://sigrok.org) is a logic analysis tool typically used with hardware logic analyser devices. It is capable of decoding many serial and parallel protocols with its built-in decoders.
 
-Below is a 115200bd UART waveform captured on a **DSO-X 1102G**, loaded in to **wavebin** with [clipping](#clipping) enabled to create a clean digital waveform, exported to PulseView and decoded using the PulseView UART protocol decoder.
+Below is a 115200bd UART waveform captured on a **DSO-X 1102G**, loaded into **wavebin** with [clipping](#clipping) enabled to create a clean digital waveform, exported to PulseView and decoded using the PulseView UART protocol decoder.
 
 ![](https://raw.githubusercontent.com/sam210723/wavebin/master/screenshots/pulseview.png)
 
@@ -88,7 +88,7 @@ A [Savitzky-Golay low pass filter](https://en.wikipedia.org/wiki/Savitzky%E2%80%
 
 
 ### Clipping
-The clipping option converts analog waveforms to digital waveforms in a similar way to Schmitt triggers.
+The clipping option converts analog waveforms to digital waveforms in a similar way to a Schmitt trigger.
 
 The [filtering](#filtering) and clipping options can be used simultaneously. Clipping is always applied after filtering.
 
@@ -96,7 +96,7 @@ The [filtering](#filtering) and clipping options can be used simultaneously. Cli
 
 
 ### Subsampling
-When a waveform capture is first loaded all available sample points will use to render the waveform.
+When a waveform capture is first loaded, all available sample points will use to render the waveform.
 The subsampling option renders the waveform using an equally-spaced subset of points.
 
 Below is a 62.5 MHz wave being rendered with all `20,000` points in the capture file, and then with only `1250` points.
