@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='wavebin',
-    version='1.3',
+    version='2.0',
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
@@ -13,18 +13,26 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
+    python_requires = '>3.6',
     install_requires = [
         'numpy',
         'pyqt5',
         'pyqtgraph'
     ],
     classifiers=[
+        "Topic :: Scientific/Engineering :: Visualization",
+        "Environment :: Console",
+        "Environment :: X11 Applications :: Qt",
+        "Intended Audience :: Developers",
+        "Intended Audience :: Science/Research",
+        "License :: MIT License",
+        "Development Status :: 5 - Production/Stable",
+        "Natural Language :: English",
+        "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
-        "Programming Language :: Python :: 3.9",
-        "Topic :: Scientific/Engineering :: Visualization",
-        "Topic :: Utilities"
-    ],
+        "Programming Language :: Python :: 3.9"
+    ]
 )

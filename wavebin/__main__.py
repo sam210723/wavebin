@@ -1,351 +1,110 @@
-from . import enums, tuples, filters
+"""
+wavebin
+https://github.com/sam210723/wavebin
 
-import argparse
-import struct
-from PyQt5 import QtWidgets as qt
-from PyQt5 import QtCore as qtc
-from PyQt5 import QtGui as qtg
-import pyqtgraph as pg
-import ntpath
-import numpy as np
+Waveform capture viewer for Keysight oscilloscopes.
+"""
 
-### Globals ###
-args = None
-file_header = None
-wave_headers = []
-waveforms = []
-wave_colours = [(242, 242, 0), (100, 149, 237), (255, 0, 0), (255, 165, 0)]
-x_limit = 50000
-version = "1.3"
-width = 1500
-height = 600
-bg = "black"
-detail_items = [
-    "Sample Points",
-    "Averaging",
-    "Display Range",
-    "Device",
-    "Date",
-    "Time",
-    "Filtering"
-]
+from argparse import ArgumentParser
+from pathlib import Path
+import sys
+
+from wavebin.interface import QtApp
+from wavebin.plot import QtPlot
+from wavebin.wave import WaveParser
+
+__version__ = 2.0
+
 
 def init():
-    global args
-    global file_header
-    global wave_headers
+    print( "                              __    _        ")
+    print( "   _      ______ __   _____  / /_  (_)___    ")
+    print( "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
+    print( "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   ")
+    print(f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n")
+    print( "             vksdr.com/wavebin\n\n")
 
     # Parse CLI arguments
     args = parse_args()
-
-    # Print version
-    print(f"wavebin v{version}\n")
-
-    # Open bin file
-    print(f"Loading \"{args.BIN}\"...")
-    bin_file = open(args.BIN, mode="rb")
     
-    # Read and parse File Header
-    file_header = parse_file_header( bin_file.read(0x0C) )
-    if args.v: print_file_header(file_header)
+    # Print startup info
+    print_info(args)
 
-    # Read and parse Waveform Headers
-    for i in range(file_header.waveforms):
-        data = bin_file.read(0x8C)
-        wave_header = parse_wave_header(data)
-        wave_headers.append(wave_header)
-        if args.v: print_wave_header(wave_header)
+    # Setup waveform capture parser
+    wave = WaveParser({
+        "verbose":     args.v
+    })
 
-        # Read and parse Data Header
-        data_header = parse_data_header( bin_file.read(0x0C) )
-        if args.v: print_data_header(data_header)
-
-        # Parse Waveform Data
-        parse_data(data_header, bin_file.read(data_header.length))
-
-    # Close bin file
-    bin_file.close()
-
-    # Show number of waveforms
-    print(f"Rendering {len(waveforms)} waveform", end="")
-    if len(waveforms) > 1: print("s", end="")
-    print("...")
-
-    # Render plots
-    render()
-
-
-### Render Functions ###
-def render():
-    """
-    Renders waveform data using PyQtGraph
-    """
-
-    # Create Qt app
-    app = qt.QApplication([])
-    if not args.no_opengl:
-        pg.setConfigOptions(useOpenGL=True)
-        line_width = 2
+    # Get subsampling limit
+    if args.no_limit:
+        limit = 10e6
     else:
-        pg.setConfigOptions(useOpenGL=False)
-        line_width = 1
-    
-    # Create Qt widgets
-    window = qt.QWidget()
-    layout = qt.QHBoxLayout()
-    pgplot = pg.PlotWidget()
-    detail = qt.QTableWidget()
+        limit = 50e3
 
-    # Setup window
-    window.setWindowTitle(f"{ntpath.basename(args.BIN)} - wavebin v{version}")
-    window.resize(width, height)
-    window.setLayout(layout)
-    window.setStyleSheet(f"background-color: {bg};")
-    window.setWindowIcon(qtg.QIcon('icon.ico'))
+    # Create Qt application
+    app = QtApp({
+        "verbose": args.v,
+        "version": __version__,
+        "width":   1100,
+        "height":  350,
+        "opengl":  not args.no_opengl,
+        "limit":   limit,
+    })
 
-    # Setup layout
-    layout.addWidget(pgplot)
-    layout.addWidget(detail)
-    layout.setContentsMargins(10, 0, 0, 10)
-    layout.setSpacing(30)
-    detail.setFixedWidth(300)
+    # Create Qt waveform plot
+    plot = QtPlot({
+        "verbose":     args.v,
+        "opengl":      not args.no_opengl,
+        "subsampling": -1,
+        "filter_type": 0,
+        "clipping":    False,
+        "colours": [
+            (242, 242, 0),
+            (100, 149, 237),
+            (255, 0, 0),
+            (255, 165, 0)
+        ]
+    })
 
-    # Setup detail table
-    detail.setStyleSheet("border: 1px solid black; background-color: black; gridline-color: #555;"\
-                         "color: white; font-weight: normal; font-size: 17px;")
-    detail.setRowCount(len(detail_items))
-    detail.setColumnCount(2)
-    detail.verticalHeader().setVisible(False)
-    detail.horizontalHeader().setVisible(False)
-    detail.horizontalHeader().setSectionResizeMode(qt.QHeaderView.Stretch)
-    detail.setEditTriggers(qt.QAbstractItemView.NoEditTriggers)
-    detail.setFocusPolicy(qtc.Qt.NoFocus)
-    detail.setSelectionMode(qt.QAbstractItemView.NoSelection)
+    # Set class instances
+    wave.instances(app, plot)
+    app.instances(wave, plot)
 
+    # Add plot to main window
+    app.add_plot(plot)
 
-    # Set detail names
-    for i, s in enumerate(detail_items):
-        detail.setItem(i, 0, qt.QTableWidgetItem(f" {s}"))
+    # Parse file if path specified in argument
+    if args.file and not wave.parse(args.file): safe_exit(code=1)
 
-    # Set detail values
-    header = wave_headers[0]
-    if header.points > int(args.s):
-        detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points} -> {args.s}"))
-    else:
-        detail.setItem(0, 1, qt.QTableWidgetItem(f" {header.points}"))
-    detail.setItem(1, 1, qt.QTableWidgetItem(" {}".format("None" if header.count == 1 else header.count)))
-    detail.setItem(2, 1, qt.QTableWidgetItem(f" {round(header.x_d_range * float(10**6), 3)} μs"))
-    detail.setItem(3, 1, qt.QTableWidgetItem(" {}".format(header.frame.decode().split(":")[0])))
-    detail.setItem(4, 1, qt.QTableWidgetItem(f" {header.date.decode()}"))
-    detail.setItem(5, 1, qt.QTableWidgetItem(f" {header.time.decode()}"))
-    detail.setItem(6, 1, qt.QTableWidgetItem(" {}".format("Savitzky-Golay" if args.f else "None")))
+    # Run application
+    app.run()
 
-    # Bold left column
-    f = qtg.QFont()
-    f.setBold(True)
-    for i in range(len(detail_items)):
-        detail.item(i, 0).setFont(f)
-
-    pgplot.setLabel(
-        'left',
-        enums.Units(wave_headers[0].y_units).name,
-        units=enums.UnitAbbr(wave_headers[0].y_units).name
-    )
-
-    # Loop through waveforms
-    for i, w in enumerate(waveforms):
-        header = wave_headers[i]
-
-        # Generate X points
-        start = header.x_d_origin
-        stop = header.x_d_origin + header.x_d_range
-        x = np.linspace(start, stop, len(w))
-
-        # Build plot
-        pgplot.setLabel('bottom', "Time", units='s')
-        pgplot.showGrid(x=True, y=True, alpha=1.0)
-        pgplot.setMouseEnabled(x=True, y=False)
-
-        # Add data to plot
-        pgplot.plot(x, w, pen=pg.mkPen(wave_colours[i], width=line_width))
-
-        # Add waveform specific details
-        r = detail.rowCount()
-        detail.insertRow(r)
-        detail.setItem(r, 0, qt.QTableWidgetItem(f" Waveform {header.label.decode()}"))
-        detail.setItem(r, 1, qt.QTableWidgetItem(f" {enums.WaveType(header.wave_type).name}"))
-        detail.item(r, 0).setForeground(qtg.QBrush(qtg.QColor(*wave_colours[i])))
-        detail.item(r, 0).setFont(f)
-
-    
-    # Run Qt app
-    window.show()
-    app.exec_()
-
-
-### Parse Functions ###
-def parse_file_header(data):
-    """
-    Parses file header into Named Tuple
-    """
-
-    # Unpack header fields
-    fields = struct.unpack("2s2s2i", data)
-    file_header = tuples.FileHeader(*fields)
-    
-    # Check file signature
-    if (file_header.signature.decode() != "AG"):
-        print("UNEXPECTED FILE SIGNATURE\nExiting...\n")
-        exit(1)
-
-    return file_header
-
-def parse_wave_header(data):
-    """
-    Parses waveform header into Named Tuple
-    """
-    
-    # Get header length
-    header_len = data[0]
-
-    # Unpack header fields
-    fields = struct.unpack("5if3d2i16s16s24s16sdI", data[:header_len])
-    wave_header = tuples.WaveHeader(*fields)
-
-    return wave_header
-
-def parse_data_header(data):
-    """
-    Parses data header into Named Tuple
-    """
-
-    # Get header length
-    header_len = data[0]
-
-    # Unpack header fields
-    fields = struct.unpack("i2hi", data[:header_len])
-    data_header = tuples.DataHeader(*fields)
-
-    return data_header
-
-def parse_data(header, data):
-    """
-    Parse waveform data field
-    """
-
-    # Get waveform data type
-    if header.type in [1, 2, 3]:
-        data_type = np.float32
-    elif header.type == 6:
-        data_type = np.uint8
-    else:
-        data_type = np.float32
-
-    arr = np.frombuffer(data, dtype=data_type)
-
-    # Subsample waveform points for large captures
-    if (len(arr) > int(args.s)):
-        print("Subsampling large waveform capture ({} -> {} points)...".format(len(arr), int(args.s)))
-        arr = arr[::int(len(arr) / int(args.s))]
-    
-    # Filtering
-    if args.f:
-        print("Applying Savitzky-Golay low-pass filter...")
-
-        # Calculate window length
-        window_len = round(len(arr) * 0.025)
-        if window_len % 2 == 0: window_len += 1
-
-        # Filter waveform points
-        try:
-            arr = filters.savitzky_golay(arr, window_len, 2)
-        except TypeError:
-            print("Not enough points to apply filter\nExiting...")
-            exit(1)
-    
-    # Clipping
-    if args.c:
-        print("Clipping waveform...")
-
-        # Find waveform median
-        wave_cen = (np.amax(arr) - abs(np.amin(arr))) / 2   # Waveform median
-        
-        # Shift waveform to be centered around zero
-        arr = arr - wave_cen
-
-        # Apply threshold to waveform values
-        arr[arr > 0] = 1
-        arr[arr < 0] = -1
-
-    waveforms.append(arr)
-
-### Print Functions ###
-def print_file_header(header):
-    # Print file info
-    size = round(header.size / 1024, 2)
-    print(f"File Size:\t\t{size} KB")
-    print(f"Waveforms:\t\t{header.waveforms}\n")
-
-def print_wave_header(header):
-    label = header.label.decode().rstrip('\0')
-    print(f"Waveform {label}:")
-
-    t = enums.WaveType(header.wave_type).name
-    print(f"  - Wave Type:\t\t{t}")
-    print(f"  - Wave Buffers:\t{header.buffers}")
-    print(f"  - Sample Points:\t{header.points}")
-    print(f"  - Average Count:\t{header.count}")
-
-    rng = round(header.x_d_range * float(10**6), 3)
-    print(f"  - X Display Range:\t{rng} μs")
-
-    dorigin = round(header.x_d_origin * float(10**6), 3)
-    print(f"  - X Display Origin:\t{dorigin} μs")
-
-    increment = round(header.x_increment * float(10**9), 3)
-    print(f"  - X Increment:\t{increment} ns")
-    
-    origin = round(header.x_origin * float(10**6), 3)
-    print(f"  - X Origin:\t\t{origin} μs")
-    
-    print(f"  - X Units:\t\t{enums.Units(header.x_units).name}")
-    print(f"  - Y Units:\t\t{enums.Units(header.y_units).name}")
-    print(f"  - Date:\t\t{header.date.decode()}")
-    print(f"  - Time:\t\t{header.time.decode()}")
-    
-    frame = header.frame.decode().split(":")
-    print(f"  - Frame Type:\t\t{frame[0]}")
-    print(f"  - Frame Serial:\t{frame[1]}")
-    
-    print(f"  - Waveform Label:\t{header.label.decode()}")
-    print(f"  - Time Tags:\t\t{header.time_tags}")
-    print(f"  - Segment Number:\t{header.segment}\n")
-
-def print_data_header(header):
-    data_type = enums.DataType(header.type).name
-    print(f"[DATA] Type: {data_type}    Depth: {header.bpp * 8} bits    Length: {header.length} bytes\n\n")
+    # Gracefully exit application
+    safe_exit()
 
 
 def parse_args():
-    """
-    Parses command line arguments
-    """
-
-    argp = argparse.ArgumentParser()
+    argp = ArgumentParser(description="Waveform capture viewer for Keysight oscilloscopes.")
     argp.prog = "wavebin"
-    argp.description = "Keysight/Agilent oscilloscope waveform file viewer and converter."
-    argp.add_argument("-f", action="store_true", help="Apply a filter to each waveform")
-    argp.add_argument("-v", action="store_true", help="Enable verbose output")
-    argp.add_argument("-s", action="store", help="Waveform subsampling threshold", default=x_limit)
-    argp.add_argument("-c", action="store_true", help="Clip analog waveform to create digital logic waveform")
-    argp.add_argument("--no-opengl", action="store_true", help="Disable use of OpenGL for rendering waveform")
-    argp.add_argument("BIN", action="store", help="Path to waveform file (.bin)")
+
+    argp.add_argument("-i", action="store", help="path to Keysight waveform capturefile (.bin)", default=None, dest="file")
+    argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
+    argp.add_argument("--no-opengl", action="store_true", help="disable hardware accelerated rendering with OpenGL")
+    argp.add_argument("--no-limit", action="store_true", help="disable subsampling limit (may cause slow frame rates with large captures)")
 
     return argp.parse_args()
+
+
+def print_info(args):
+    if args.no_opengl and args.v: print("OpenGL disabled")
+
+
+def safe_exit(msg=True, code=0):
+    if msg: print("Exiting...")
+    sys.exit(code)
 
 
 try:
     init()
 except KeyboardInterrupt:
-    print("Exiting...")
-    exit()
+    safe_exit()

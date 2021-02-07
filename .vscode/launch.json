@@ -10,7 +10,8 @@
             "request": "launch",
             "module": "wavebin",
             "args": [
-                "samples\\single.bin"
+                "-i",
+                "samples\\DSOX1102G\\single.bin"
             ]
         },
         {
@@ -19,7 +20,8 @@
             "request": "launch",
             "module": "wavebin",
             "args": [
-                "samples\\dual.bin"
+                "-i",
+                "samples\\DSOX1102G\\dual.bin"
             ]
         }
     ]
