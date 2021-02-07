@@ -199,7 +199,7 @@ class QtApp(qt.QApplication):
         file_path = self.sfd.getSaveFileName(
             self.window,
             "Export to PulseView",
-            f"./{self.config['file'].name.split('.')[0]}",
+            f"./{self.config['file'].name.split('.')[0]}.sr",
             "sigrok Sessions (*.sr)"
         )[0]
 
@@ -222,7 +222,7 @@ class QtApp(qt.QApplication):
         file_path = self.sfd.getSaveFileName(
             self.window,
             "Export to WAV file",
-            f"./{self.config['file'].name.split('.')[0]}",
+            f"./{self.config['file'].name.split('.')[0]}.wav",
             "WAV file (*.wav)"
         )[0]
 
