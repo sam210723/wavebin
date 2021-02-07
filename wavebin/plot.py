@@ -84,7 +84,7 @@ class QtPlot(PlotWidget):
 
                 # Apply threshold to waveform values
                 y[y > 0] = 1
-                y[y < 0] = -1
+                y[y < 0] = 0
             
 
             # Make processed waveforms available for exporting

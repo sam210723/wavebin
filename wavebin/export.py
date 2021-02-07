@@ -44,30 +44,39 @@ class PulseView():
 
         meta +=  "[device 1]\r\n"
         meta +=  "capturefile=logic-1\r\n"
+        meta +=  "unitsize=1\r\n"
         meta += f"total probes={len(self.waveforms)}\r\n"
         meta += f"samplerate={round(self.get_sample_rate(), 4) / 1e6} MHz\r\n"
         meta +=  "total analog=0\r\n"       #TODO: Use 'clipped' flag to export analog waveforms
         
         for i in range(len(self.waveforms)):
             meta +=  f"probe{i + 1}=D{i}\r\n"
-
-        meta +=  "unitsize=1"
         meta +=  "\r\n"
 
         return meta
 
 
     def write_data(self):
-        for i, w in enumerate(self.waveforms):
-            arr = bytearray(b'')
-            
-            for p in w['data']:
-                if p == 1:
-                    arr.append(0xFF)
-                elif p == -1:
-                    arr.append(0xFE)
+        num = len(self.waveforms[0]['data'])
+        data = bytearray(b'')
 
-            self.zipf.writestr(f"logic-1-{i + 1}", bytes(arr))
+        # Loop through waveform samples
+        for i in range(num):
+            sample = 0x00
+
+            # Loop through waveforms
+            for j, w in enumerate(self.waveforms):
+                # Get current sample
+                point = w['data'][i]
+
+                # Set bit for waveform
+                if point: sample |= 1 << j
+            
+            # Add byte to data buffer
+            data.append(sample)
+
+        # Write data to ZIP file
+        self.zipf.writestr(f"logic-1", bytes(data))
 
 
     def get_sample_rate(self):
