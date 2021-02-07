@@ -104,7 +104,7 @@ class WaveFile():
         self.path = Path(path)
         self.waveforms = waveforms
 
-        self.log(f"Exporting WAVE file to \"{self.path}\"")
+        self.log(f"Exporting WAV file to \"{self.path}\"")
 
         # Loop through waveforms
         for i, w in enumerate(self.waveforms):
@@ -128,6 +128,7 @@ class WaveFile():
             self.wavf.close()
 
         #TODO: Fix analog waveform exporting
+        #TODO: Add max (ulong) data rate check
 
         self.log("Finished exporting")
 
