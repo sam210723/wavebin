@@ -70,8 +70,8 @@ class QtPlot(PlotWidget):
                 except TypeError as e:
                     if str(e) == "window_size is too small for the polynomials order":
                         self.log("  Not enough points to apply filter")
-            
-            
+
+
             # Clipping
             if self.config['clipping']:
                 self.log(f"  Clipping")
@@ -103,7 +103,7 @@ class QtPlot(PlotWidget):
                     width=self.config['line_width']
                 )
             )
-        
+
         # Set left Y axis label
         self.setLabel(
             'left',
