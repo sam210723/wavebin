@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for Keysight oscilloscopes.
 """
 
+from pathlib import Path
 import numpy
 import wave
 import zipfile
@@ -70,7 +71,7 @@ class PulseView():
                 point = w['data'][i]
 
                 # Set bit for waveform
-                if point: sample |= 1 << j
+                if point == 1: sample |= 1 << j
             
             # Add byte to data buffer
             data.append(sample)
@@ -100,42 +101,47 @@ class PulseView():
 class WaveFile():
     def __init__(self, verbose, path, waveforms):
         self.verbose = verbose
-        self.path = path
+        self.path = Path(path)
         self.waveforms = waveforms
 
         self.log(f"Exporting WAVE file to \"{self.path}\"")
 
-        # Create WAV file
-        self.wavf = wave.open(path, mode='wb')
-        self.wavf.setnchannels(len(self.waveforms))             # Number of channels
-        self.wavf.setsampwidth(2)                               # Bytes per sample
-        self.wavf.setframerate(self.get_sample_rate())          # Sample rate
-        self.wavf.setnframes(len(self.waveforms[0]['data']))    # Number of samples
-
-        # Write samples to WAV
+        # Loop through waveforms
         for i, w in enumerate(self.waveforms):
+            # Extend waveform below zero
+            w['data'][w['data'] == 0] = -1
+
+            # Append waveform number to file name
+            file_path = str(self.path).replace(self.path.suffix, f"_{i}{self.path.suffix}")
+
+            # Create WAV file
+            self.wavf = wave.open(file_path, mode='wb')
+            self.wavf.setnchannels(1)                       # Number of channels
+            self.wavf.setsampwidth(2)                       # Bytes per sample
+            self.wavf.setframerate(self.get_sample_rate(i)) # Sample rate
+            self.wavf.setnframes(len(w['data']))            # Number of samples
+
             # Write samples to WAV file
-            self.wavf.writeframesraw(
-                w['data'].astype(numpy.float16)
-            )
+            self.wavf.writeframes(w['data'].astype(numpy.float16))
 
-        #TODO: Fix data normalisation
+            # Close WAV file
+            self.wavf.close()
 
-        # Close WAV file
-        self.wavf.close()
+        #TODO: Fix analog waveform exporting
+
         self.log("Finished exporting")
+
     
-    
-    def get_sample_rate(self):
+    def get_sample_rate(self, i):
         # Check if waveform is subsampled
-        if self.waveforms[0]['header'].points != len(self.waveforms[0]['data']):
+        if self.waveforms[i]['header'].points != len(self.waveforms[i]['data']):
             # Calculate new sample increment value
-            dur = self.waveforms[0]['header'].x_increment * self.waveforms[0]['header'].points
-            inc = dur / len(self.waveforms[0]['data'])
+            dur = self.waveforms[i]['header'].x_increment * self.waveforms[i]['header'].points
+            inc = dur / len(self.waveforms[i]['data'])
             sr = 1 / inc
         else:
             # Use increment value from waveform header
-            sr  = 1 / self.waveforms[0]['header'].x_increment
+            sr  = 1 / self.waveforms[i]['header'].x_increment
         
         return sr
 
