@@ -48,7 +48,7 @@ class WaveParser():
             p = self.waveforms[i]['header'].points
             self.log(f"  - Sample Points:  {self.human_format(p)}")
             sr = round(1 / self.waveforms[i]['header'].x_increment)
-            self.log(f"  - Sample Rate:    {sr / 1e9} Gsps")
+            self.log(f"  - Sample Rate:    {self.human_format(sr, sep=' ')}sps")
             self.log(f"  - Device Model:   {self.waveforms[i]['header'].frame.decode().split(':')[0]}")
             self.log(f"  - Device Serial:  {self.waveforms[i]['header'].frame.decode().split(':')[1]}\n")
 
@@ -144,18 +144,20 @@ class WaveParser():
         self.config['plot'] = plot
 
 
-    def human_format(self, num, binary=False):
+    def human_format(self, num, binary=False, sep=""):
         if binary:
             div = 1024.0
         else:
             div = 1000.0
         
         num = float('{:.3g}'.format(num))
-        magnitude = 0
+        mag = 0
         while abs(num) >= div:
-            magnitude += 1
+            mag += 1
             num /= div
-        return '{}{}'.format('{:f}'.format(round(num, 2)).rstrip('0').rstrip('.'), ['', 'k', 'M', 'G', 'T'][magnitude])
+        
+        digits = '{:f}'.format(round(num, 2)).rstrip('0').rstrip('.')
+        return f"{digits}{sep}{['', 'k', 'M', 'G', 'T'][mag]}"
 
 
     def log(self, msg):
