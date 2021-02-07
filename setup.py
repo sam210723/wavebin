@@ -25,7 +25,7 @@ setuptools.setup(
         "Environment :: X11 Applications :: Qt",
         "Intended Audience :: Developers",
         "Intended Audience :: Science/Research",
-        "License :: MIT License",
+        "License :: OSI Approved :: MIT License",
         "Development Status :: 5 - Production/Stable",
         "Natural Language :: English",
         "Programming Language :: Python",
