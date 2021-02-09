@@ -95,7 +95,7 @@ The [filtering](#filtering) and clipping options can be used simultaneously. Cli
 
 
 ### Subsampling
-When a waveform capture is first loaded, all available sample points will use to render the waveform.
+When a waveform capture is first loaded, all available sample points will be used to render the waveform.
 The subsampling option renders the waveform using an equally-spaced subset of points.
 
 Below is a 62.5 MHz wave being rendered with all `20,000` points in the capture file, and then with only `1250` points.
