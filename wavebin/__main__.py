@@ -55,7 +55,7 @@ def init():
     plot = QtPlot({
         "verbose":     args.v,
         "opengl":      not args.no_opengl,
-        "subsampling": -1,
+        "subsampling": limit,
         "filter_type": 0,
         "clipping":    False,
         "colours": [
