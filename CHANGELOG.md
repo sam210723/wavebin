@@ -5,10 +5,10 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
-  - 
+  - Support for Rigol waveform captures
 
 ### Changed
-  - 
+  - Open file dialog in directory of current waveform capture
 
 ### Fixed
   - 
