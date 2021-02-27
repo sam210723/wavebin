@@ -158,11 +158,17 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_open(self):
+        # Get initial path
+        if "file" in self.config:
+            initial_path = str(self.config['file'].parents[0])
+        else:
+            initial_path = "."
+
         # Show open file dialog
         file_path = self.ofd.getOpenFileName(
             self.window,
             "Open waveform capture",
-            ".",
+            initial_path,
             "Waveform files (*.bin);;All files (*.*)"
         )[0]
 
