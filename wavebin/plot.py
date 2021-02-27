@@ -2,7 +2,7 @@
 wavebin
 https://github.com/sam210723/wavebin
 
-Waveform capture viewer for Keysight oscilloscopes.
+Waveform capture viewer for oscilloscopes.
 """
 
 from enum import Enum
@@ -44,10 +44,10 @@ class QtPlot(PlotWidget):
         for i, w in enumerate(self.waveforms):
             self.log(f"Rendering waveform {i + 1}")
             # Subsampling
-            if self.config['subsampling'] >= len(w['data']) or self.config['subsampling'] == -1:
+            if self.config['subsampling'] >= len(w['data']):
                 y = w['data']
             else:
-                self.log(f"  Subsampling ({len(w['data'])} -> {self.config['subsampling']})")
+                self.log(f"  Subsampling ({len(w['data'])} -> {int(self.config['subsampling'])})")
                 y = w['data'][:: int( len(w['data']) / self.config['subsampling'] )]
 
             # Generate X points
@@ -65,7 +65,7 @@ class QtPlot(PlotWidget):
 
                 # Catch filter exceptions
                 try:
-                    # Applt filter
+                    # Apply filter
                     y = Filters().savitzky_golay(y, window, 3)
                 except TypeError as e:
                     if str(e) == "window_size is too small for the polynomials order":

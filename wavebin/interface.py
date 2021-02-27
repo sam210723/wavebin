@@ -2,7 +2,7 @@
 wavebin
 https://github.com/sam210723/wavebin
 
-Waveform capture viewer for Keysight oscilloscopes.
+Waveform capture viewer for oscilloscopes.
 """
 
 from pathlib import Path
@@ -158,11 +158,17 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_open(self):
+        # Get initial path
+        if "file" in self.config:
+            initial_path = str(self.config['file'].parents[0])
+        else:
+            initial_path = "."
+
         # Show open file dialog
         file_path = self.ofd.getOpenFileName(
             self.window,
             "Open waveform capture",
-            ".",
+            initial_path,
             "Waveform files (*.bin);;All files (*.*)"
         )[0]
 
@@ -352,7 +358,7 @@ class QtApp(qt.QApplication):
         msgbox.setIcon(qt.QMessageBox.Information)
         msgbox.setStandardButtons(qt.QMessageBox.Ok)
         msgbox.setText(
-            "Waveform capture viewer for Keysight oscilloscopes.\n\n"\
+            "Waveform capture viewer for Agilent, Keysight and Rigol oscilloscopes.\n\n"\
             "Update wavebin by running \"pip install wavebin --upgrade\""
         )
         self.log("About dialog launched")
@@ -445,7 +451,8 @@ class QtSidebar(qt.QTableWidget):
             self.clipping_changed(c)
         
         if p != None:
-            # Set subsampling spin box maximum
+            # Set subsampling spin box min/max
+            self.config['parts'][2]['widget'].setMinimum(2)
             self.config['parts'][2]['widget'].setMaximum(p)
             self.config['parts'][2]['widget'].setValue(p)
             self.subsampling_changed(p)

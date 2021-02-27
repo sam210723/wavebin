@@ -15,6 +15,23 @@ All notable changes to this project will be documented in this file.
 </details>
 
 
+## [v2.1](https://github.com/sam210723/wavebin/releases/tag/v2.1) - 2021-02-27
+Add support for Rigol waveform captures, plus some minor fixes.
+
+<details>
+<summary>Details</summary>
+
+### Added
+  - Support for Rigol waveform captures
+
+### Changed
+  - Open file dialog in directory of current waveform capture
+
+### Fixed
+  - Minimum number of subsampling points
+</details>
+
+
 ## [v2.0](https://github.com/sam210723/wavebin/releases/tag/v2.0) - 2021-02-07
 Complete re-write of the project with various new features.
 

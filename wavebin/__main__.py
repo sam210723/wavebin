@@ -2,7 +2,7 @@
 wavebin
 https://github.com/sam210723/wavebin
 
-Waveform capture viewer for Keysight oscilloscopes.
+Waveform capture viewer for oscilloscopes.
 """
 
 from argparse import ArgumentParser
@@ -13,7 +13,7 @@ from wavebin.interface import QtApp
 from wavebin.plot import QtPlot
 from wavebin.wave import WaveParser
 
-__version__ = 2.0
+__version__ = 2.1
 
 
 def init():
@@ -55,7 +55,7 @@ def init():
     plot = QtPlot({
         "verbose":     args.v,
         "opengl":      not args.no_opengl,
-        "subsampling": -1,
+        "subsampling": limit,
         "filter_type": 0,
         "clipping":    False,
         "colours": [

@@ -2,7 +2,7 @@
 wavebin
 https://github.com/sam210723/wavebin
 
-Waveform capture viewer for Keysight oscilloscopes.
+Waveform capture viewer for oscilloscopes.
 """
 
 from collections import namedtuple
@@ -74,13 +74,20 @@ class WaveParser():
         fields = struct.unpack("2s2s2i", data)
         self.file_header = file_header_tuple(*fields)
 
+        # Get vendor based on file magic
+        vendor = {
+            b'AG': "Agilent/Keysight",
+            b'RG': "Rigol"
+        }
+
         # Check file magic
-        if self.file_header.magic != b'AG':
+        if not self.file_header.magic in vendor:
             print("Unknown file format")
             return False
 
         # Print file header info
         self.log("File Header:")
+        self.log(f"  - Vendor:    {vendor[self.file_header.magic]}")
         self.log(f"  - Waveforms: {self.file_header.waveforms}")
         self.log(f"  - File Size: {self.human_format(self.file_header.size, binary=True)}B\n")
 
