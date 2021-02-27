@@ -451,7 +451,8 @@ class QtSidebar(qt.QTableWidget):
             self.clipping_changed(c)
         
         if p != None:
-            # Set subsampling spin box maximum
+            # Set subsampling spin box min/max
+            self.config['parts'][2]['widget'].setMinimum(2)
             self.config['parts'][2]['widget'].setMaximum(p)
             self.config['parts'][2]['widget'].setValue(p)
             self.subsampling_changed(p)
