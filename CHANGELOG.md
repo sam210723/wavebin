@@ -11,7 +11,7 @@ All notable changes to this project will be documented in this file.
   - Open file dialog in directory of current waveform capture
 
 ### Fixed
-  - 
+  - Minimum number of subsampling points
 </details>
 
 
