@@ -2,7 +2,7 @@
 wavebin
 https://github.com/sam210723/wavebin
 
-Waveform capture viewer for Keysight oscilloscopes.
+Waveform capture viewer for oscilloscopes.
 """
 
 from enum import Enum

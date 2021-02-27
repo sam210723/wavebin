@@ -9,7 +9,7 @@ setuptools.setup(
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Waveform capture viewer for Keysight oscilloscopes",
+    description="Waveform capture viewer for Agilent, Keysight and Rigol oscilloscopes",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
