@@ -65,7 +65,7 @@ class QtPlot(PlotWidget):
 
                 # Catch filter exceptions
                 try:
-                    # Applt filter
+                    # Apply filter
                     y = Filters().savitzky_golay(y, window, 3)
                 except TypeError as e:
                     if str(e) == "window_size is too small for the polynomials order":
