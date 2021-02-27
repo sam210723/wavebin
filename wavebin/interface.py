@@ -358,7 +358,7 @@ class QtApp(qt.QApplication):
         msgbox.setIcon(qt.QMessageBox.Information)
         msgbox.setStandardButtons(qt.QMessageBox.Ok)
         msgbox.setText(
-            "Waveform capture viewer for Keysight oscilloscopes.\n\n"\
+            "Waveform capture viewer for Agilent, Keysight and Rigol oscilloscopes.\n\n"\
             "Update wavebin by running \"pip install wavebin --upgrade\""
         )
         self.log("About dialog launched")
