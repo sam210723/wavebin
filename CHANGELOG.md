@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
+  - 
+
+### Changed
+  - 
+
+### Fixed
+  - 
+</details>
+
+
+## [v2.1](https://github.com/sam210723/wavebin/releases/tag/v2.1) - 2021-02-27
+Add support for Rigol waveform captures, plus some minor fixes.
+
+<details>
+<summary>Details</summary>
+
+### Added
   - Support for Rigol waveform captures
 
 ### Changed
