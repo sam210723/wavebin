@@ -5,23 +5,23 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "single.bin",
+            "name": "Single Waveform",
             "type": "python",
             "request": "launch",
             "module": "wavebin",
             "args": [
                 "-i",
-                "samples\\DSOX1102G\\single.bin"
+                "samples\\Keysight\\Keysight_DSOX1102G_1CH_1MSPS_2Kpts_SINGLE.bin"
             ]
         },
         {
-            "name": "dual.bin",
+            "name": "Dual Waveform",
             "type": "python",
             "request": "launch",
             "module": "wavebin",
             "args": [
                 "-i",
-                "samples\\DSOX1102G\\dual.bin"
+                "samples\\Keysight\\Keysight_DSOX1102G_2CH_2GSPS_4Kpts_DUAL.bin"
             ]
         }
     ]
