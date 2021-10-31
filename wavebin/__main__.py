@@ -13,7 +13,7 @@ from wavebin.interface import QtApp
 from wavebin.plot import QtPlot
 from wavebin.wave import WaveParser
 
-__version__ = 2.1
+__version__ = 2.2
 
 
 def init():
