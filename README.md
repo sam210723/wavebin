@@ -9,7 +9,16 @@
 
 ![](https://raw.githubusercontent.com/sam210723/wavebin/master/screenshots/wavebin.png)
 
-**wavebin** has been tested with capture files from a [**Keysight DSO-X 1102G**](https://www.keysight.com/en/pdx-2766207-pn-DSOX1102G/oscilloscope-70-100-mhz-2-analog-channels), [**Keysight MSO-X 4154A**](https://www.keysight.com/en/pdx-x201943-pn-MSOX4154A/mixed-signal-oscilloscope-15-ghz-4-analog-plus-16-digital-channels) and [**Rigol MSO5074**](https://www.rigolna.com/products/digital-oscilloscopes/MSO5000/). If you have access to waveform files from other Agilent, Keysight or Rigol oscilloscopes, please submit them for testing through the [Sample Waveforms issue](https://github.com/sam210723/wavebin/issues/1).
+
+### Suppored Devices
+This table lists specific devices which **wavebin** has been tested with. Other devices from these manufacturers will most likely work.
+If you encounter any issues viewing a waveform capture from an oscilloscope on this list, please submit the capture file via the [Sample Waveforms issue](https://github.com/sam210723/wavebin/issues/1).
+
+| Manufacturer | Model                                                                                                                                  |
+| ------------ | -------------------------------------------------------------------------------------------------------------------------------------- |
+| Keysight     | [DSO-X 1102G](https://www.keysight.com/en/pdx-2766207-pn-DSOX1102G/oscilloscope-70-100-mhz-2-analog-channels)                          |
+|              | [MSO-X 4154A](https://www.keysight.com/en/pdx-x201943-pn-MSOX4154A/mixed-signal-oscilloscope-15-ghz-4-analog-plus-16-digital-channels) |
+| Rigol        | [MSO5074](https://www.rigolna.com/products/digital-oscilloscopes/MSO5000/)                                                             |
 
 ![](https://raw.githubusercontent.com/sam210723/wavebin/master/screenshots/console.png)
 
@@ -45,7 +54,7 @@ For more information about the **wavebin** command-line arguments run:
    _      ______ __   _____  / /_  (_)___
   | | /| / / __ `/ | / / _ \/ __ \/ / __ \
   | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /
-  |__/|__/\__,_/ |___/\___/_.___/_/_/ /_/  v2.1
+  |__/|__/\__,_/ |___/\___/_.___/_/_/ /_/  v2.2
 
              vksdr.com/wavebin
 
