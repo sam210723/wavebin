@@ -9,7 +9,7 @@ from argparse import ArgumentParser
 from pathlib import Path
 import sys
 
-from wavebin.interface import QtApp
+from wavebin.interface.window import QtApp
 from wavebin.plot import QtPlot
 from wavebin.wave import WaveParser
 
