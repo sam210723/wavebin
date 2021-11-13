@@ -15,7 +15,7 @@ from wavebin.interface.window import QtApp
 from wavebin.interface.plot import QtPlot
 from wavebin.wave import WaveParser
 
-__version__ = 2.2
+__version__ = "2.2"
 
 
 def init():
@@ -29,20 +29,8 @@ def init():
     # Parse CLI arguments
     args = parse_args()
 
-    # Check for existing configuration file
-    config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
-    if config_path.is_file():
-        #TODO: Load config from file
-        pass
-    else:
-        # Create default configuration object
-        config = {
-            "version": __version__,
-            "verbose": args.v,
-            "width":   1400,
-            "height":  800
-        }
-    exit()
+    # Load configuration from file
+    config = load_config(args.v)
 
     # Create Qt application
     app = QtApp(config)
@@ -78,7 +66,7 @@ def init():
     app.run()
 
     # Gracefully exit application
-    safe_exit()
+    safe_exit(config)
 
 
 def parse_args() -> argparse.Namespace:
@@ -100,16 +88,91 @@ def parse_args() -> argparse.Namespace:
     return argp.parse_args()
 
 
-def safe_exit(msg=True, code=0) -> None:
+def load_config(verbose: bool) -> dict:
+    """
+    Load configuration options from file
+
+    Args:
+        verbose (bool): Verbose console output flag
+
+    Returns:
+        dict: Configuration options
+    """
+
+    # Check for existing configuration file
+    config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
+    if config_path.is_file():
+        if verbose: print(f"Found configuration file at \"{config_path}\"")
+
+        # Load configuration from file
+        cfgp = configparser.ConfigParser()
+        cfgp.read(config_path)
+
+        # Create configuration object
+        config_dict = {
+            "version":   __version__,
+            "verbose":   verbose,
+            "width":     cfgp.getint("wavebin", "width"),
+            "height":    cfgp.getint("wavebin", "height"),
+            "maximised": cfgp.getboolean("wavebin", "maximised")
+        }   
+    else:
+        # Create default configuration object
+        config_dict = {
+            "version":   __version__,
+            "verbose":   verbose,
+            "width":     1400,
+            "height":    800,
+            "maximised": False
+        }
+
+        # Save default configuration to file
+        save_config(config_dict)
+
+    return config_dict
+
+
+def save_config(config_dict: dict) -> bool:
+    """
+    Save configuration to file
+
+    Args:
+        config_dict (dict): Configuration options
+
+    Returns:
+        bool: Success flag
+    """
+
+    # Create folders for configuration file
+    config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+
+    # Prepare configuration object
+    if "verbose" in config_dict: del config_dict['verbose']
+    cfgp = configparser.ConfigParser()
+    cfgp._sections['wavebin'] = config_dict
+
+    # Write configuration to file
+    with open(config_path, "w") as fh:
+        cfgp.write(fh)
+    return True
+
+
+def safe_exit(config: dict, code=0) -> None:
     """
     Gracefully exit the application
 
     Args:
-        msg (bool, optional): Print "Exiting..." to the console. Defaults to True.
+        config (dict): Configuration options
         code (int, optional): Code to exit with. Defaults to 0.
     """
 
-    if msg: print("Exiting...")
+    # Save configuration to file
+    verbose = config['verbose']
+    if verbose: print("Saving configuration...")
+    save_config(config)
+
+    if verbose: print("Exiting...")
     sys.exit(code)
 
 

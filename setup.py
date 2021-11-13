@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 setuptools.setup(
     name='wavebin',
     version='2.2',
-    packages=['wavebin'],
+    packages=['wavebin', 'wavebin.interface', 'wavebin.vendor'],
     author="sam210723",
     author_email="pypi@vksdr.com",
     description="Waveform capture viewer for Agilent, Keysight, Rigol and Siglent oscilloscopes.",
