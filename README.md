@@ -19,6 +19,7 @@ If you encounter any issues viewing a waveform capture from an oscilloscope on t
 | Keysight     | [DSO-X 1102G](https://www.keysight.com/en/pdx-2766207-pn-DSOX1102G/oscilloscope-70-100-mhz-2-analog-channels)                          |
 |              | [MSO-X 4154A](https://www.keysight.com/en/pdx-x201943-pn-MSOX4154A/mixed-signal-oscilloscope-15-ghz-4-analog-plus-16-digital-channels) |
 | Rigol        | [MSO5074](https://www.rigolna.com/products/digital-oscilloscopes/MSO5000/)                                                             |
+| Siglent      | [SDS2000X Plus](https://siglentna.com/digital-oscilloscopes/sds2000xp/)                                                                |
 
 ![](docs/screenshots/console.png)
 
