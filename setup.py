@@ -7,9 +7,14 @@ setuptools.setup(
     name='wavebin',
     version='2.2',
     packages=['wavebin', 'wavebin.interface', 'wavebin.vendor'],
+    entry_points={
+        'console_scripts': [
+            'wavebin=wavebin.__main__:main',
+        ]
+    },
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Waveform capture viewer for Agilent, Keysight, Rigol and Siglent oscilloscopes.",
+    description="Oscilloscope waveform capture viewer.",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",

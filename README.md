@@ -35,7 +35,7 @@ Keysight oscilloscopes save capture files to external USB Mass Storage devices f
 To open a capture file in **wavebin**, start the application by running:
 
 ```
-> python3 -m wavebin
+> wavebin
 ```
 
 Next, click *File* &#8594; *Open* and navigate to the `.bin` file.
@@ -44,13 +44,13 @@ Next, click *File* &#8594; *Open* and navigate to the `.bin` file.
 Alternatively a capture file path can be specified when running **wavebin** using the `-i` argument.
 
 ```
-> python3 -m wavebin -i [PATH TO BIN FILE]
+> wavebin -i [PATH TO BIN FILE]
 ```
 
 For more information about the **wavebin** command-line arguments run:
 
 ```
-> python3 -m wavebin -h
+> wavebin -h
                               __    _
    _      ______ __   _____  / /_  (_)___
   | | /| / / __ `/ | / / _ \/ __ \/ / __ \

@@ -19,7 +19,7 @@ __version__ = "2.2"
 description = "Oscilloscope waveform capture viewer"
 
 
-def init():
+def main():
     print( "                              __    _        ")
     print( "   _      ______ __   _____  / /_  (_)___    ")
     print( "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
@@ -182,6 +182,6 @@ def safe_exit(config: dict, code=0) -> None:
 
 
 try:
-    init()
+    if __name__ == "__main__": main()
 except KeyboardInterrupt:
     safe_exit()
