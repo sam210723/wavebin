@@ -166,19 +166,20 @@ def save_config(config: dict) -> bool:
     return True
 
 
-def safe_exit(config: dict, code=0) -> None:
+def safe_exit(config: dict = None, code=0) -> None:
     """
     Gracefully exit the application
 
     Args:
-        config (dict): Configuration options
+        config (dict): Configuration options. Defaults to None.
         code (int, optional): Code to exit with. Defaults to 0.
     """
 
     # Save configuration to file
-    verbose = config['verbose']
-    if verbose: print("Saving configuration...")
-    save_config(config)
+    if config:
+        verbose = config['verbose']
+        if verbose: print("Saving configuration...")
+        save_config(config)
 
     if verbose: print("Exiting...")
     sys.exit(code)
