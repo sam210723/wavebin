@@ -23,5 +23,5 @@ class Vendor:
         """
 
         print(f"{self.vendor_name} ({self.vendor_site})")
-        for d in self.devices: print(f"  - {d}")
-        print()
+        print(f"  {', '.join(self.devices)}")
+        print(f"  {', '.join(self.extensions)}\n")

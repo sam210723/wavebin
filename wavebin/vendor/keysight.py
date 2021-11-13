@@ -19,5 +19,5 @@ class KeysightWaveform(Vendor):
             "https://www.keysight.com",
             "https://vksdr.com/download/wavebin/Agilent%20MSO-X%20User%20Manual.pdf",
             ["DSO-X 1102G", "MSO-X 4154A"],
-            ["*.bin"]
+            ["*.bin", "*.csv"]
         )

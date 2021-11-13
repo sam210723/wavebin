@@ -19,5 +19,5 @@ class RigolWaveform(Vendor):
             "https://www.rigolna.com",
             "https://vksdr.com/download/wavebin/Rigol%20MSO8000%20User%20Manual.pdf#page=277",
             ["MSO5074"],
-            ["*.bin"]   #TODO: Add Rigol *.wfm support
+            ["*.bin", "*.wfm", "*.csv"]
         )
