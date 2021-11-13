@@ -10,12 +10,13 @@ from PyQt5 import QtWidgets as qt
 from PyQt5 import QtCore as qtc
 from PyQt5 import QtGui as qtg
 import webbrowser
+
 from wavebin.export import PulseView, WaveFile
 
 
-class QtApp(qt.QApplication):
+class MainWindow(qt.QApplication):
     def __init__(self, config):
-        super(QtApp, self).__init__([])
+        super(MainWindow, self).__init__([])
         self.config = config
         self.name = f"wavebin v{self.config['version']}"
 
@@ -358,7 +359,7 @@ class QtApp(qt.QApplication):
         msgbox.setIcon(qt.QMessageBox.Information)
         msgbox.setStandardButtons(qt.QMessageBox.Ok)
         msgbox.setText(
-            "Waveform capture viewer for Agilent, Keysight and Rigol oscilloscopes.\n\n"\
+            f"{self.config['description']}.\n\n"\
             "Update wavebin by running \"pip install wavebin --upgrade\""
         )
         self.log("About dialog launched")

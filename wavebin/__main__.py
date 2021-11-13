@@ -11,11 +11,12 @@ import configparser
 from pathlib import Path
 import sys
 
-from wavebin.interface.window import QtApp
+from wavebin.interface.window import MainWindow
 from wavebin.interface.plot import QtPlot
 from wavebin.wave import WaveParser
 
 __version__ = "2.2"
+description = "Oscilloscope waveform capture viewer"
 
 
 def init():
@@ -24,6 +25,7 @@ def init():
     print( "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
     print( "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   ")
     print(f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n")
+    print(f"    {description}")
     print( "             vksdr.com/wavebin\n\n")
 
     # Parse CLI arguments
@@ -33,7 +35,7 @@ def init():
     config = load_config(args.v)
 
     # Create Qt application
-    app = QtApp(config)
+    app = MainWindow(config)
 
     # Create Qt waveform plot
     """
@@ -77,7 +79,7 @@ def parse_args() -> argparse.Namespace:
         argparse.Namespace: List of arguments
     """
 
-    argp = argparse.ArgumentParser(description="Oscilloscope waveform capture viewer")
+    argp = argparse.ArgumentParser(description=description)
     argp.prog = "wavebin"
 
     argp.add_argument("-i", action="store", help="Path to waveform capture file", default=None, dest="file")
@@ -108,24 +110,25 @@ def load_config(verbose: bool) -> dict:
 
         # Create configuration object
         config_dict = {
-            "version":   __version__,
-            "verbose":   verbose,
-            "width":     cfgp.getint("wavebin", "width"),
-            "height":    cfgp.getint("wavebin", "height"),
-            "maximised": cfgp.getboolean("wavebin", "maximised")
+            "width":       cfgp.getint("wavebin", "width"),
+            "height":      cfgp.getint("wavebin", "height"),
+            "maximised":   cfgp.getboolean("wavebin", "maximised")
         }   
     else:
         # Create default configuration object
         config_dict = {
-            "version":   __version__,
-            "verbose":   verbose,
-            "width":     1400,
-            "height":    800,
-            "maximised": False
+            "width":       1400,
+            "height":      800,
+            "maximised":   False
         }
 
         # Save default configuration to file
         save_config(config_dict)
+    
+    # Add non-persistent options
+    config_dict['version'] = __version__
+    config_dict['verbose'] = verbose
+    config_dict['description'] = description
 
     return config_dict
 
@@ -145,8 +148,12 @@ def save_config(config_dict: dict) -> bool:
     config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
     config_path.parent.mkdir(parents=True, exist_ok=True)
 
+    # Remove non-persistent options
+    rmkeys = ["verbose", "description"]
+    for _, key in enumerate(rmkeys):
+        if key in config_dict: del config_dict[key]
+
     # Prepare configuration object
-    if "verbose" in config_dict: del config_dict['verbose']
     cfgp = configparser.ConfigParser()
     cfgp._sections['wavebin'] = config_dict
 

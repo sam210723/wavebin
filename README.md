@@ -57,17 +57,16 @@ For more information about the **wavebin** command-line arguments run:
   | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /
   |__/|__/\__,_/ |___/\___/_.___/_/_/ /_/  v2.2
 
+    Oscilloscope waveform capture viewer
              vksdr.com/wavebin
 
 
 usage: wavebin [-h] [-i FILE] [-v]
 
-Oscilloscope waveform capture viewer
-
 optional arguments:
-  -h, --help   Show this help message and exit
-  -i FILE      Path to waveform capture file
-  -v           Enable verbose logging mode
+  -h, --help  show this help message and exit
+  -i FILE     Path to waveform capture file
+  -v          Enable verbose logging mode
 ```
 
 ## Features
