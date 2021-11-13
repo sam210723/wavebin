@@ -7,6 +7,7 @@ Oscilloscope waveform capture viewer
 
 import appdirs
 import argparse
+import configparser
 from pathlib import Path
 import sys
 
@@ -40,10 +41,14 @@ def init():
             "verbose": args.v,
             "width":   1400,
             "height":  800
+        }
+    exit()
 
     # Create Qt application
+    app = QtApp(config)
 
     # Create Qt waveform plot
+    """
     plot = QtPlot({
         "verbose":     args.v,
         "opengl":      not args.no_opengl,
@@ -57,13 +62,17 @@ def init():
             (255, 165, 0)
         ]
     })
+    """
 
     # Set class instances
     #wave.instances(app, plot)
+    #app.instances(wave, plot)
 
     # Add plot to main window
+    #app.add_plot(plot)
 
     # Parse file if path specified in argument
+    #if args.file and not wave.parse(args.file): safe_exit(code=1)
 
     # Run application
     app.run()
