@@ -5,6 +5,8 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for oscilloscopes.
 """
 
+from pathlib import Path
+
 class Vendor:
     """
     Base class for vendor-specific capture file parsers
@@ -17,6 +19,7 @@ class Vendor:
         self.devices: list = devices     # List of vendor devices tested with wavebin
         self.extensions: list = exts     # List of supported file extensions
 
+
     def info(self):
         """
         Print vendor information
@@ -25,3 +28,21 @@ class Vendor:
         print(f"{self.vendor_name} ({self.vendor_site})")
         print(f"  {', '.join(self.devices)}")
         print(f"  {', '.join(self.extensions)}\n")
+
+
+    def open(self, file_path: str) -> bool:
+        """
+        Open waveform capture file
+
+        Args:
+            file_path (str): Path to waveform capture file
+        """
+
+        # Check file exists
+        p = Path(file_path)
+        if not p.is_file(): return False
+
+        # Read contents into byte array
+        with open(p, "rb") as fh:
+            self.data = fh.read()
+        return True
