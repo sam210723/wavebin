@@ -19,6 +19,8 @@ class Vendor:
         self.devices: list = devices     # List of vendor devices tested with wavebin
         self.extensions: list = exts     # List of supported file extensions
 
+        self.data = None    # Capture file byte array
+
 
     def info(self):
         """
