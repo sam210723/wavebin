@@ -77,13 +77,11 @@ def parse_args() -> argparse.Namespace:
         argparse.Namespace: List of arguments
     """
 
-    argp = argparse.ArgumentParser(description="Waveform capture viewer for oscilloscopes")
+    argp = argparse.ArgumentParser(description="Oscilloscope waveform capture viewer")
     argp.prog = "wavebin"
 
     argp.add_argument("-i", action="store", help="Path to waveform capture file", default=None, dest="file")
     argp.add_argument("-v", action="store_true", help="Enable verbose logging mode")
-    argp.add_argument("--no-opengl", action="store_true", help="disable hardware accelerated rendering with OpenGL")
-    argp.add_argument("--no-limit", action="store_true", help="disable subsampling limit (may cause slow frame rates with large captures)")
 
     return argp.parse_args()
 
