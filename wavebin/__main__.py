@@ -133,12 +133,12 @@ def load_config(verbose: bool) -> dict:
     return config_dict
 
 
-def save_config(config_dict: dict) -> bool:
+def save_config(config: dict) -> bool:
     """
     Save configuration to file
 
     Args:
-        config_dict (dict): Configuration options
+        config (dict): Configuration options
 
     Returns:
         bool: Success flag
@@ -151,11 +151,11 @@ def save_config(config_dict: dict) -> bool:
     # Remove non-persistent options
     rmkeys = ["verbose", "description"]
     for _, key in enumerate(rmkeys):
-        if key in config_dict: del config_dict[key]
+        if key in config: del config[key]
 
     # Prepare configuration object
     cfgp = configparser.ConfigParser()
-    cfgp._sections['wavebin'] = config_dict
+    cfgp._sections['wavebin'] = config
 
     # Write configuration to file
     with open(config_path, "w") as fh:
