@@ -14,7 +14,7 @@ setuptools.setup(
     },
     author="sam210723",
     author_email="pypi@vksdr.com",
-    description="Oscilloscope waveform capture viewer.",
+    description="Oscilloscope waveform capture viewer",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
