@@ -2,7 +2,7 @@
 wavebin
 https://github.com/sam210723/wavebin
 
-Waveform capture viewer for oscilloscopes.
+Oscilloscope waveform capture viewer
 """
 
 from collections import namedtuple
