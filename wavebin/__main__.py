@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for oscilloscopes.
 """
 
-from argparse import ArgumentParser
+import argparse
 from pathlib import Path
 import sys
 
@@ -26,9 +26,6 @@ def init():
 
     # Parse CLI arguments
     args = parse_args()
-    
-    # Print startup info
-    print_info(args)
 
     # Setup waveform capture parser
     wave = WaveParser({
@@ -83,23 +80,34 @@ def init():
     safe_exit()
 
 
-def parse_args():
-    argp = ArgumentParser(description="Waveform capture viewer for Keysight oscilloscopes.")
+def parse_args() -> argparse.Namespace:
+    """
+    Parse command-line arguments
+
+    Returns:
+        argparse.Namespace: List of arguments
+    """
+
+    argp = argparse.ArgumentParser(description="Waveform capture viewer for oscilloscopes")
     argp.prog = "wavebin"
 
-    argp.add_argument("-i", action="store", help="path to Keysight waveform capturefile (.bin)", default=None, dest="file")
-    argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
+    argp.add_argument("-i", action="store", help="Path to waveform capture file", default=None, dest="file")
+    argp.add_argument("-v", action="store_true", help="Enable verbose logging mode")
     argp.add_argument("--no-opengl", action="store_true", help="disable hardware accelerated rendering with OpenGL")
     argp.add_argument("--no-limit", action="store_true", help="disable subsampling limit (may cause slow frame rates with large captures)")
 
     return argp.parse_args()
 
 
-def print_info(args):
-    if args.no_opengl and args.v: print("OpenGL disabled")
+def safe_exit(msg=True, code=0) -> None:
+    """
+    Gracefully exit the application
 
+    Args:
+        msg (bool, optional): Print "Exiting..." to the console. Defaults to True.
+        code (int, optional): Code to exit with. Defaults to 0.
+    """
 
-def safe_exit(msg=True, code=0):
     if msg: print("Exiting...")
     sys.exit(code)
 
