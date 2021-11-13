@@ -15,6 +15,7 @@ setuptools.setup(
     url="https://github.com/sam210723/wavebin",
     python_requires = '>3.6',
     install_requires = [
+        'appdirs',
         'numpy',
         'pyqt5',
         'pyqtgraph'

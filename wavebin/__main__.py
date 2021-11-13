@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Waveform capture viewer for oscilloscopes.
 """
 
+import appdirs
 import argparse
 from pathlib import Path
 import sys
@@ -27,26 +28,20 @@ def init():
     # Parse CLI arguments
     args = parse_args()
 
-    # Setup waveform capture parser
-    wave = WaveParser({
-        "verbose":     args.v
-    })
-
-    # Get subsampling limit
-    if args.no_limit:
-        limit = 10e6
+    # Check for existing configuration file
+    config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
+    if config_path.is_file():
+        #TODO: Load config from file
+        pass
     else:
-        limit = 50e3
+        # Create default configuration object
+        config = {
+            "version": __version__,
+            "verbose": args.v,
+            "width":   1400,
+            "height":  800
 
     # Create Qt application
-    app = QtApp({
-        "verbose": args.v,
-        "version": __version__,
-        "width":   1100,
-        "height":  350,
-        "opengl":  not args.no_opengl,
-        "limit":   limit,
-    })
 
     # Create Qt waveform plot
     plot = QtPlot({
@@ -64,14 +59,11 @@ def init():
     })
 
     # Set class instances
-    wave.instances(app, plot)
-    app.instances(wave, plot)
+    #wave.instances(app, plot)
 
     # Add plot to main window
-    app.add_plot(plot)
 
     # Parse file if path specified in argument
-    if args.file and not wave.parse(args.file): safe_exit(code=1)
 
     # Run application
     app.run()
