@@ -32,7 +32,7 @@ def main():
     args = parse_args()
 
     # Load configuration from file
-    config = load_config(args.v)
+    config = load_config(args.v, args.r)
 
     # Create Qt application
     app = MainWindow(config)
@@ -84,16 +84,18 @@ def parse_args() -> argparse.Namespace:
 
     argp.add_argument("-i", action="store", help="Path to waveform capture file", default=None, dest="file")
     argp.add_argument("-v", action="store_true", help="Enable verbose logging mode")
+    argp.add_argument("-r", action="store_true", help="Reset configuration to defaults")
 
     return argp.parse_args()
 
 
-def load_config(verbose: bool) -> dict:
+def load_config(verbose: bool, reset: bool = False) -> dict:
     """
     Load configuration options from file
 
     Args:
         verbose (bool): Verbose console output flag
+        reset (bool): Reset configuration to default. Defaults to False.
 
     Returns:
         dict: Configuration options
@@ -101,7 +103,7 @@ def load_config(verbose: bool) -> dict:
 
     # Check for existing configuration file
     config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
-    if config_path.is_file():
+    if config_path.is_file() and not reset:
         if verbose: print(f"Found configuration file at \"{config_path}\"")
 
         # Load configuration from file
@@ -118,9 +120,10 @@ def load_config(verbose: bool) -> dict:
         # Create default configuration object
         config_dict = {
             "width":       1400,
-            "height":      800,
+            "height":      700,
             "maximised":   False
         }
+        if reset: print("Configuration reset to defaults") 
 
         # Save default configuration to file
         save_config(config_dict)

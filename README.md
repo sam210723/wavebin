@@ -67,6 +67,7 @@ optional arguments:
   -h, --help  show this help message and exit
   -i FILE     Path to waveform capture file
   -v          Enable verbose logging mode
+  -r          Reset configuration to defaults
 ```
 
 ## Features

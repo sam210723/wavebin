@@ -42,25 +42,31 @@
         {
             "label": "Run Module",
             "type": "shell",
-            "command": "python -m wavebin -v",
+            "command": "wavebin -v",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Module (reset configuration)",
+            "type": "shell",
+            "command": "wavebin -v -r",
             "problemMatcher": []
         },
         {
             "label": "Run Module (single waveform)",
             "type": "shell",
-            "command": "python -m wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_1MSPS_2Kpts_SINGLE.bin\"",
+            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_1MSPS_2Kpts_SINGLE.bin\"",
             "problemMatcher": []
         },
         {
             "label": "Run Module (dual waveform)",
             "type": "shell",
-            "command": "python -m wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_2CH_2GSPS_4Kpts_DUAL.bin\"",
+            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_2CH_2GSPS_4Kpts_DUAL.bin\"",
             "problemMatcher": []
         },
         {
             "label": "Run Module (UART waveform)",
             "type": "shell",
-            "command": "python -m wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_20MSPS_1Mpts_UART.bin\"",
+            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_20MSPS_1Mpts_UART.bin\"",
             "problemMatcher": []
         },
         {
