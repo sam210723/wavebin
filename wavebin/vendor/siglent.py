@@ -17,7 +17,7 @@ class SiglentWaveform(Vendor):
         super(SiglentWaveform, self).__init__(
             "Siglent",
             "https://siglentna.com",
-            "https://siglentna.com/operating-tip/oscilloscope-binary-data-format",
+            "https://vksdr.com/download/wavebin/Siglent%20Oscilloscope%20Binary%20Data%20Format.pdf#page=3",
             ["SDS2000X Plus"],
             ["*.bin"]
         )
