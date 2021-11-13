@@ -10,7 +10,7 @@ from pathlib import Path
 import sys
 
 from wavebin.interface.window import QtApp
-from wavebin.plot import QtPlot
+from wavebin.interface.plot import QtPlot
 from wavebin.wave import WaveParser
 
 __version__ = 2.2
