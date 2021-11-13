@@ -10,7 +10,7 @@ from wavebin.vendor import Vendor
 
 class SiglentWaveform(Vendor):
     """
-    Binary capture file parser for Siglent oscilloscopes
+    Capture file parser for Siglent oscilloscopes
     """
 
     def __init__(self):
@@ -18,5 +18,6 @@ class SiglentWaveform(Vendor):
             "Siglent",
             "https://siglentna.com",
             "https://siglentna.com/operating-tip/oscilloscope-binary-data-format",
-            ["SDS2000X Plus"]
+            ["SDS2000X Plus"],
+            ["*.bin"]
         )

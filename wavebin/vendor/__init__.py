@@ -7,14 +7,15 @@ Waveform capture viewer for oscilloscopes.
 
 class Vendor:
     """
-    Base class for vendor-specific binary capture file parsers
+    Base class for vendor-specific capture file parsers
     """
 
-    def __init__(self, name: str, site: str, docs: str, devices: list):
+    def __init__(self, name: str, site: str, docs: str, devices: list, exts: list):
         self.vendor_name: str = name     # Plain-text vendor name
         self.vendor_site: str = site     # Vendor website URL
-        self.vendor_docs: str = docs     # Binary format documentation URL
+        self.vendor_docs: str = docs     # File format documentation URL
         self.devices: list = devices     # List of vendor devices tested with wavebin
+        self.extensions: list = exts     # List of supported file extensions
 
     def info(self):
         """
