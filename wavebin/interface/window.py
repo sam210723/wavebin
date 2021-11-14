@@ -110,16 +110,19 @@ class MainWindow(QApplication):
             QToolBar::separator {
                 background: #666;
                 width: 1px;
-                margin-right: 4px;
+                margin: 5px 17px 5px 10px;
             }
             """
         )
 
         # Tool bar items
         self.tools = {
-            "open": ["Open File", "DirIcon"],
-            "sep0": None,
-            "info": ["Waveform Info", "MessageBoxInformation"]
+            "open":   ["Open File", "DirIcon"],
+            "export": ["Export Waveform", "DriveFDIcon"],
+            "sep0":   None,
+            "info":   ["Waveform Info", "MessageBoxInformation"],
+            "sep1":   None,
+            "bug":    ["Report Bug", "MessageBoxWarning"]
         }
 
         # Build tool bar
@@ -146,6 +149,7 @@ class MainWindow(QApplication):
                 """
                 QToolButton {
                     color: #FFF;
+                    padding: 5px 0 5px 0;
                 }
 
                 QToolButton:hover {
