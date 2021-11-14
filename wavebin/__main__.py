@@ -120,7 +120,7 @@ def load_config(verbose: bool, reset: bool = False) -> dict:
         # Create default configuration object
         config_dict = {
             "width":       1400,
-            "height":      700,
+            "height":      800,
             "maximised":   False
         }
         if reset: print("Configuration reset to defaults") 

@@ -15,7 +15,7 @@ class MainWindow(qt.QApplication):
     Main application window
     """
 
-    def __init__(self, config):
+    def __init__(self, config: dict):
         """
         Initialise main application window
 
@@ -23,8 +23,10 @@ class MainWindow(qt.QApplication):
             config (dict): Configuration options
         """
 
+        # Initialise parent class
         super(MainWindow, self).__init__([])
 
+        # Set globals
         self.config = config
         self.name = f"wavebin v{self.config['version']}"
 
@@ -36,6 +38,19 @@ class MainWindow(qt.QApplication):
         # Create main Qt window
         self.log("Creating main Qt window")
         self.window = qt.QMainWindow()
+        self.setup_window()
+
+
+    def setup_window(self):
+        """
+        Setup main application window
+        """
+
+        # Styling and icon
+        self.window.setWindowIcon(qtg.QIcon("icon.ico"))
+        self.window.resize(self.config['width'], self.config['height'])
+        self.window.setMinimumSize(800, 400)
+        self.window.setStyleSheet("background-color: black;")
 
 
     def run(self):
