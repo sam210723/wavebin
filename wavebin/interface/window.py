@@ -99,16 +99,33 @@ class MainWindow(QApplication):
         self.tool_bar.setMovable(False)
         self.tool_bar.setFloatable(False)
         self.tool_bar.setContextMenuPolicy(Qt.PreventContextMenu)
-        self.tool_bar.setStyleSheet("background-color: #333;")
+        self.tool_bar.setStyleSheet(
+            """
+            QToolBar {
+                background-color: #333;
+            }
+
+            QToolBar::separator {
+                background: #666;
+                width: 1px;
+                margin-right: 4px;
+            }
+            """
+        )
 
         # Tool bar items
         self.tools = {
             "open": ["Open File", "DirIcon"],
-            "help": ["Help", "MessageBoxQuestion"]
+            "sep0": None,
+            "info": ["Waveform Info", "MessageBoxInformation"]
         }
 
         # Build tool bar
         for t in self.tools:
+            if self.tools[t] == None:
+                self.tool_bar.insertSeparator(None)
+                continue
+
             # Get built-in Qt icon
             icon = QIcon(
                 self.style().standardIcon(
@@ -121,8 +138,33 @@ class MainWindow(QApplication):
             button.setIcon(icon)
             button.setText(f"  {self.tools[t][0]}")
             button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-            button.setStyleSheet("color: white;")
+
+            # Set button appreance
+            button.setStyleSheet(
+                """
+                QToolButton {
+                    color: #FFF;
+                }
+
+                QToolButton:hover {
+                    background: #444;
+                }
+
+                QToolButton:pressed {
+                    color: #000;
+                    background: #FFF;
+                }
+                """
+            )
+
+            # Add button to toolbar
             self.tool_bar.addWidget(button)
+
+            # Replace list in dict with QToolButton instance
+            self.tools[t] = button
+        
+        # Set default button states
+        self.tools['info'].setEnabled(False)
 
 
     def resizeEvent(self, event):
