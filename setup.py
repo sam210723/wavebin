@@ -21,8 +21,8 @@ setuptools.setup(
     python_requires = '>3.6',
     install_requires = [
         'appdirs>=1.4.4',
-        'numpy>=1.21.4',
-        'pyqt6>=6.2.1',
+        'numpy>=1.21.0',
+        'pyqt5>=5.15.0',
         'pyqtgraph>=0.12.3'
     ],
     classifiers=[
