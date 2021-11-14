@@ -22,7 +22,7 @@ setuptools.setup(
     install_requires = [
         'appdirs',
         'numpy',
-        'pyqt5',
+        'pyqt6',
         'pyqtgraph'
     ],
     classifiers=[
