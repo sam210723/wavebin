@@ -48,24 +48,27 @@ class MainWindow(QApplication):
         self.window.setMinimumSize(800, 400)
         if self.config['maximised']: self.window.showMaximized()
 
-        # Add tool bar to main window
-        self.log("Building tool bar")
-        self.tool_bar = MainToolBar()
-        self.window.addToolBar(Qt.TopToolBarArea, self.tool_bar)
-
         # Add menu bar to main window
         self.log("Building menu bar")
         self.menu_bar = MainMenuBar()
         self.window.setMenuBar(self.menu_bar)
 
+        # Add tool bar to main window
+        self.log("Building tool bar")
+        self.tool_bar = MainToolBar()
+        self.window.addToolBar(Qt.TopToolBarArea, self.tool_bar)
+
         # Create main widget
         self.log("Creating main Qt widget")
         self.widget = QWidget()
-        self.widget.setStyleSheet("background-color: #000;")
         self.window.setCentralWidget(self.widget)
-        self.window.setFocus()
+        self.widget.setStyleSheet("background-color: #000;")
+        self.widget.setContentsMargins(0, 0, 0, 0)
         self.window.resizeEvent = self.resizeEvent
         self.window.changeEvent = self.changeEvent
+        self.window.setFocus()
+
+        #TODO: Create grid layout widget
 
 
     def run(self):
