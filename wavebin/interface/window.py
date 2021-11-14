@@ -6,7 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QStyle, QMenu, QToolBar, QToolButton
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 
 
@@ -53,6 +53,7 @@ class MainWindow(QApplication):
         # Styling and icon
         self.window.setWindowIcon(QIcon("icon.ico"))
         self.window.resize(self.config['width'], self.config['height'])
+        if self.config['maximised']: self.window.showMaximized()
         self.window.setMinimumSize(800, 400)
 
         # Create main widget
@@ -62,6 +63,7 @@ class MainWindow(QApplication):
         self.window.setCentralWidget(self.widget)
         self.window.setFocus()
         self.window.resizeEvent = self.resizeEvent
+        self.window.changeEvent = self.changeEvent
 
 
     def setup_menubar(self):
@@ -173,10 +175,19 @@ class MainWindow(QApplication):
         """
 
         QMainWindow.resizeEvent(self.window, event)
-        
-        # Update window size in configuration
+
+        # Update window size and state in configuration
         self.config['width'] = self.window.width()
         self.config['height'] = self.window.height()
+    
+
+    def changeEvent(self, event):
+        """
+        Handle window state change
+        """
+
+        if event.type() == QEvent.WindowStateChange:
+            self.config['maximised'] = self.window.isMaximized()
 
 
     def run(self):
