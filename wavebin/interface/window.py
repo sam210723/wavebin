@@ -61,6 +61,7 @@ class MainWindow(QApplication):
         self.widget.setStyleSheet("background-color: #000;")
         self.window.setCentralWidget(self.widget)
         self.window.setFocus()
+        self.window.resizeEvent = self.resizeEvent
 
 
     def setup_menubar(self):
@@ -122,6 +123,18 @@ class MainWindow(QApplication):
             button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
             button.setStyleSheet("color: white;")
             self.tool_bar.addWidget(button)
+
+
+    def resizeEvent(self, event):
+        """
+        Handle window resize event
+        """
+
+        QMainWindow.resizeEvent(self.window, event)
+        
+        # Update window size in configuration
+        self.config['width'] = self.window.width()
+        self.config['height'] = self.window.height()
 
 
     def run(self):
