@@ -9,7 +9,8 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenu
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 
-from wavebin.interface.toolbar import MainToolbar
+from wavebin.interface.toolbar import MainToolBar
+from wavebin.interface.menubar import MainMenuBar
 
 
 class MainWindow(QApplication):
@@ -49,8 +50,13 @@ class MainWindow(QApplication):
 
         # Add tool bar to main window
         self.log("Building tool bar")
-        self.tool_bar = MainToolbar()
+        self.tool_bar = MainToolBar()
         self.window.addToolBar(Qt.TopToolBarArea, self.tool_bar)
+
+        # Add menu bar to main window
+        self.log("Building menu bar")
+        self.menu_bar = MainMenuBar()
+        self.window.setMenuBar(self.menu_bar)
 
         # Create main widget
         self.log("Creating main Qt widget")
@@ -62,25 +68,14 @@ class MainWindow(QApplication):
         self.window.changeEvent = self.changeEvent
 
 
-    def setup_menubar(self):
+    def run(self):
         """
-        Setup main window menu bar
+        Launch main application window
         """
 
-        # Initialise menu bar
-        self.log("Building menu bar")
-        self.menu_bar = self.window.menuBar()
-        self.window.setMenuBar(self.menu_bar)
-
-        # Root items
-        self.menus = {
-            "file": QMenu("&File", self.window),
-            "view": QMenu("&View", self.window),
-            "help": QMenu("&Help", self.window)
-        }
-
-        # Add root items to menu bar
-        for m in self.menus: self.menu_bar.addMenu(self.menus[m])
+        self.log("Starting Qt application")
+        self.window.show()
+        self.exec()
 
 
     def resizeEvent(self, event):
@@ -102,16 +97,6 @@ class MainWindow(QApplication):
 
         if event.type() == QEvent.WindowStateChange:
             self.config['maximised'] = self.window.isMaximized()
-
-
-    def run(self):
-        """
-        Launch main application window
-        """
-
-        self.log("Starting Qt application")
-        self.window.show()
-        self.exec()
 
 
     def log(self, msg):

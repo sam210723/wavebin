@@ -10,14 +10,14 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 
 
-class MainToolbar(QToolBar):
+class MainToolBar(QToolBar):
     """
     Main window tool bar
     """
 
     def __init__(self):
         # Initialise parent class
-        super(MainToolbar, self).__init__()
+        super(MainToolBar, self).__init__()
 
         # Set tool bar properties
         self.setMovable(False)
