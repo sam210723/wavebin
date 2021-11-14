@@ -38,7 +38,7 @@ class MainToolbar(QToolBar):
         )
 
         # Tool bar items
-        self.tools = {
+        self.items = {
             "open":   ["Open File", "DirIcon"],
             "export": ["Export Waveform", "DriveFDIcon"],
             "sep0":   None,
@@ -48,22 +48,22 @@ class MainToolbar(QToolBar):
         }
 
         # Build tool bar
-        for t in self.tools:
-            if self.tools[t] == None:
+        for t in self.items:
+            if self.items[t] == None:
                 self.insertSeparator(None)
                 continue
 
             # Get built-in Qt icon
             icon = QIcon(
                 self.style().standardIcon(
-                    getattr(QStyle, f"SP_{self.tools[t][1]}")
+                    getattr(QStyle, f"SP_{self.items[t][1]}")
                 )
             )
 
             # Build button
             button = QToolButton()
             button.setIcon(icon)
-            button.setText(f"  {self.tools[t][0]}")
+            button.setText(f"  {self.items[t][0]}")
             button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
 
             # Set button appreance
@@ -89,7 +89,7 @@ class MainToolbar(QToolBar):
             self.addWidget(button)
 
             # Replace list in dict with QToolButton instance
-            self.tools[t] = button
+            self.items[t] = button
         
         # Set default button states
-        self.tools['info'].setEnabled(False)
+        self.items['info'].setEnabled(False)
