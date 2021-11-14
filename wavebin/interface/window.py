@@ -5,12 +5,11 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5 import QtWidgets as qt
-from PyQt5 import QtCore as qtc
-from PyQt5 import QtGui as qtg
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtGui import QIcon
 
 
-class MainWindow(qt.QApplication):
+class MainWindow(QApplication):
     """
     Main application window
     """
@@ -37,7 +36,7 @@ class MainWindow(qt.QApplication):
 
         # Create main Qt window
         self.log("Creating main Qt window")
-        self.window = qt.QMainWindow()
+        self.window = QMainWindow()
         self.setup_window()
 
 
@@ -47,7 +46,7 @@ class MainWindow(qt.QApplication):
         """
 
         # Styling and icon
-        self.window.setWindowIcon(qtg.QIcon("icon.ico"))
+        self.window.setWindowIcon(QIcon("icon.ico"))
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 400)
         self.window.setStyleSheet("background-color: black;")
