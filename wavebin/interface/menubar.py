@@ -29,3 +29,14 @@ class MainMenuBar(QMenuBar):
 
         # Add root items to menu bar
         for m in self.menus: self.addMenu(self.menus[m])
+
+
+    def log(self, msg: str):
+        """
+        Print message to console if verbose mode enabled
+
+        Args:
+            msg (str): Message to print to console
+        """
+
+        if self.app.config['verbose']: print(msg)
