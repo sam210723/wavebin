@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+from pathlib import Path
 from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar, QStyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
@@ -89,10 +90,37 @@ class MainToolBar(QToolBar):
         if not self.app.config['update']: self.removeAction(self.items['update'])
 
 
-    def button_open(self):    print("button_open")
+    def button_open(self):
+        """
+        Launch open file dialog
+        """
+
+        # Get initial path
+        if self.app.config['file']:
+            initial = self.app.config['file'].parent
+        else:
+            initial = Path.home()
+
+        # Show open file dialog
+        file_path = Path(self.app.open_dialog.getOpenFileName(
+            self,
+            "Open Waveform Capture",
+            str(initial.absolute()),
+            "Waveform files (*.bin; *.wfm; *.csv);;All files (*.*)"
+        )[0])
+
+        # Handle cancelled dialog
+        if file_path == "":
+            self.log("Open file dialog cancelled")
+            return
+        
+        # Update current file in config
+        self.app.config['file'] = file_path
+
+
     def button_export(self):  print("button_export")
-    def button_capture(self): print("button_capture")
     def button_info(self):    print("button_info")
+    def button_capture(self): print("button_capture")
 
 
     def button_bug(self):
