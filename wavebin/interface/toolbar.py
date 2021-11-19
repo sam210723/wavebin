@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QAction, QApplication, QToolBar, QToolButton, QStyle
+from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar, QToolButton, QStyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 import sys
@@ -48,7 +48,8 @@ class MainToolBar(QToolBar):
             "sep0":   None,
             "info":   ["Waveform Info", "MessageBoxInformation"],
             "sep1":   None,
-            "bug":    ["Report Bug", "MessageBoxWarning"]
+            "bug":    ["Report Bug", "MessageBoxWarning"],
+            "update": ["Update", "ArrowUp"]
         }
 
         # Build tool bar
@@ -105,6 +106,7 @@ class MainToolBar(QToolBar):
     def button_export(self): print("button_export")
     def button_info(self):   print("button_info")
 
+
     def button_bug(self):
         """
         Open issue form on GitHub
@@ -118,6 +120,30 @@ class MainToolBar(QToolBar):
             "&assignees=sam210723" +
            f"&title=[v{self.app.config['version']} on {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}] *Brief description of issue*"
         )
+
+
+    def button_update(self):
+        """
+        Update wavebin via PyPI
+        """
+
+        # Confirm update with user
+        msgbox = QMessageBox()
+        confirm = msgbox.question(
+            self,
+            None,
+            "Are you sure you want to update wavebin?", 
+            QMessageBox.Yes | QMessageBox.No,
+            QMessageBox.No
+        )
+        if confirm == QMessageBox.No: return
+
+        # Launch separate process to update
+        import subprocess
+        subprocess.Popen("python3 -m pip install --no-input --upgrade wavebin && wavebin", shell=True)
+
+        # Exit current instance
+        self.app.safe_exit(self.app.config)
 
 
     def log(self, msg: str):
