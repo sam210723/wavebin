@@ -55,7 +55,7 @@ class MainToolBar(QToolBar):
             "open":    ["Open File", "folder-open"],
             "export":  ["Export Waveform", "file-export"],
             "sep0":    None,
-            "info":    ["Waveform Info", "list"],
+            "props":   ["Waveform Properties", "list"],
             "capture": ["Capture Waveform", "wave-square"],
             "sep1":    None,
             "bug":     ["Report Bug", "bug"],
@@ -86,7 +86,7 @@ class MainToolBar(QToolBar):
             self.items[t] = action
         
         # Set default button states
-        self.items['info'].setEnabled(False)
+        #self.items['props'].setEnabled(False)
         if not self.app.config['update']: self.removeAction(self.items['update'])
 
 
@@ -106,7 +106,7 @@ class MainToolBar(QToolBar):
             self,
             "Open Waveform Capture",
             str(initial.absolute()),
-            "Waveform files (*.bin; *.wfm; *.csv);;All files (*.*)"
+            "Waveforms (*.bin *.wfm *.csv);;All files (*.*)"
         )[0])
 
         # Handle cancelled dialog
@@ -118,9 +118,31 @@ class MainToolBar(QToolBar):
         self.app.config['file'] = file_path
 
 
-    def button_export(self):  print("button_export")
-    def button_info(self):    print("button_info")
-    def button_capture(self): print("button_capture")
+    def button_export(self):
+        """
+        Launch save file dialog
+        """
+
+        pass
+
+
+    def button_props(self):
+        """
+        Show current waveform properties
+        """
+        
+        msgbox = QMessageBox()
+        msgbox.setWindowTitle("Waveform Properties")
+        msgbox.setWindowIcon(QIcon("icon.ico"))
+        msgbox.setIcon(QMessageBox.Icon.NoIcon)
+        msgbox.setTextFormat(Qt.TextFormat.RichText)
+        msgbox.setText(
+            "PLACEHOLDER TEXT<br>" +    #TODO
+            "Body to be filled by waveform parser class"
+        )
+        msgbox.setStandardButtons(QMessageBox.Close)
+        msgbox.setDefaultButton(QMessageBox.Close)
+        msgbox.exec()
 
 
     def button_bug(self):
@@ -146,6 +168,7 @@ class MainToolBar(QToolBar):
         # Confirm update with user
         msgbox = QMessageBox()
         msgbox.setWindowTitle("Update available")
+        msgbox.setWindowIcon(QIcon("icon.ico"))
         msgbox.setTextFormat(Qt.TextFormat.RichText)
         msgbox.setText(
             "An update is available for wavebin via the Python Package Index (PyPI)<br>" +
@@ -153,7 +176,6 @@ class MainToolBar(QToolBar):
             "Are you sure you want to update wavebin?"
         )
         msgbox.setIcon(QMessageBox.Icon.Question)
-        msgbox.setWindowIcon(QIcon("icon.ico"))
         msgbox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msgbox.setDefaultButton(QMessageBox.No)
         msgbox.exec()
