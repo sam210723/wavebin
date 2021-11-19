@@ -31,6 +31,7 @@ class MainToolBar(QToolBar):
             """
             QToolBar {
                 background-color: #333;
+                border: none;
             }
 
             QToolBar::separator {
