@@ -17,6 +17,9 @@ class MainMenuBar(QMenuBar):
         # Initialise base class
         super(MainMenuBar, self).__init__()
 
+        # Hide menubar by default
+        self.setHidden(True)
+
         # Parent application instance
         self.app = app
         

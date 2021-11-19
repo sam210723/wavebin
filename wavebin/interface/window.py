@@ -68,6 +68,7 @@ class MainWindow(QApplication):
         self.widget.setContentsMargins(0, 0, 0, 0)
         self.window.resizeEvent = self.resizeEvent
         self.window.changeEvent = self.changeEvent
+        self.window.keyPressEvent = self.keyPressEvent
         self.window.setFocus()
 
         # Create main layout
@@ -112,6 +113,17 @@ class MainWindow(QApplication):
 
         if event.type() == QEvent.WindowStateChange:
             self.config['maximised'] = self.window.isMaximized()
+
+
+    def keyPressEvent(self, event):
+        """
+        Handle keyboard hotkey events
+        """
+
+        # Show/Hide menubar
+        if event.key() == Qt.Key.Key_Alt:
+            self.menu_bar.setHidden(not self.menu_bar.isHidden())
+            self.menu_bar.setFocus(not self.menu_bar.isHidden())
 
 
     def log(self, msg: str):
