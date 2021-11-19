@@ -8,7 +8,8 @@ Oscilloscope waveform capture viewer
 from PyQt5.QtWidgets import QAction, QApplication, QToolBar, QToolButton, QStyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-
+import sys
+import webbrowser
 
 class MainToolBar(QToolBar):
     """
@@ -103,4 +104,29 @@ class MainToolBar(QToolBar):
     def button_open(self):   print("button_open")
     def button_export(self): print("button_export")
     def button_info(self):   print("button_info")
-    def button_bug(self):    print("button_bug")
+
+    def button_bug(self):
+        """
+        Open issue form on GitHub
+        """
+
+        self.log("Opening GitHub issue form in default web browser")
+        webbrowser.open(
+            "https://github.com/sam210723/wavebin/issues/new" +
+            "?template=bug.md" +
+            "&labels=bug,from+app" +
+            "&assignees=sam210723" +
+            "&body=asdf" +
+           f"&title=[v{self.app.config['version']} on {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}] *Brief description of issue*"
+        )
+
+
+    def log(self, msg: str):
+        """
+        Print message to console if verbose mode enabled
+
+        Args:
+            msg (str): Message to print to console
+        """
+
+        if self.app.config['verbose']: print(msg)
