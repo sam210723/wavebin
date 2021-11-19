@@ -67,9 +67,9 @@ class MainWindow(QApplication):
         self.window.setCentralWidget(self.widget)
         self.widget.setStyleSheet("background-color: #000;")
         self.widget.setContentsMargins(0, 0, 0, 0)
-        self.window.resizeEvent = self.resizeEvent
-        self.window.changeEvent = self.changeEvent
-        self.window.keyPressEvent = self.keyPressEvent
+        self.window.resizeEvent = self.event_resize
+        self.window.changeEvent = self.event_change
+        self.window.keyPressEvent = self.event_keypress
         self.window.setFocus()
 
         # Create main layout
@@ -95,7 +95,7 @@ class MainWindow(QApplication):
         self.exec()
 
 
-    def resizeEvent(self, event):
+    def event_resize(self, event):
         """
         Handle window resize event
         """
@@ -107,7 +107,7 @@ class MainWindow(QApplication):
         self.config['height'] = self.window.height()
     
 
-    def changeEvent(self, event):
+    def event_change(self, event):
         """
         Handle window state change
         """
@@ -116,7 +116,7 @@ class MainWindow(QApplication):
             self.config['maximised'] = self.window.isMaximized()
 
 
-    def keyPressEvent(self, event):
+    def event_keypress(self, event):
         """
         Handle keyboard hotkey events
         """
