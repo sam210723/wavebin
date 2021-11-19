@@ -116,7 +116,6 @@ class MainToolBar(QToolBar):
             "?template=bug.md" +
             "&labels=bug,from+app" +
             "&assignees=sam210723" +
-            "&body=asdf" +
            f"&title=[v{self.app.config['version']} on {sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}] *Brief description of issue*"
         )
 
