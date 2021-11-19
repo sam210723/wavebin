@@ -34,9 +34,13 @@ class MainToolBar(QToolBar):
             }
 
             QToolBar::separator {
-                background: #666;
+                background: #000;
                 width: 1px;
-                margin: 5px 15px 5px 10px;
+                margin: 5px 8px 5px 8px;
+            }
+
+            QToolButton {
+                padding: 5px;
             }
             """
         )
@@ -44,7 +48,7 @@ class MainToolBar(QToolBar):
         # Tool bar items
         self.items = {
             "open":   ["Open File", "DirIcon"],
-            "export": ["Export Waveform", "DriveFDIcon"],
+            "export": ["Export", "DriveFDIcon"],
             "sep0":   None,
             "info":   ["Waveform Info", "MessageBoxInformation"],
             "sep1":   None,
@@ -59,47 +63,26 @@ class MainToolBar(QToolBar):
                 self.insertSeparator(None)
                 continue
 
-            # Build button action with built-in icon
+            # Get built-in Qt icon
             icon = QIcon(
                 self.style().standardIcon(
                     getattr(QStyle, f"SP_{self.items[t][1]}")
                 )
             )
-            action = QAction(icon, f"  {self.items[t][0]}", self)
+
+            # Build action object
+            action = QAction(self)
+            action.setIcon(icon)
+            action.setText(self.items[t][0])
             action.triggered.connect(eval(f"self.button_{t}"))
+            self.addAction(action)
 
-            # Build button
-            button = QToolButton()
-            button.setDefaultAction(action)
-            button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
-
-            # Set button appreance
-            button.setStyleSheet(
-                """
-                QToolButton {
-                    color: #FFF;
-                    padding: 5px 0 5px 0;
-                }
-
-                QToolButton:hover {
-                    background: #444;
-                }
-
-                QToolButton:pressed {
-                    color: #000;
-                    background: #FFF;
-                }
-                """
-            )
-
-            # Add button to toolbar
-            self.addWidget(button)
-
-            # Replace list in dict with QToolButton instance
-            self.items[t] = button
+            # Replace list in dict with QAction instance
+            self.items[t] = action
         
         # Set default button states
         self.items['info'].setEnabled(False)
+        if not self.app.config['update']: self.removeAction(self.items['update'])
 
 
     def button_open(self):   print("button_open")
@@ -141,6 +124,7 @@ class MainToolBar(QToolBar):
         # Launch separate process to update
         import subprocess
         subprocess.Popen("python3 -m pip install --no-input --upgrade wavebin && wavebin", shell=True)
+        #TODO: Fix new wavebin process exiting
 
         # Exit current instance
         self.app.safe_exit(self.app.config)
