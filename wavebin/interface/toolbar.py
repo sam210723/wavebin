@@ -32,13 +32,13 @@ class MainToolBar(QToolBar):
         self.setStyleSheet(
             """
             QToolBar {
-                background-color: #333;
+                background-color: #222;
                 border: none;
                 padding-left: 4px;
             }
 
             QToolBar::separator {
-                background: #000;
+                background: #444;
                 width: 1px;
                 margin: 5px 5px 5px 5px;
             }
