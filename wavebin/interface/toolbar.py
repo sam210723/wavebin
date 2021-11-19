@@ -103,17 +103,19 @@ class MainToolBar(QToolBar):
             initial = Path.home()
 
         # Show open file dialog
-        file_path = Path(self.app.open_dialog.getOpenFileName(
+        file_path = self.app.open_dialog.getOpenFileName(
             self,
             "Open waveform capture",
             str(initial.absolute()),
             "Waveforms (*.bin *.wfm *.csv);;All files (*.*)"
-        )[0])
+        )[0]
 
         # Handle cancelled dialog
         if file_path == "":
             self.log("Open file dialog cancelled")
             return
+        else:
+            file_path = Path(file_path)
         
         # Update current file in config
         self.app.config['file'] = file_path
@@ -128,17 +130,19 @@ class MainToolBar(QToolBar):
         initial = self.app.config['file']
 
         # Show export file dialog
-        file_path = Path(self.app.save_dialog.getSaveFileName(
+        file_path = self.app.save_dialog.getSaveFileName(
             self,
             "Export waveform",
             str(initial.with_suffix(".sr").absolute()),
             "PulseView session (*.sr);;WAV file (*.wav)"
-        )[0])
+        )[0]
 
         # Handle cancelled dialog
         if file_path == "":
             self.log("Export file dialog cancelled")
             return
+        else:
+            file_path = Path(file_path)
         
         #TODO: Call export class
 
