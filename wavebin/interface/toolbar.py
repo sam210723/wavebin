@@ -5,9 +5,10 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar, QToolButton, QStyle
+from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar, QStyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
+import qtawesome as qta
 import sys
 import webbrowser
 
@@ -32,29 +33,32 @@ class MainToolBar(QToolBar):
             QToolBar {
                 background-color: #333;
                 border: none;
+                padding-left: 4px;
             }
 
             QToolBar::separator {
                 background: #000;
                 width: 1px;
-                margin: 5px 8px 5px 8px;
+                margin: 5px 5px 5px 5px;
             }
 
             QToolButton {
-                padding: 5px;
+                color: #FFF;
+                padding: 7px;
             }
             """
         )
 
         # Tool bar items
         self.items = {
-            "open":   ["Open File", "DirIcon"],
-            "export": ["Export", "DriveFDIcon"],
-            "sep0":   None,
-            "info":   ["Waveform Info", "MessageBoxInformation"],
-            "sep1":   None,
-            "bug":    ["Report Bug", "MessageBoxWarning"],
-            "update": ["Update", "ArrowUp"]
+            "open":    ["Open File", "folder-open"],
+            "export":  ["Export Waveform", "file-export"],
+            "sep0":    None,
+            "info":    ["Waveform Info", "list"],
+            "capture": ["Capture Waveform", "wave-square"],
+            "sep1":    None,
+            "bug":     ["Report Bug", "bug"],
+            "update":  ["Update wavebin", "sync-alt"]
         }
 
         # Build tool bar
@@ -64,11 +68,10 @@ class MainToolBar(QToolBar):
                 self.insertSeparator(None)
                 continue
 
-            # Get built-in Qt icon
-            icon = QIcon(
-                self.style().standardIcon(
-                    getattr(QStyle, f"SP_{self.items[t][1]}")
-                )
+            icon = qta.icon(
+                f"fa5s.{self.items[t][1]}",
+                color="#FFF",
+                color_active="#AAA"
             )
 
             # Build action object
@@ -86,9 +89,10 @@ class MainToolBar(QToolBar):
         if not self.app.config['update']: self.removeAction(self.items['update'])
 
 
-    def button_open(self):   print("button_open")
-    def button_export(self): print("button_export")
-    def button_info(self):   print("button_info")
+    def button_open(self):    print("button_open")
+    def button_export(self):  print("button_export")
+    def button_capture(self): print("button_capture")
+    def button_info(self):    print("button_info")
 
 
     def button_bug(self):

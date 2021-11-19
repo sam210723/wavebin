@@ -24,6 +24,7 @@ setuptools.setup(
         'numpy>=1.21.0',
         'pyqt5>=5.15.0',
         'pyqtgraph>=0.12.3',
+        'qtawesome>=1.1.0',
         'requests>=2.24.0'
     ],
     classifiers=[
