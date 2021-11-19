@@ -86,7 +86,8 @@ class MainToolBar(QToolBar):
             self.items[t] = action
         
         # Set default button states
-        #self.items['props'].setEnabled(False)
+        self.items['export'].setEnabled(False)
+        self.items['props'].setEnabled(False)
         if not self.app.config['update']: self.removeAction(self.items['update'])
 
 
@@ -120,10 +121,26 @@ class MainToolBar(QToolBar):
 
     def button_export(self):
         """
-        Launch save file dialog
+        Launch export file dialog
         """
 
-        pass
+        # Get initial path
+        initial = self.app.config['file']
+
+        # Show export file dialog
+        file_path = Path(self.app.save_dialog.getSaveFileName(
+            self,
+            "Export Waveform",
+            str(initial.with_suffix(".sr").absolute()),
+            "PulseView session (*.sr);;WAV file (*.wav)"
+        )[0])
+
+        # Handle cancelled dialog
+        if file_path == "":
+            self.log("Export file dialog cancelled")
+            return
+        
+        #TODO: Call export class
 
 
     def button_props(self):
@@ -143,6 +160,13 @@ class MainToolBar(QToolBar):
         msgbox.setStandardButtons(QMessageBox.Close)
         msgbox.setDefaultButton(QMessageBox.Close)
         msgbox.exec()
+
+
+    def button_capture(self):
+        """
+        Trigger waveform capture via USB-TMC / PyVISA
+        """
+        pass
 
 
     def button_bug(self):
