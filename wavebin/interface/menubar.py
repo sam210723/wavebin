@@ -25,9 +25,9 @@ class MainMenuBar(QMenuBar):
         
         # Root menu bar items
         self.menus = {
-            "file": QMenu("&File"),
-            "view": QMenu("&View"),
-            "help": QMenu("&Help")
+            "file": QMenu("File"),
+            "view": QMenu("View"),
+            "help": QMenu("Help")
         }
 
         # Add root items to menu bar
