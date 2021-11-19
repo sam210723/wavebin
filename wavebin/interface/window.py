@@ -24,6 +24,7 @@ class MainWindow(QApplication):
 
         Args:
             config (dict): Configuration options
+            safe_exit (function): Graceful application exit function
         """
 
         # Initialise parent class
@@ -61,7 +62,7 @@ class MainWindow(QApplication):
         self.window.addToolBar(Qt.TopToolBarArea, self.tool_bar)
 
         # Create main widget
-        self.log("Creating main Qt widget")
+        self.log("Creating main widget")
         self.widget = QWidget()
         self.window.setCentralWidget(self.widget)
         self.widget.setStyleSheet("background-color: #000;")
