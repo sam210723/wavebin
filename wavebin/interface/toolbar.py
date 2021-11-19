@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QToolBar, QToolButton, QStyle
+from PyQt5.QtWidgets import QApplication, QToolBar, QToolButton, QStyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 
@@ -15,9 +15,12 @@ class MainToolBar(QToolBar):
     Main window tool bar
     """
 
-    def __init__(self):
-        # Initialise parent class
+    def __init__(self, app: QApplication):
+        # Initialise base class
         super(MainToolBar, self).__init__()
+
+        # Parent application instance
+        self.app = app
 
         # Set tool bar properties
         self.setMovable(False)

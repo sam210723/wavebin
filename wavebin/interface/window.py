@@ -51,12 +51,12 @@ class MainWindow(QApplication):
 
         # Add menu bar to main window
         self.log("Building menu bar")
-        self.menu_bar = MainMenuBar()
+        self.menu_bar = MainMenuBar(self)
         self.window.setMenuBar(self.menu_bar)
 
         # Add tool bar to main window
         self.log("Building tool bar")
-        self.tool_bar = MainToolBar()
+        self.tool_bar = MainToolBar(self)
         self.window.addToolBar(Qt.TopToolBarArea, self.tool_bar)
 
         # Create main widget
