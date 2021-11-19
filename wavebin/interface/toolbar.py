@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QApplication, QToolBar, QToolButton, QStyle
+from PyQt5.QtWidgets import QAction, QApplication, QToolBar, QToolButton, QStyle
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 
@@ -52,21 +52,23 @@ class MainToolBar(QToolBar):
 
         # Build tool bar
         for t in self.items:
+            # Insert toolbar separators
             if self.items[t] == None:
                 self.insertSeparator(None)
                 continue
 
-            # Get built-in Qt icon
+            # Build button action with built-in icon
             icon = QIcon(
                 self.style().standardIcon(
                     getattr(QStyle, f"SP_{self.items[t][1]}")
                 )
             )
+            action = QAction(icon, f"  {self.items[t][0]}", self)
+            action.triggered.connect(eval(f"self.button_{t}"))
 
             # Build button
             button = QToolButton()
-            button.setIcon(icon)
-            button.setText(f"  {self.items[t][0]}")
+            button.setDefaultAction(action)
             button.setToolButtonStyle(Qt.ToolButtonStyle.ToolButtonTextBesideIcon)
 
             # Set button appreance
@@ -96,3 +98,9 @@ class MainToolBar(QToolBar):
         
         # Set default button states
         self.items['info'].setEnabled(False)
+
+
+    def button_open(self):   print("button_open")
+    def button_export(self): print("button_export")
+    def button_info(self):   print("button_info")
+    def button_bug(self):    print("button_bug")
