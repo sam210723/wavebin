@@ -9,6 +9,7 @@ import appdirs
 import argparse
 import configparser
 from pathlib import Path
+import requests
 import sys
 
 from wavebin.interface.window import MainWindow
@@ -36,8 +37,11 @@ def main():
     # Parse CLI arguments
     args = parse_args()
 
+    # Check for update on GitHub
+    update = update_check()
+
     # Load configuration from file
-    config = load_config(args.v, args.r)
+    config = load_config(args.v, args.r, update)
 
     # Create Qt application
     app = MainWindow(config, safe_exit)
@@ -94,13 +98,14 @@ def parse_args() -> argparse.Namespace:
     return argp.parse_args()
 
 
-def load_config(verbose: bool, reset: bool = False) -> dict:
+def load_config(verbose: bool, reset: bool = False, update: bool = False) -> dict:
     """
     Load configuration options from file
 
     Args:
         verbose (bool): Verbose console output flag
         reset (bool): Reset configuration to default. Defaults to False.
+        update (bool): True if update is available on GitHub. Defaults to False.
 
     Returns:
         dict: Configuration options
@@ -137,6 +142,7 @@ def load_config(verbose: bool, reset: bool = False) -> dict:
     config_dict['version'] = __version__
     config_dict['verbose'] = verbose
     config_dict['description'] = description
+    config_dict['update'] = update
 
     return config_dict
 
@@ -157,7 +163,7 @@ def save_config(config: dict) -> bool:
     config_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Remove non-persistent options
-    rmkeys = ["verbose", "description"]
+    rmkeys = ["verbose", "description", "update"]
     for _, key in enumerate(rmkeys):
         if key in config: del config[key]
 
@@ -169,6 +175,25 @@ def save_config(config: dict) -> bool:
     with open(config_path, "w") as fh:
         cfgp.write(fh)
     return True
+
+
+def update_check() -> bool:
+    """
+    Check for update on GitHub
+
+    Returns:
+        bool: True if update available
+    """
+
+    try:
+        r = requests.get("https://api.github.com/repos/sam210723/wavebin/releases/latest")
+        if r.status_code == 200 and f"v{__version__}" != r.json()['tag_name']:
+            print("An update for wavebin is available")
+            return True
+    except Exception:
+        return False
+
+    return False
 
 
 def safe_exit(config: dict = None, code=0) -> None:

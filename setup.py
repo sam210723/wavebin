@@ -23,7 +23,8 @@ setuptools.setup(
         'appdirs>=1.4.4',
         'numpy>=1.21.0',
         'pyqt5>=5.15.0',
-        'pyqtgraph>=0.12.3'
+        'pyqtgraph>=0.12.3',
+        'requests>=2.24.0'
     ],
     classifiers=[
         "Topic :: Scientific/Engineering :: Visualization",
