@@ -1,7 +1,7 @@
 ---
 name: Bug Report
 about: Report a bug or issue
-title: '<title> Describe the issue'
+title: Brief issue description
 labels: Bug, From App
 assignees: 'sam210723'
 
