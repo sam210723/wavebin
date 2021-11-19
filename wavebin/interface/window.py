@@ -43,6 +43,7 @@ class MainWindow(QApplication):
         self.window = QMainWindow()
 
         # Window styling and state
+        self.log("Updating window style")
         self.window.setWindowIcon(QIcon("icon.ico"))
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 400)
@@ -76,6 +77,7 @@ class MainWindow(QApplication):
         self.widget.setLayout(self.layout)
 
         # Create open/save file dialogs
+        self.log("Creating file dialogs")
         self.open_dialog = QFileDialog()
         self.save_dialog = QFileDialog()
 
