@@ -105,7 +105,7 @@ class MainToolBar(QToolBar):
         # Show open file dialog
         file_path = Path(self.app.open_dialog.getOpenFileName(
             self,
-            "Open Waveform Capture",
+            "Open waveform capture",
             str(initial.absolute()),
             "Waveforms (*.bin *.wfm *.csv);;All files (*.*)"
         )[0])
@@ -130,7 +130,7 @@ class MainToolBar(QToolBar):
         # Show export file dialog
         file_path = Path(self.app.save_dialog.getSaveFileName(
             self,
-            "Export Waveform",
+            "Export waveform",
             str(initial.with_suffix(".sr").absolute()),
             "PulseView session (*.sr);;WAV file (*.wav)"
         )[0])
