@@ -16,7 +16,7 @@ from wavebin.interface.window import MainWindow
 from wavebin.interface.plot import QtPlot
 from wavebin.wave import WaveParser
 
-__version__ = "2.2"
+__version__ = "3.0"
 description = "Oscilloscope waveform capture viewer"
 
 
@@ -189,7 +189,7 @@ def update_check() -> bool:
     try:
         r = requests.get("https://api.github.com/repos/sam210723/wavebin/releases/latest")
         if r.status_code == 200 and f"v{__version__}" != r.json()['tag_name']:
-            print("A new version of wavebin is available\nRun \"pip3 install --upgrade wavebin\" to install it\n\n")
+            print("A new version of wavebin is available\nRun \"pip3 install --upgrade wavebin\" to install it\n")
             return True
     except Exception:
         return False
