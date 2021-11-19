@@ -35,7 +35,7 @@ def main():
     config = load_config(args.v, args.r)
 
     # Create Qt application
-    app = MainWindow(config)
+    app = MainWindow(config, safe_exit)
 
     # Create Qt waveform plot
     """

@@ -18,7 +18,7 @@ class MainWindow(QApplication):
     Main application window
     """
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict, safe_exit):
         """
         Initialise main application window
 
@@ -30,6 +30,7 @@ class MainWindow(QApplication):
         super(MainWindow, self).__init__([])
 
         # Set globals
+        self.safe_exit = safe_exit
         self.config = config
         self.name = f"wavebin v{self.config['version']}"
 
