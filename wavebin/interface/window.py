@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout, QFileDialog
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 
@@ -74,6 +74,10 @@ class MainWindow(QApplication):
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
         self.widget.setLayout(self.layout)
+
+        # Create open/save file dialogs
+        self.open_dialog = QFileDialog()
+        self.save_dialog = QFileDialog()
 
 
     def run(self):
