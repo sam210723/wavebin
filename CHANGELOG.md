@@ -5,13 +5,22 @@ All notable changes to this project will be documented in this file.
 <summary>Unreleased changes</summary>
 
 ### Added
-  - 
+  - Persistent configuration options
+  - Base class for vendor specific file parsers
+  - Tool bar for common operations
+  - Toggle menu bar visibility with `Alt` key
+  - Update checker using GitHub API
+  - Update installer using `pip`
 
 ### Changed
-  - 
+  - Rearrange PyQt5 interface code into multiple classes
+  - Better documentation and type hinting
+  - Global configuration object for all classes
 
 ### Fixed
-  - 
+  - Launcher executable in `PATH`
+  - Minimum dependency versions
+  - Minimum Python version check
 </details>
 
 
