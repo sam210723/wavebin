@@ -52,13 +52,13 @@ class MainToolBar(QToolBar):
 
         # Tool bar items
         self.items = {
-            "open":    ["Open File", "folder-open"],
-            "export":  ["Export Waveform", "file-export"],
+            "open":    ["Open file", "folder-open"],
+            "export":  ["Export waveform", "file-export"],
             "sep0":    None,
-            "props":   ["Waveform Properties", "list"],
-            "capture": ["Capture Waveform", "wave-square"],
+            "props":   ["Waveform properties", "list"],
+            "capture": ["Capture waveform", "wave-square"],
             "sep1":    None,
-            "bug":     ["Report Bug", "bug"],
+            "bug":     ["Report a bug", "bug"],
             "update":  ["Update wavebin", "sync-alt"]
         }
 
