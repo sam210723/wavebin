@@ -117,14 +117,19 @@ class MainToolBar(QToolBar):
 
         # Confirm update with user
         msgbox = QMessageBox()
-        confirm = msgbox.question(
-            self,
-            None,
-            "Are you sure you want to update wavebin?", 
-            QMessageBox.Yes | QMessageBox.No,
-            QMessageBox.No
+        msgbox.setWindowTitle("Update available")
+        msgbox.setTextFormat(Qt.TextFormat.RichText)
+        msgbox.setText(
+            "An update is available for wavebin via the Python Package Index (PyPI)<br>" +
+            "<a href=\"https://github.com/sam210723/wavebin/blob/master/CHANGELOG.md\">View changelog on GitHub</a><br><br>"
+            "Are you sure you want to update wavebin?"
         )
-        if confirm == QMessageBox.No: return
+        msgbox.setIcon(QMessageBox.Icon.Question)
+        msgbox.setWindowIcon(QIcon("icon.ico"))
+        msgbox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
+        msgbox.setDefaultButton(QMessageBox.No)
+        msgbox.exec()
+        if msgbox.result() == QMessageBox.No: return
 
         # Launch separate process to update
         import subprocess
