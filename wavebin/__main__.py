@@ -41,7 +41,7 @@ def main():
     update = update_check()
 
     # Load configuration from file
-    config = load_config(args.v, args.r, update)
+    config = load_config(args, update)
 
     # Create Qt application
     app = MainWindow(config, safe_exit)
@@ -98,7 +98,7 @@ def parse_args() -> argparse.Namespace:
     return argp.parse_args()
 
 
-def load_config(verbose: bool, reset: bool = False, update: bool = False) -> dict:
+def load_config(args: argparse.Namespace, update: bool = False) -> dict:
     """
     Load configuration options from file
 
@@ -113,8 +113,8 @@ def load_config(verbose: bool, reset: bool = False, update: bool = False) -> dic
 
     # Check for existing configuration file
     config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
-    if config_path.is_file() and not reset:
-        if verbose: print(f"Found configuration file at \"{config_path}\"")
+    if config_path.is_file() and not args.r:
+        if args.v: print(f"Found configuration file at \"{config_path}\"")
 
         # Load configuration from file
         cfgp = configparser.ConfigParser()
@@ -133,16 +133,17 @@ def load_config(verbose: bool, reset: bool = False, update: bool = False) -> dic
             "height":      800,
             "maximised":   False
         }
-        if reset: print("Configuration reset to defaults") 
+        if args.r: print("Configuration reset to defaults") 
 
         # Save default configuration to file
         save_config(config_dict)
     
     # Add non-persistent options
     config_dict['version'] = __version__
-    config_dict['verbose'] = verbose
+    config_dict['verbose'] = args.v
     config_dict['description'] = description
     config_dict['update'] = update
+    config_dict['file'] = Path(args.file) if args.file else None
 
     return config_dict
 
@@ -163,7 +164,7 @@ def save_config(config: dict) -> bool:
     config_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Remove non-persistent options
-    rmkeys = ["verbose", "description", "update"]
+    rmkeys = ["verbose", "description", "update", "file"]
     for _, key in enumerate(rmkeys):
         if key in config: del config[key]
 
@@ -188,7 +189,7 @@ def update_check() -> bool:
     try:
         r = requests.get("https://api.github.com/repos/sam210723/wavebin/releases/latest")
         if r.status_code == 200 and f"v{__version__}" != r.json()['tag_name']:
-            print("An update for wavebin is available")
+            print("A new version of wavebin is available\nRun \"pip3 install --upgrade wavebin\" to install it\n\n")
             return True
     except Exception:
         return False
