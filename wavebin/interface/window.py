@@ -5,7 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QMenu
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QGridLayout
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 
@@ -68,7 +68,12 @@ class MainWindow(QApplication):
         self.window.changeEvent = self.changeEvent
         self.window.setFocus()
 
-        #TODO: Create grid layout widget
+        # Create main layout
+        self.log("Creating main grid layout")
+        self.layout = QGridLayout()
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
+        self.widget.setLayout(self.layout)
 
 
     def run(self):
@@ -102,7 +107,7 @@ class MainWindow(QApplication):
             self.config['maximised'] = self.window.isMaximized()
 
 
-    def log(self, msg):
+    def log(self, msg: str):
         """
         Print message to console if verbose mode enabled
 
