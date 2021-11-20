@@ -87,9 +87,13 @@ class MainWindow(QApplication):
         self.open_dialog = QFileDialog()
         self.save_dialog = QFileDialog()
 
-        # Initial welcome screen
-        self.log("Building welcome screen")
-        if not self.config['file']: self.welcome()
+        # If file already loaded from CLI args
+        if self.config['file']:
+            # Prepare to render waveform
+            self.reset()
+        else:
+            # Initial welcome screen
+            self.welcome()
 
 
     def run(self):
@@ -107,6 +111,8 @@ class MainWindow(QApplication):
         """
         Builds welcome screen when no waveforms are loaded
         """
+
+        self.log("Building welcome screen")
 
         # Text banner
         banner = QTextEdit()
@@ -201,6 +207,22 @@ class MainWindow(QApplication):
         self.layout.addWidget(button_docs, 1, 5, 1, 1, Qt.AlignLeft | Qt.AlignTop)
 
 
+    def reset(self):
+        """
+        Reset main grid layout ready for channel objects
+        """
+
+        # Clear grid layout
+        self.log("Resetting main grid layout")
+        while self.layout.count():
+            child = self.layout.takeAt(0)
+            if child.widget():
+                child.widget().deleteLater()
+
+        # Set file name in window title
+        self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
+
+
     def button_open(self):
         """
         Launch open file dialog
@@ -228,13 +250,12 @@ class MainWindow(QApplication):
             file_path = Path(file_path)
 
         # Open waveform file
-        if self.open_waveform(file_path):
+        waveform = self.open_waveform(file_path)
+        if waveform:
+            # Prepare to render waveform
             self.config['file'] = file_path
-
-            # Clear grid layout
-            for i in reversed(range(self.layout.count())): 
-                self.layout.itemAt(i).widget().setParent(None)
-
+            self.config['waveform'] = waveform
+            self.reset()
         else:
             # Show error message
             msgbox = QMessageBox()
