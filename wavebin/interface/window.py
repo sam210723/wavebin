@@ -117,7 +117,6 @@ class MainWindow(QApplication):
                 #container {
                     text-align: center;
                     vertical-align: bottom;
-                    margin-top: 100px;
                 }
 
                 span {
@@ -135,7 +134,7 @@ class MainWindow(QApplication):
                 }
             </style>
 
-            <br><div id='container'>
+            <div id='container'>
             """ +
           f"    <img src='{self.icon}'><span> wavebin</span>" +
             """
@@ -145,7 +144,7 @@ class MainWindow(QApplication):
             </div>
             """
         )
-        self.layout.addWidget(banner, 0, 0, 1, 9)
+        self.layout.addWidget(banner, 0, 0, 1, 9, Qt.AlignBottom)
 
         # Button style
         style = """
