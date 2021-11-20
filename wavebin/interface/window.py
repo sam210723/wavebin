@@ -174,6 +174,7 @@ class MainWindow(QApplication):
         # Open waveform button
         button_open = QPushButton()
         button_open.setText(" Open waveform")
+        button_open.setToolTip("Open a waveform capture file from a supported oscilloscope vendor")
         button_open.setStyleSheet(style)
         button_open.setIcon(qta.icon("fa5s.folder-open", color="#FFF"))
         button_open.clicked.connect(self.button_open)
@@ -182,6 +183,7 @@ class MainWindow(QApplication):
         # Capture waveform button
         button_capture = QPushButton()
         button_capture.setText(" Capture waveform")
+        button_capture.setToolTip("Capture a new waveform from an oscilloscope using USB-TMC")
         button_capture.setStyleSheet(style)
         button_capture.setIcon(qta.icon("fa5s.wave-square", color="#FFF"))
         button_capture.clicked.connect(self.button_capture)
@@ -190,6 +192,7 @@ class MainWindow(QApplication):
         # Documentation button
         button_docs = QPushButton()
         button_docs.setText(" Documentation")
+        button_docs.setToolTip("Open wavebin documentation in the default web browser")
         button_docs.setStyleSheet(style)
         button_docs.setIcon(qta.icon("fa5s.bookmark", color="#FFF"))
         button_docs.clicked.connect(self.button_docs)
