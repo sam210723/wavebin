@@ -48,3 +48,34 @@ class Vendor:
         with open(path, "rb") as fh:
             self.data = fh.read()
         return True
+
+
+def vendor_detect(path: Path) -> Vendor:
+    """
+    Detect vendor of waveform capture
+
+    Args:
+        path (Path): Path to waveform file as pathlib Path object
+
+    Returns:
+        Vendor: Instance of KeysightWaveform, RigolWaveform or SiglentWaveform
+    """
+
+    # Read file contents in binary mode
+    with open(path, "rb") as fh: data = fh.read()
+
+    # Detect waveform capture vendor
+    if data[0:2] == b'AG':
+        # Keysight/Agilent
+        from wavebin.vendor.keysight import KeysightWaveform
+        return KeysightWaveform(data)
+    elif data[0:2] == b'RG':
+        # Rigol
+        from wavebin.vendor.rigol import RigolWaveform
+        return RigolWaveform(data)
+    elif data[0:4] == b'\x02\x00\x00\x00':  #TODO: This is probably wrong
+        # Siglent
+        from wavebin.vendor.siglent import SiglentWaveform
+        return SiglentWaveform(data)
+    else:
+        return None
