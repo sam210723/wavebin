@@ -53,14 +53,13 @@ class MainToolBar(QToolBar):
         # Tool bar items
         self.items = {
             "open":    ["Open waveform", "folder-open"],
-            "export":  ["Export waveform", "file-export"],
-            "sep0":    None,
-            "props":   ["Waveform properties", "list"],
             "capture": ["Capture waveform", "wave-square"],
-            "sep1":    None,
+            "export":  ["Export waveform", "file-export"],
+            "props":   ["Waveform properties", "list"],
+            "sep0":    None,
             "docs":    ["Open documentation", "bookmark"],
             "bug":     ["Report a bug", "bug"],
-            "update":  ["Update wavebin", "sync-alt"]
+            "update":  ["An update is available for wavebin", "sync-alt"]
         }
 
         # Build tool bar
@@ -98,6 +97,14 @@ class MainToolBar(QToolBar):
         """
         
         self.app.button_open()
+
+
+    def button_capture(self):
+        """
+        Trigger waveform capture via USB-TMC / PyVISA
+        """
+
+        self.app.button_capture()
 
 
     def button_export(self):
@@ -143,13 +150,6 @@ class MainToolBar(QToolBar):
         msgbox.setStandardButtons(QMessageBox.Close)
         msgbox.setDefaultButton(QMessageBox.Close)
         msgbox.exec()
-
-
-    def button_capture(self):
-        """
-        Trigger waveform capture via USB-TMC / PyVISA
-        """
-        self.app.button_capture()
 
 
     def button_docs(self):
