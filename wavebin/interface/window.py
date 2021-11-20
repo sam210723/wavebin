@@ -127,8 +127,8 @@ class MainWindow(QApplication):
                 }
 
                 p {
-                    margin-top: 30px;
-                    color: #AAA;
+                    margin-top: 90px;
+                    color: #BBB;
                     font-family: Roboto;
                     font-size: 12pt;
                 }
