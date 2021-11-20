@@ -53,7 +53,6 @@ class MainWindow(QApplication):
         self.window.setWindowIcon(QIcon(self.icon))
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 500)
-        if self.config['maximised']: self.window.showMaximized()
 
         # Add menu bar to main window
         self.log("Building menu bar")
@@ -98,6 +97,7 @@ class MainWindow(QApplication):
 
         self.log("Starting Qt application")
         self.window.show()
+        if self.config['maximised']: self.window.setWindowState(Qt.WindowState.WindowMaximized)
         self.exec()
 
 
@@ -117,7 +117,7 @@ class MainWindow(QApplication):
                 #container {
                     text-align: center;
                     vertical-align: bottom;
-                    margin-top: 150px;
+                    margin-top: 100px;
                 }
 
                 span {
@@ -147,7 +147,7 @@ class MainWindow(QApplication):
         )
         self.layout.addWidget(banner, 0, 0, 1, 9)
 
-        # Open/Capture buttons
+        # Button style
         style = """
             QPushButton {
                 margin: 10px;
@@ -171,6 +171,8 @@ class MainWindow(QApplication):
                 background: #999;
             }
         """
+
+        # Open waveform button
         button_open = QPushButton()
         button_open.setText(" Open waveform")
         button_open.setStyleSheet(style)
@@ -178,6 +180,7 @@ class MainWindow(QApplication):
         button_open.clicked.connect(self.button_open)
         self.layout.addWidget(button_open, 1, 3, 1, 1, Qt.AlignRight | Qt.AlignTop)
 
+        # Capture waveform button
         button_capture = QPushButton()
         button_capture.setText(" Capture waveform")
         button_capture.setStyleSheet(style)
@@ -185,6 +188,7 @@ class MainWindow(QApplication):
         button_capture.clicked.connect(self.button_capture)
         self.layout.addWidget(button_capture, 1, 4, 1, 1, Qt.AlignCenter | Qt.AlignTop)
 
+        # Documentation button
         button_docs = QPushButton()
         button_docs.setText(" Documentation")
         button_docs.setStyleSheet(style)
@@ -248,14 +252,17 @@ class MainWindow(QApplication):
         QMainWindow.resizeEvent(self.window, event)
 
         # Update window size and state in configuration
-        self.config['width'] = self.window.width()
-        self.config['height'] = self.window.height()
+        if self.window.width() != self.primaryScreen().size().width():
+            self.config['width'] = self.window.width()
+            self.config['height'] = self.window.height()
     
 
     def event_change(self, event):
         """
-        Handle window state change
+        Handle window state change event
         """
+
+        QMainWindow.changeEvent(self.window, event)
 
         if event.type() == QEvent.WindowStateChange:
             self.config['maximised'] = self.window.isMaximized()
