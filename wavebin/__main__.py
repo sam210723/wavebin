@@ -186,12 +186,18 @@ def update_check() -> bool:
     """
 
     try:
-        r = requests.get("https://api.github.com/repos/sam210723/wavebin/releases/latest")
+        r = requests.get(
+            "https://api.github.com/repos/sam210723/wavebin/releases/latest",
+            headers = {
+                "User-Agent": "sam210723/wavebin update_check"
+            }
+        )
+
         if r.status_code == 200 and f"v{__version__}" != r.json()['tag_name']:
             print("A new version of wavebin is available\nRun \"pip3 install --upgrade wavebin\" to install it\n")
             return True
-    except Exception:
-        return False
+        elif r.status_code == 403: print("Update check failed due to GitHub API rate limit")
+    except Exception: pass
 
     return False
 
