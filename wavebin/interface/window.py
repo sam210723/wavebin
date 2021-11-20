@@ -49,9 +49,10 @@ class MainWindow(QApplication):
 
         # Window styling and state
         self.log("Updating window style")
-        self.window.setWindowIcon(QIcon("icon.ico"))
+        self.icon = str(Path(__file__).parent.parent.with_name("icon").with_suffix(".ico"))
+        self.window.setWindowIcon(QIcon(self.icon))
         self.window.resize(self.config['width'], self.config['height'])
-        self.window.setMinimumSize(800, 400)
+        self.window.setMinimumSize(800, 500)
         if self.config['maximised']: self.window.showMaximized()
 
         # Add menu bar to main window
@@ -135,7 +136,9 @@ class MainWindow(QApplication):
             </style>
 
             <br><div id='container'>
-                <img src='icon.ico'><span> wavebin</span>
+            """ +
+          f"    <img src='{self.icon}'><span> wavebin</span>" +
+            """
                 <p>
                     Get started by opening a waveform file or capturing a new waveform
                 </p>
