@@ -52,12 +52,13 @@ class MainToolBar(QToolBar):
 
         # Tool bar items
         self.items = {
-            "open":    ["Open file", "folder-open"],
+            "open":    ["Open waveform", "folder-open"],
             "export":  ["Export waveform", "file-export"],
             "sep0":    None,
             "props":   ["Waveform properties", "list"],
             "capture": ["Capture waveform", "wave-square"],
             "sep1":    None,
+            "docs":    ["Open documentation", "bookmark"],
             "bug":     ["Report a bug", "bug"],
             "update":  ["Update wavebin", "sync-alt"]
         }
@@ -171,6 +172,15 @@ class MainToolBar(QToolBar):
         Trigger waveform capture via USB-TMC / PyVISA
         """
         pass
+
+
+    def button_docs(self):
+        """
+        Open documentation in browser
+        """
+
+        self.log("Opening documentation in default web browser")
+        webbrowser.open("https://vksdr.com/wavebin")
 
 
     def button_bug(self):
