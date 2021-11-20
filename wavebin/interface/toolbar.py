@@ -6,7 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar, QStyle
+from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 import qtawesome as qta
