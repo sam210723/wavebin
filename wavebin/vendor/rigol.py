@@ -17,7 +17,7 @@ class RigolWaveform(Vendor):
         super(RigolWaveform, self).__init__(
             "Rigol",
             "https://www.rigolna.com",
-            "https://vksdr.com/download/wavebin/Rigol%20MSO8000%20User%20Manual.pdf#page=277",
+            "https://vksdr.com/download/wavebin/manuals/Rigol%20MSO8000%20User%20Manual.pdf#page=277",
             ["MSO5074"],
             ["*.bin", "*.wfm", "*.csv"]
         )
