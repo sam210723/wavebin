@@ -13,6 +13,8 @@ import requests
 import sys
 
 from wavebin.interface.window import MainWindow
+from wavebin.vendor import vendor_detect
+
 from wavebin.interface.plot import QtPlot
 from wavebin.wave import WaveParser
 
@@ -44,7 +46,7 @@ def main():
     config = load_config(args, update)
 
     # Create Qt application
-    app = MainWindow(config, safe_exit)
+    app = MainWindow(config, safe_exit, open_waveform)
 
     # Create Qt waveform plot
     """
@@ -200,6 +202,29 @@ def update_check() -> bool:
     except Exception: pass
 
     return False
+
+
+def open_waveform(path: Path) -> bool:
+    """
+    Open waveform file, parse, then update UI
+
+    Args:
+        path (Path): Path to waveform file as pathlib Path object
+    
+    Returns:
+        bool: True on success
+    """
+
+    # Detect waveform vendor
+    waveform = vendor_detect(path)
+    if waveform:
+        # Known file type
+        print(f"Detected {waveform.vendor_name} waveform file")
+        return True
+    else:
+        # Unknown file type
+        print(f"Unknown file format in \"{path.name}\"")
+        return False
 
 
 def safe_exit(config: dict = None, code=0) -> None:

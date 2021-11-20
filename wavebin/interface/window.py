@@ -6,7 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 import qtawesome as qta
@@ -21,21 +21,23 @@ class MainWindow(QApplication):
     Main application window
     """
 
-    def __init__(self, config: dict, safe_exit):
+    def __init__(self, config: dict, safe_exit, open_waveform):
         """
         Initialise main application window
 
         Args:
             config (dict): Configuration options
             safe_exit (function): Graceful application exit function
+            open_waveform (function): Waveform file handling function
         """
 
         # Initialise parent class
         super(MainWindow, self).__init__([])
 
         # Set globals
-        self.safe_exit = safe_exit
         self.config = config
+        self.safe_exit = safe_exit
+        self.open_waveform = open_waveform
         self.name = f"wavebin v{self.config['version']}"
 
         # Setup main Qt application
@@ -224,9 +226,24 @@ class MainWindow(QApplication):
             return
         else:
             file_path = Path(file_path)
-        
-        # Update current file in config
-        self.config['file'] = file_path
+
+        # Open waveform file
+        if self.open_waveform(file_path):
+            self.config['file'] = file_path
+
+            # Clear grid layout
+            for i in reversed(range(self.layout.count())): 
+                self.layout.itemAt(i).widget().setParent(None)
+
+        else:
+            # Show error message
+            msgbox = QMessageBox()
+            msgbox.setText(f"Error opening \"{file_path.name}\"\n\nUnknown file format.")
+            msgbox.setWindowIcon(QIcon("icon.ico"))
+            msgbox.setIcon(QMessageBox.Icon.Critical)
+            msgbox.setStandardButtons(QMessageBox.Ok)
+            msgbox.setDefaultButton(QMessageBox.Ok)
+            msgbox.exec()
 
 
     def button_capture(self):
