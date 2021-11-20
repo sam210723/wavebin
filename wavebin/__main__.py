@@ -13,7 +13,7 @@ import requests
 import sys
 
 from wavebin.interface.window import MainWindow
-from wavebin.vendor import vendor_detect
+from wavebin.vendor import Vendor, vendor_detect
 
 from wavebin.interface.plot import QtPlot
 from wavebin.wave import WaveParser
@@ -44,6 +44,12 @@ def main():
 
     # Load configuration from file
     config = load_config(args, update)
+
+    # Load file from -i argument
+    if config['file']:
+        waveform = open_waveform(config['file'])
+        if not waveform: safe_exit(code=1)
+        config['waveform'] = waveform
 
     # Create Qt application
     app = MainWindow(config, safe_exit, open_waveform)
@@ -165,7 +171,7 @@ def save_config(config: dict) -> bool:
     config_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Remove non-persistent options
-    rmkeys = ["verbose", "description", "update", "file"]
+    rmkeys = ["verbose", "description", "update", "file", "waveform"]
     for _, key in enumerate(rmkeys):
         if key in config: del config[key]
 
@@ -204,7 +210,7 @@ def update_check() -> bool:
     return False
 
 
-def open_waveform(path: Path) -> bool:
+def open_waveform(path: Path) -> Vendor | None:
     """
     Open waveform file, parse, then update UI
 
@@ -212,19 +218,19 @@ def open_waveform(path: Path) -> bool:
         path (Path): Path to waveform file as pathlib Path object
     
     Returns:
-        bool: True on success
+        Vendor or None: None when file format is unknown, otherwise instance of Vendor
     """
 
     # Detect waveform vendor
     waveform = vendor_detect(path)
     if waveform:
         # Known file type
-        print(f"Detected {waveform.vendor_name} waveform file")
-        return True
+        print(f"Opening \"{path.name}\" ({waveform.vendor_name})")
+        return waveform
     else:
         # Unknown file type
-        print(f"Unknown file format in \"{path.name}\"")
-        return False
+        print(f"Unknown file format \"{path.name}\"")
+        return None
 
 
 def safe_exit(config: dict = None, code=0) -> None:
