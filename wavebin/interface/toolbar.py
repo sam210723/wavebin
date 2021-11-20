@@ -96,30 +96,8 @@ class MainToolBar(QToolBar):
         """
         Launch open file dialog
         """
-
-        # Get initial path
-        if self.app.config['file']:
-            initial = self.app.config['file'].parent
-        else:
-            initial = Path.home()
-
-        # Show open file dialog
-        file_path = self.app.open_dialog.getOpenFileName(
-            self,
-            "Open waveform capture",
-            str(initial.absolute()),
-            "Waveforms (*.bin *.wfm *.csv);;All files (*.*)"
-        )[0]
-
-        # Handle cancelled dialog
-        if file_path == "":
-            self.log("Open file dialog cancelled")
-            return
-        else:
-            file_path = Path(file_path)
         
-        # Update current file in config
-        self.app.config['file'] = file_path
+        self.app.button_open()
 
 
     def button_export(self):
@@ -171,7 +149,7 @@ class MainToolBar(QToolBar):
         """
         Trigger waveform capture via USB-TMC / PyVISA
         """
-        pass
+        self.app.button_capture()
 
 
     def button_docs(self):

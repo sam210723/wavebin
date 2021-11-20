@@ -7,6 +7,7 @@ All notable changes to this project will be documented in this file.
 ### Added
   - Persistent configuration options
   - Base class for vendor specific file parsers
+  - Welcome screen with starting actions
   - Tool bar for common operations
   - Toggle menu bar visibility with `Alt` key
   - Update checker using GitHub API
@@ -18,7 +19,7 @@ All notable changes to this project will be documented in this file.
   - Global configuration object for all classes
 
 ### Fixed
-  - Launcher executable in `PATH`
+  - Launcher executable script (`> wavebin` instead of `python3 -m wavebin`)
   - Minimum dependency versions
   - Minimum Python version check
 </details>
