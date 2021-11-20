@@ -32,19 +32,18 @@ class Vendor:
         print(f"  {', '.join(self.extensions)}\n")
 
 
-    def open(self, file_path: str) -> bool:
+    def open(self, path: Path) -> bool:
         """
         Open waveform capture file
 
         Args:
-            file_path (str): Path to waveform capture file
+            path (pathlib.Path): Path to waveform capture file
         """
 
         # Check file exists
-        p = Path(file_path)
-        if not p.is_file(): return False
+        if not path.is_file(): return False
 
         # Read contents into byte array
-        with open(p, "rb") as fh:
+        with open(path, "rb") as fh:
             self.data = fh.read()
         return True
