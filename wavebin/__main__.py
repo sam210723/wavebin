@@ -103,8 +103,7 @@ def load_config(args: argparse.Namespace, update: bool = False) -> dict:
     Load configuration options from file
 
     Args:
-        verbose (bool): Verbose console output flag
-        reset (bool): Reset configuration to default. Defaults to False.
+        args (argparse.Namespace): Parsed command line arguments.
         update (bool): True if update is available on GitHub. Defaults to False.
 
     Returns:
