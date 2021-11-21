@@ -6,7 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QAction, QApplication, QMessageBox, QToolBar
+from PyQt5.QtWidgets import QApplication, QWidget, QToolBar, QAction, QLabel, QMessageBox, QSizePolicy
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 import qtawesome as qta
@@ -89,6 +89,25 @@ class MainToolBar(QToolBar):
         self.items['export'].setEnabled(False)
         self.items['props'].setEnabled(False)
         if not self.app.config['update']: self.removeAction(self.items['update'])
+
+        # Add waveform info label
+        spacer = QWidget()
+        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.addWidget(spacer)
+        self.info = QLabel()
+        self.info.setFixedWidth(150)
+        self.info.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.info.setToolTip("Sample rate and capture duration")
+        self.info.setStyleSheet(
+            """
+            QLabel {
+                color: #FFF;
+                font-size: 11pt;
+                padding-right: 10px;
+            }
+            """
+        )
+        self.addWidget(self.info)
 
 
     def button_open(self):
@@ -204,6 +223,18 @@ class MainToolBar(QToolBar):
 
         # Exit current instance
         self.app.safe_exit(self.app.config)
+
+
+    def set_info(self, sr: str, dur: str):
+        """
+        Update info widget in toolbar
+
+        Args:
+            sr (str): Sample rate as human-readable string
+            dur (str): Capture duration as human-readable string
+        """
+
+        self.info.setText(f"{sr}\n{dur}")
 
 
     def log(self, msg: str):
