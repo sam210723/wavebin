@@ -41,6 +41,21 @@ class KeysightWaveform(Vendor):
             bool: True if waveform parsed 
         """
 
+        # Parse file header
+        if not self.parse_file_header(): return False
+
+        self.parsed = True
+        return True
+
+
+    def parse_file_header(self) -> bool:
+        """
+        Parse waveform file header
+
+        Returns:
+            bool: True if waveform file header parsed ok
+        """
+
         # Unpack file header
         file_header_tuple = namedtuple(
             "FileHeader",
@@ -59,6 +74,5 @@ class KeysightWaveform(Vendor):
         print("File Header:")
         print(f"  - Waveforms: {self.count}")
         print(f"  - File Size: {self.human_format(self._file_header.size, binary=True)}B\n")
-        
-        self.parsed = True
+
         return True
