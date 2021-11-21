@@ -14,13 +14,15 @@ class Vendor:
     """
 
     def __init__(self, name: str, site: str, docs: str, devices: list, exts: list, data: bytes):
-        self.vendor_name: str = name     # Plain-text vendor name
-        self.vendor_site: str = site     # Vendor website URL
-        self.vendor_docs: str = docs     # File format documentation URL
-        self.devices: list = devices     # List of vendor devices tested with wavebin
-        self.extensions: list = exts     # List of supported file extensions
+        self.vendor_name: str = name    # Plain-text vendor name
+        self.vendor_site: str = site    # Vendor website URL
+        self.vendor_docs: str = docs    # File format documentation URL
+        self.devices: list = devices    # List of vendor devices tested with wavebin
+        self.extensions: list = exts    # List of supported file extensions
 
-        self.data = data    # Capture file byte array
+        self.parsed = False             # Parsed flag
+        self.data = data                # Capture file byte array
+        self.count = 0                  # Number of waveform channels
 
 
     def info(self):
