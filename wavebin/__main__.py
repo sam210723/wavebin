@@ -69,7 +69,6 @@ def main():
             (255, 165, 0)
         ]
     })
-    """
 
     # Set class instances
     #wave.instances(app, plot)
@@ -80,6 +79,7 @@ def main():
 
     # Parse file if path specified in argument
     #if args.file and not wave.parse(args.file): safe_exit(code=1)
+    """
 
     # Run application
     app.run()
