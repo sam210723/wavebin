@@ -6,13 +6,13 @@
         {
             "label": "Build Package (source + wheel)",
             "type": "shell",
-            "command": "python setup.py sdist bdist_wheel",
+            "command": "python3 setup.py sdist bdist_wheel",
             "problemMatcher": []
         },
         {
             "label": "Install Package (local)",
             "type": "shell",
-            "command": "python setup.py install",
+            "command": "python3 setup.py install",
             "problemMatcher": []
         },
         {
@@ -24,7 +24,7 @@
         {
             "label": "Develop Package",
             "type": "shell",
-            "command": "python setup.py develop",
+            "command": "python3 setup.py develop",
             "problemMatcher": []
         },
         {
@@ -61,6 +61,12 @@
             "label": "Run Module (dual waveform)",
             "type": "shell",
             "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_2CH_2GSPS_4Kpts_DUAL.bin\"",
+            "problemMatcher": []
+        },
+        {
+            "label": "Run Module (quad waveform)",
+            "type": "shell",
+            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Agilent\\Agilent_MSOX4154A_4CH_1.25GSPS_2Mpts.bin\"",
             "problemMatcher": []
         },
         {
