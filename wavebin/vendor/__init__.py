@@ -21,8 +21,9 @@ class Vendor:
         self.extensions: list = exts    # List of supported file extensions
         print(f"Detected {self.vendor_name} waveform file")
 
-        self.parsed = False             # Parsed flag
         self.data = data                # Capture file byte array
+        self.offset = 0                 # Current byte offset in data array
+        self.parsed = False             # Flag set when parsing finished
         self.count = 0                  # Number of waveform channels
 
 
@@ -53,28 +54,43 @@ class Vendor:
         return True
 
 
-    def human_format(self, num: int | float, binary=False, sep="") -> str:
+    def human_format(self, num: int | float, binary: bool = False, sep=' ', unit: str = "") -> str:
         """
         Format numbers as human-readable strings
 
         Args:
             num (int | float): Number to format
             binary (bool, optional): Divide by 1024 instead of 1000. Defaults to False.
-            sep (str, optional): Digit group separation character. Defaults to "".
+            sep (str, optional): Number and unit separating character
 
         Returns:
             str: Formatted number string
         """
 
-        mag = 0
-        div = 1024.0 if binary else 1000.0
-        num = float(f"{num:.3g}")
-        while abs(num) >= div:
-            mag += 1
-            num /= div
+        magnitude = 0                               # Number of magnitudes away from original number
+        divmul = 1024.0 if binary else 1000.0       # Divisor/Multiplier between magnitudes
+        num = float(f"{num:.3g}")                   # Number as three digit float
+        
+        if num > 1:
+            # Larger SI prefixes
+            while abs(num) >= divmul:
+                magnitude += 1
+                num /= divmul
+            prefix = ['', 'k', 'M', 'G', 'T', 'P'][magnitude]
 
-        digits = f"{round(num, 2)}".rstrip('0')
-        return f"{digits}{sep} {['', 'k', 'M', 'G', 'T'][mag]}"
+        elif num < 1:
+            # Smaller SI prefixes
+            while abs(num) <= divmul:
+                magnitude += 1
+                num *= divmul
+            prefix = ['', 'm', 'μ', 'n', 'p', 'f'][magnitude]
+        else:
+            # Number is 1
+            prefix = ""
+
+        # Append prefix and units
+        digits = f"{round(num, 4)}".rstrip('0').rstrip('.')
+        return f"{digits}{sep}{prefix}{unit}"
 
 
 def vendor_detect(path: Path) -> Vendor:
