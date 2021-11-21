@@ -44,6 +44,17 @@ class KeysightWaveform(Vendor):
         # Parse file header
         if not self.parse_file_header(): return False
 
+        # Loop through waveforms
+        for i in range(self.count):
+            print(f"Waveform {i + 1}:")
+
+            # Parse waveform header
+            header = self.parse_waveform_header()
+            self.channels.append({
+                "header": header,
+                "data": None
+            })
+
         self.parsed = True
         return True
 
@@ -53,7 +64,7 @@ class KeysightWaveform(Vendor):
         Parse waveform file header
 
         Returns:
-            bool: True if waveform file header parsed ok
+            bool: True if waveform file header parsed
         """
 
         # Unpack file header
@@ -62,6 +73,7 @@ class KeysightWaveform(Vendor):
             "magic version size waveforms"
         )
         fields = struct.unpack("2s2s2i", self.data[:0x0C])
+        self.offset = 0x0C
         self._file_header = file_header_tuple(*fields)
         self.count = self._file_header.waveforms
 
@@ -71,8 +83,42 @@ class KeysightWaveform(Vendor):
             return False
 
         # Print file header info
-        print("File Header:")
-        print(f"  - Waveforms: {self.count}")
-        print(f"  - File Size: {self.human_format(self._file_header.size, binary=True)}B\n")
+        print(
+            f"Found {self.count} waveform{'s' if self.count > 1 else ''}" +
+            f" in {self.human_format(self._file_header.size, binary=True, unit='B')}\n"
+        )
 
         return True
+
+
+    def parse_waveform_header(self) -> namedtuple:
+        """
+        Parse waveform header
+
+        Returns:
+            namedtuple: Parsed waveform header as namedtuple
+        """
+
+        # Unpack waveform header
+        length = self.data[self.offset]
+        waveform_header_tuple = namedtuple(
+            "WaveformHeader",
+            "size wave_type buffers points average " +
+            "x_d_range x_d_origin x_increment x_origin " +
+            "x_units y_units date time frame label " +
+            "time_tags segment"
+        )
+        fields = struct.unpack("5if3d2i16s16s24s16sdI", self.data[self.offset : self.offset + length])
+        self.offset += length
+        header = waveform_header_tuple(*fields)
+
+        # Format sample rate and duration
+        self.sample_rate = self.human_format(1 / header.x_increment, unit="S/s")
+        self.duration = self.human_format(header.x_d_range, unit="s")
+
+        print(f"  - Sample Points:  {self.human_format(header.points)}")
+        print(f"  - Sample Rate:    {self.sample_rate}")
+        print(f"  - Device Model:   {header.frame.decode().split(':')[0]}")
+        print(f"  - Device Serial:  {header.frame.decode().split(':')[1]}\n")
+
+        return header
