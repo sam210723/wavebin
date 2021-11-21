@@ -25,6 +25,9 @@ class Vendor:
         self.offset = 0                 # Current byte offset in data array
         self.parsed = False             # Flag set when parsing finished
         self.count = 0                  # Number of waveform channels
+        self.sample_rate = 0            # Capture sample rate
+        self.duration = 0               # Capture duration
+        self.channels = []              # Capture channel list
 
 
     def info(self):
@@ -62,6 +65,7 @@ class Vendor:
             num (int | float): Number to format
             binary (bool, optional): Divide by 1024 instead of 1000. Defaults to False.
             sep (str, optional): Number and unit separating character
+            unit (str, optional): Unit to append to formatted string
 
         Returns:
             str: Formatted number string
@@ -89,7 +93,7 @@ class Vendor:
             prefix = ""
 
         # Append prefix and units
-        digits = f"{round(num, 4)}".rstrip('0').rstrip('.')
+        digits = f"{round(num, 2)}".rstrip('0').rstrip('.')
         return f"{digits}{sep}{prefix}{unit}"
 
 
