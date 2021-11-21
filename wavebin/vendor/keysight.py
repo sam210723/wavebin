@@ -5,6 +5,9 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+import struct
+from collections import namedtuple
+
 from wavebin.vendor import Vendor
 
 
@@ -25,3 +28,34 @@ class KeysightWaveform(Vendor):
             ["*.bin", "*.csv"],
             data
         )
+
+        # Parse data when class initialised
+        if data: self.parse()
+    
+
+    def parse(self) -> bool:
+        """
+        Parse waveform data
+
+        Returns:
+            bool: True if waveform parsed 
+        """
+
+        # Unpack file header
+        file_header_tuple = namedtuple(
+            "FileHeader",
+            "magic version size waveforms"
+        )
+        fields = struct.unpack("2s2s2i", self.data[:0x0C])
+        self._file_header = file_header_tuple(*fields)
+        self.count = self._file_header.waveforms
+
+        # Check file magic
+        if self._file_header.magic != b'AG':
+            print("Unknown file format")
+            return False
+
+        # Print file header info
+        print("File Header:")
+        print(f"  - Waveforms: {self.count}")
+        print(f"  - File Size: {self.human_format(self._file_header.size, binary=True)}B\n")
