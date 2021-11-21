@@ -90,7 +90,7 @@ class MainWindow(QApplication):
         # If file already loaded from CLI args
         if self.config['file']:
             # Prepare to render waveform
-            self.reset()
+            self.update()
         else:
             # Initial welcome screen
             self.welcome()
@@ -207,9 +207,9 @@ class MainWindow(QApplication):
         self.layout.addWidget(button_docs, 1, 5, 1, 1, Qt.AlignLeft | Qt.AlignTop)
 
 
-    def reset(self):
+    def update(self):
         """
-        Reset main grid layout ready for channel objects
+        Update UI for new waveform capture
         """
 
         # Clear grid layout
@@ -222,7 +222,7 @@ class MainWindow(QApplication):
         # Set file name in window title
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
-        # Add rows to grid layout
+        # Add widgets to grid layout
         for wave in range(self.config['waveform'].count):
             label0 = QLabel(f"WAVE{wave} PLOT")
             label0.setStyleSheet("QLabel { color: #FFF; }")
@@ -265,7 +265,7 @@ class MainWindow(QApplication):
             # Prepare to render waveform
             self.config['file'] = file_path
             self.config['waveform'] = waveform
-            self.reset()
+            self.update()
         else:
             # Show error message
             msgbox = QMessageBox()
