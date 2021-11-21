@@ -6,7 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
+from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
 from PyQt5.QtCore import Qt, QEvent
 from PyQt5.QtGui import QIcon
 import qtawesome as qta
@@ -221,6 +221,16 @@ class MainWindow(QApplication):
 
         # Set file name in window title
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
+
+        # Add rows to grid layout
+        for wave in range(self.config['waveform'].count):
+            label0 = QLabel(f"WAVE{wave} PLOT")
+            label0.setStyleSheet("QLabel { color: #FFF; }")
+            label1 = QLabel(f"WAVE{wave} CONTROLS")
+            label1.setStyleSheet("QLabel { color: #FFF; }")
+
+            self.layout.addWidget(label0, wave, 0, 1, 1)
+            self.layout.addWidget(label1, wave, 1, 1, 1)
 
 
     def button_open(self):
