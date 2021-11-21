@@ -121,7 +121,7 @@ def load_config(args: argparse.Namespace, update: bool = False) -> dict:
     # Check for existing configuration file
     config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
     if config_path.is_file() and not args.r:
-        if args.v: print(f"Found configuration file at \"{config_path}\"")
+        if args.v: print(f"Loading configuration \"{config_path}\"")
 
         # Load configuration from file
         cfgp = configparser.ConfigParser()
@@ -222,14 +222,15 @@ def open_waveform(path: Path) -> Vendor | None:
     """
 
     # Detect waveform vendor
+    print(f"Opening \"{path.name}\"")
     waveform = vendor_detect(path)
+
     if waveform:
         # Known file type
-        print(f"Opening \"{path.name}\" ({waveform.vendor_name})")
         return waveform
     else:
         # Unknown file type
-        print(f"Unknown file format \"{path.name}\"")
+        print(f"\nUnknown file format \"{path.name}\"")
         return None
 
 
