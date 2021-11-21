@@ -231,6 +231,12 @@ class MainWindow(QApplication):
 
             self.layout.addWidget(label0, wave, 0, 1, 1)
             self.layout.addWidget(label1, wave, 1, 1, 1)
+        
+        # Show waveform info in toolbar
+        self.tool_bar.set_info(
+            self.config['waveform'].sample_rate,
+            self.config['waveform'].duration
+        )
 
 
     def button_open(self):
