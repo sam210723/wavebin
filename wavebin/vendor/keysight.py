@@ -59,3 +59,6 @@ class KeysightWaveform(Vendor):
         print("File Header:")
         print(f"  - Waveforms: {self.count}")
         print(f"  - File Size: {self.human_format(self._file_header.size, binary=True)}B\n")
+        
+        self.parsed = True
+        return True

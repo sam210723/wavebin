@@ -227,10 +227,13 @@ def open_waveform(path: Path) -> Vendor | None:
 
     if waveform:
         # Known file type
-        return waveform
+        if waveform.parsed:
+            return waveform
+        else:
+            print(f"Unable to parse waveform file \"{path.name}\"")
     else:
         # Unknown file type
-        print(f"\nUnknown file format \"{path.name}\"")
+        print(f"Unknown file format \"{path.name}\"")
         return None
 
 
