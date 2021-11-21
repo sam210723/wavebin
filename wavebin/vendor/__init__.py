@@ -19,6 +19,7 @@ class Vendor:
         self.vendor_docs: str = docs    # File format documentation URL
         self.devices: list = devices    # List of vendor devices tested with wavebin
         self.extensions: list = exts    # List of supported file extensions
+        print(f"Detected {self.vendor_name} waveform file")
 
         self.parsed = False             # Parsed flag
         self.data = data                # Capture file byte array
@@ -50,6 +51,30 @@ class Vendor:
         with open(path, "rb") as fh:
             self.data = fh.read()
         return True
+
+
+    def human_format(self, num: int | float, binary=False, sep="") -> str:
+        """
+        Format numbers as human-readable strings
+
+        Args:
+            num (int | float): Number to format
+            binary (bool, optional): Divide by 1024 instead of 1000. Defaults to False.
+            sep (str, optional): Digit group separation character. Defaults to "".
+
+        Returns:
+            str: Formatted number string
+        """
+
+        mag = 0
+        div = 1024.0 if binary else 1000.0
+        num = float(f"{num:.3g}")
+        while abs(num) >= div:
+            mag += 1
+            num /= div
+
+        digits = f"{round(num, 2)}".rstrip('0')
+        return f"{digits}{sep} {['', 'k', 'M', 'G', 'T'][mag]}"
 
 
 def vendor_detect(path: Path) -> Vendor:
