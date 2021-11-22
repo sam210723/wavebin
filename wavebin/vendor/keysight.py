@@ -32,7 +32,7 @@ class KeysightWaveform(Vendor):
 
         # Parse data when class initialised
         if data: self.parse()
-    
+
 
     def parse(self) -> bool:
         """
@@ -59,8 +59,8 @@ class KeysightWaveform(Vendor):
                 points = header.points,
                 sample_rate = 1/header.x_increment,
                 duration = header.x_d_range,
-                x_unit=Unit(header.x_units),
-                y_unit=Unit(header.y_units),
+                x_unit = Unit(header.x_units),
+                y_unit = Unit(header.y_units),
                 digital = data.dtype == np.uint8
             ))
 
