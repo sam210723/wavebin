@@ -14,11 +14,12 @@ from wavebin.vendor import Channel
 
 
 class WaveformPlot(PlotWidget):
-    def __init__(self, config: dict, waveform: Channel):
+    def __init__(self, config: dict, waveform: Channel, colour: tuple):
         super(WaveformPlot, self).__init__()
 
         self.config = config
         self.waveform = waveform
+        self.colour = colour
 
         self.log("Initialising plot widget")
         self.config['opengl'] = False   #FIXME: TEMP
@@ -109,7 +110,7 @@ class WaveformPlot(PlotWidget):
             x,
             y,
             pen=pg.mkPen(
-                "#fff",#self.config['colours'][0],
+                self.colour,
                 width=self.config['line_width']
             )
         )

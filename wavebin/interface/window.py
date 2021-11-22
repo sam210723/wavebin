@@ -223,9 +223,16 @@ class MainWindow(QApplication):
         # Set file name in window title
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
+        colours = [
+            (242, 242, 0),
+            (100, 149, 237),
+            (255, 0, 0),
+            (255, 165, 0)
+        ]
+
         # Add widgets to grid layout
         for i, ch in enumerate(self.config['waveform'].channels):
-            ch.plot = WaveformPlot(self.config, ch)
+            ch.plot = WaveformPlot(self.config, ch, colours[i])
             self.layout.addWidget(ch.plot, i, 0, 1, 1)
 
             label1 = QLabel(f"WAVE{i} CONTROLS")
