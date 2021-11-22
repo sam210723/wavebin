@@ -157,12 +157,24 @@ class Channel:
     @property
     def sample_rate(self) -> str:
         """Waveform sample rate"""
+        self._sample_rate
+
+
+    @property
+    def sample_rate_pretty(self) -> str:
+        """Waveform sample rate as human-readable string"""
         return Vendor.human_format(None, self._sample_rate, unit="S/s")
 
 
     @property
     def duration(self) -> str:
         """Waveform capture duration"""
+        return self._duration
+
+
+    @property
+    def duration_pretty(self) -> str:
+        """Waveform capture duration as human-readable string"""
         return Vendor.human_format(None, self._duration, unit="s")
 
 
