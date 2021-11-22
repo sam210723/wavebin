@@ -238,6 +238,10 @@ class MainWindow(QApplication):
             self.config['waveform'].channels[0].duration
         )
 
+        # Enable export and properties tool bar buttons
+        self.tool_bar.items['export'].setEnabled(True)
+        self.tool_bar.items['props'].setEnabled(True)
+
 
     def button_open(self):
         """
