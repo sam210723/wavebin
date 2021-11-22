@@ -140,6 +140,7 @@ class Channel:
         self._x_unit = x_unit
         self._y_unit = y_unit
         self._digital = digital
+        self.plot = None    # Instance of pyqtgraph plot
 
 
     @property
