@@ -5,8 +5,9 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-import struct
 from collections import namedtuple
+import struct
+import numpy as np
 
 from wavebin.vendor import Vendor
 
@@ -46,13 +47,9 @@ class KeysightWaveform(Vendor):
 
         # Loop through waveforms
         for i in range(self.count):
-            print(f"Waveform {i + 1}:")
-
-            # Parse waveform header
-            header = self.parse_waveform_header()
             self.channels.append({
-                "header": header,
-                "data": None
+                "header": self.parse_waveform_header(),
+                "data": self.parse_waveform_data()
             })
 
         self.parsed = True
@@ -116,9 +113,41 @@ class KeysightWaveform(Vendor):
         self.sample_rate = self.human_format(1 / header.x_increment, unit="S/s")
         self.duration = self.human_format(header.x_d_range, unit="s")
 
-        print(f"  - Sample Points:  {self.human_format(header.points)}")
-        print(f"  - Sample Rate:    {self.sample_rate}")
-        print(f"  - Device Model:   {header.frame.decode().split(':')[0]}")
-        print(f"  - Device Serial:  {header.frame.decode().split(':')[1]}\n")
-
         return header
+
+
+    def parse_waveform_data(self) -> np.array:
+        """
+        Parse waveform data and data header
+
+        Returns:
+            np.array: NumPy array containing waveform data
+        """
+
+        # Unpack waveform data header
+        length = self.data[self.offset]
+        waveform_data_header_tuple = namedtuple(
+            "WaveformDataHeader",
+            "size data_type bpp length"
+        )
+        fields = struct.unpack("i2hi", self.data[self.offset : self.offset + length])
+        self.offset += length
+        header = waveform_data_header_tuple(*fields)
+
+        # Parse waveform data
+        dtype = [
+            None,           # Unknown data
+            np.float32,     # Normal float data
+            np.float32,     # Maximum float data
+            np.float32,     # Minimum float data
+            None,           # Not used
+            None,           # Not used
+            np.uint8        # Digital unsigned char
+        ]
+        buf = np.frombuffer(
+            self.data[self.offset : self.offset + header.length],
+            dtype=dtype[header.data_type]
+        )
+        self.offset += header.length
+
+        return buf

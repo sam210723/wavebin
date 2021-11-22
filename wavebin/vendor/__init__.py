@@ -24,7 +24,6 @@ class Vendor:
         self.data = data                # Capture file byte array
         self.offset = 0                 # Current byte offset in data array
         self.parsed = False             # Flag set when parsing finished
-        self.count = 0                  # Number of waveform channels
         self.sample_rate = 0            # Capture sample rate
         self.duration = 0               # Capture duration
         self.channels = []              # Capture channel list

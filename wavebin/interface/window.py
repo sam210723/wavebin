@@ -223,14 +223,14 @@ class MainWindow(QApplication):
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Add widgets to grid layout
-        for wave in range(self.config['waveform'].count):
-            label0 = QLabel(f"WAVE{wave} PLOT")
+        for i, c in enumerate(self.config['waveform'].channels):
+            label0 = QLabel(f"WAVE{i} PLOT")
             label0.setStyleSheet("QLabel { color: #FFF; }")
-            label1 = QLabel(f"WAVE{wave} CONTROLS")
+            label1 = QLabel(f"WAVE{i} CONTROLS")
             label1.setStyleSheet("QLabel { color: #FFF; }")
 
-            self.layout.addWidget(label0, wave, 0, 1, 1)
-            self.layout.addWidget(label1, wave, 1, 1, 1)
+            self.layout.addWidget(label0, i, 0, 1, 1)
+            self.layout.addWidget(label1, i, 1, 1, 1)
         
         # Show waveform info in toolbar
         self.tool_bar.set_info(
