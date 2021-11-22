@@ -15,9 +15,6 @@ import sys
 from wavebin.interface.window import MainWindow
 from wavebin.vendor import Vendor, vendor_detect
 
-from wavebin.interface.plot import QtPlot
-from wavebin.wave import WaveParser
-
 __version__ = "3.0"
 description = "Oscilloscope waveform capture viewer"
 
@@ -53,33 +50,6 @@ def main():
 
     # Create Qt application
     app = MainWindow(config, safe_exit, open_waveform)
-
-    # Create Qt waveform plot
-    """
-    plot = QtPlot({
-        "verbose":     args.v,
-        "opengl":      not args.no_opengl,
-        "subsampling": limit,
-        "filter_type": 0,
-        "clipping":    False,
-        "colours": [
-            (242, 242, 0),
-            (100, 149, 237),
-            (255, 0, 0),
-            (255, 165, 0)
-        ]
-    })
-
-    # Set class instances
-    #wave.instances(app, plot)
-    #app.instances(wave, plot)
-
-    # Add plot to main window
-    #app.add_plot(plot)
-
-    # Parse file if path specified in argument
-    #if args.file and not wave.parse(args.file): safe_exit(code=1)
-    """
 
     # Run application
     app.run()
