@@ -234,8 +234,8 @@ class MainWindow(QApplication):
         
         # Show waveform info in toolbar
         self.tool_bar.set_info(
-            self.config['waveform'].sample_rate,
-            self.config['waveform'].duration
+            self.config['waveform'].channels[0].sample_rate,
+            self.config['waveform'].channels[0].duration
         )
 
 

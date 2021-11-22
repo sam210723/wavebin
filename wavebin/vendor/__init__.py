@@ -5,6 +5,8 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+from enum import Enum
+import numpy as np
 from pathlib import Path
 
 
@@ -24,8 +26,8 @@ class Vendor:
         self.data = data                # Capture file byte array
         self.offset = 0                 # Current byte offset in data array
         self.parsed = False             # Flag set when parsing finished
-        self.sample_rate = 0            # Capture sample rate
-        self.duration = 0               # Capture duration
+        self.model = ""                 # Capture device model
+        self.serial = ""                # Capture device serial
         self.channels = []              # Capture channel list
 
 
@@ -94,6 +96,92 @@ class Vendor:
         # Append prefix and units
         digits = f"{round(num, 2)}".rstrip('0').rstrip('.')
         return f"{digits}{sep}{prefix}{unit}"
+
+
+class Unit(Enum):
+    """
+    Waveform units
+    """
+
+    UNKNOWN     = 0
+    Volts       = 1
+    Seconds     = 2
+    Constant    = 3
+    Amps        = 4
+    Decibels    = 5
+    Hertz       = 6
+
+
+class UnitAbbr(Enum):
+    """
+    Waveform unit abbreviations
+    """
+
+    UNKNOWN     = 0
+    V           = 1
+    s           = 2
+    C           = 3
+    A           = 4
+    dB          = 5
+    Hz          = 6
+
+
+class Channel:
+    """
+    Vendor-independent waveform channel class
+    """
+
+    def __init__(self, trace: np.array, points: int, sample_rate: float, duration: float, x_unit: Unit, y_unit: Unit, digital: bool):
+        # Set properties
+        self._trace = trace
+        self._points = points
+        self._sample_rate = sample_rate
+        self._duration = duration
+        self._x_unit = x_unit
+        self._y_unit = y_unit
+        self._digital = digital
+
+
+    @property
+    def trace(self) -> np.array:
+        """Trace data as NumPy array"""
+        return self._trace
+
+
+    @property
+    def points(self) -> int:
+        """Number of sample points"""
+        return self._points
+
+
+    @property
+    def sample_rate(self) -> str:
+        """Waveform sample rate"""
+        return Vendor.human_format(None, self._sample_rate, unit="S/s")
+
+
+    @property
+    def duration(self) -> str:
+        """Waveform capture duration"""
+        return Vendor.human_format(None, self._duration, unit="s")
+
+
+    @property
+    def x_unit(self) -> Unit:
+        """X-axis measurement unit"""
+        return self._x_unit
+
+
+    @property
+    def y_unit(self) -> Unit:
+        """Y-axis measurement unit"""
+        return self._y_unit
+
+
+    @property
+    def is_digital(self) -> bool:
+        """True for digital channels"""
+        return self._digital
 
 
 def vendor_detect(path: Path) -> Vendor:

@@ -9,7 +9,7 @@ from collections import namedtuple
 import struct
 import numpy as np
 
-from wavebin.vendor import Vendor
+from wavebin.vendor import Vendor, Channel, Unit
 
 
 class KeysightWaveform(Vendor):
@@ -47,10 +47,22 @@ class KeysightWaveform(Vendor):
 
         # Loop through waveforms
         for i in range(self.count):
-            self.channels.append({
-                "header": self.parse_waveform_header(),
-                "data": self.parse_waveform_data()
-            })
+            header = self.parse_waveform_header()
+            data = self.parse_waveform_data()
+
+            # Set waveform capture device model and serial from first waveform
+            if i == 0: self.model, self.serial = header.frame.decode().split(':')
+
+            # Create channel object
+            self.channels.append(Channel(
+                trace = data,
+                points = header.points,
+                sample_rate = 1/header.x_increment,
+                duration = header.x_d_range,
+                x_unit=Unit(header.x_units),
+                y_unit=Unit(header.y_units),
+                digital = data.dtype == np.uint8
+            ))
 
         self.parsed = True
         return True
@@ -96,7 +108,6 @@ class KeysightWaveform(Vendor):
             namedtuple: Parsed waveform header as namedtuple
         """
 
-        # Unpack waveform header
         length = self.data[self.offset]
         waveform_header_tuple = namedtuple(
             "WaveformHeader",
@@ -108,10 +119,6 @@ class KeysightWaveform(Vendor):
         fields = struct.unpack("5if3d2i16s16s24s16sdI", self.data[self.offset : self.offset + length])
         self.offset += length
         header = waveform_header_tuple(*fields)
-
-        # Format sample rate and duration
-        self.sample_rate = self.human_format(1 / header.x_increment, unit="S/s")
-        self.duration = self.human_format(header.x_d_range, unit="s")
 
         return header
 
