@@ -14,6 +14,7 @@ import webbrowser
 
 from wavebin.interface.toolbar import MainToolBar
 from wavebin.interface.menubar import MainMenuBar
+from wavebin.interface.plot import WaveformPlot
 
 
 class MainWindow(QApplication):
@@ -223,19 +224,18 @@ class MainWindow(QApplication):
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Add widgets to grid layout
-        for i, c in enumerate(self.config['waveform'].channels):
-            label0 = QLabel(f"WAVE{i} PLOT")
-            label0.setStyleSheet("QLabel { color: #FFF; }")
+        for i, ch in enumerate(self.config['waveform'].channels):
+            plot = WaveformPlot(self.config, ch)
+            self.layout.addWidget(plot, i, 0, 1, 1)
+
             label1 = QLabel(f"WAVE{i} CONTROLS")
             label1.setStyleSheet("QLabel { color: #FFF; }")
-
-            self.layout.addWidget(label0, i, 0, 1, 1)
             self.layout.addWidget(label1, i, 1, 1, 1)
         
         # Show waveform info in toolbar
         self.tool_bar.set_info(
-            self.config['waveform'].channels[0].sample_rate,
-            self.config['waveform'].channels[0].duration
+            self.config['waveform'].channels[0].sample_rate_pretty,
+            self.config['waveform'].channels[0].duration_pretty
         )
 
         # Enable export and properties tool bar buttons

@@ -10,13 +10,18 @@ import numpy as np
 from pyqtgraph import PlotWidget
 import pyqtgraph as pg
 
+from wavebin.vendor import Channel
 
-class QtPlot(PlotWidget):
-    def __init__(self, config):
+
+class WaveformPlot(PlotWidget):
+    def __init__(self, config: dict, waveform: Channel):
+        super(WaveformPlot, self).__init__()
+
         self.config = config
+        self.waveform = waveform
 
         self.log("Initialising plot widget")
-        super().__init__()
+        self.config['opengl'] = False   #FIXME: TEMP
 
         # Enable/Disable OpenGL
         if self.config['opengl']:
@@ -34,82 +39,89 @@ class QtPlot(PlotWidget):
         self.showGrid(x=True, y=True, alpha=1.0)
         self.setMouseEnabled(x=True, y=False)
 
+        self.draw()
 
-    def update(self):
+
+    def draw(self):
         # Remove old traces
         self.clear()
         self.processed_waveforms = []
 
-        # Loop through waveforms and render traces
-        for i, w in enumerate(self.waveforms):
-            self.log(f"Rendering waveform {i + 1}")
-            # Subsampling
-            if self.config['subsampling'] >= len(w['data']):
-                y = w['data']
-            else:
-                self.log(f"  Subsampling ({len(w['data'])} -> {int(self.config['subsampling'])})")
-                y = w['data'][:: int( len(w['data']) / self.config['subsampling'] )]
+        #FIXME: TEMP
+        w = self.waveform
+        self.config['subsampling'] = w.points
+        self.config['filter_type'] = ""
+        self.config['clipping'] = None
 
-            # Generate X points
-            start = w['header'].x_d_origin
-            stop = w['header'].x_d_origin + w['header'].x_d_range
-            x = np.linspace(start, stop, len(y))
+        # Subsampling
+        if self.config['subsampling'] >= len(w.trace) or True:
+            y = w.trace
+        else:
+            self.log(f"  Subsampling ({len(w.trace)} -> {int(self.config['subsampling'])})")
+            y = w.trace[:: int( len(w.trace) / self.config['subsampling'] )]
 
-            # Filtering
-            if self.config['filter_type'] == 1:
-                self.log(f"  Filtering (Savitzky-Golay)")
-                
-                # Calculate window length
-                window = round(len(y) * 0.025)
-                if window % 2 == 0: window += 1
+        # Generate X points
+        start = 0
+        stop = w.duration
+        x = np.linspace(start, stop, len(y))
 
-                # Catch filter exceptions
-                try:
-                    # Apply filter
-                    y = Filters().savitzky_golay(y, window, 3)
-                except TypeError as e:
-                    if str(e) == "window_size is too small for the polynomials order":
-                        self.log("  Not enough points to apply filter")
-
-
-            # Clipping
-            if self.config['clipping']:
-                self.log(f"  Clipping")
-
-                # Find waveform median
-                med = (np.amax(y) - abs(np.amin(y))) / 2   # Waveform median
-
-                # Shift waveform to be centered around zero
-                y = (y - med) + 0
-
-                # Apply threshold to waveform values
-                y[y > 0] = 1
-                y[y < 0] = 0
+        # Filtering
+        if self.config['filter_type'] == 1 and False:
+            self.log(f"  Filtering (Savitzky-Golay)")
             
+            # Calculate window length
+            window = round(len(y) * 0.025)
+            if window % 2 == 0: window += 1
 
-            # Make processed waveforms available for exporting
-            self.processed_waveforms.append({
-                "header": w['header'],
-                "data": y
-            })
+            # Catch filter exceptions
+            try:
+                # Apply filter
+                y = Filters().savitzky_golay(y, window, 3)
+            except TypeError as e:
+                if str(e) == "window_size is too small for the polynomials order":
+                    self.log("  Not enough points to apply filter")
 
 
-            # Render data on plot
-            self.plot(
-                x,
-                y,
-                pen=pg.mkPen(
-                    self.config['colours'][i],
-                    width=self.config['line_width']
-                )
+        # Clipping
+        if self.config['clipping'] and False:
+            self.log(f"  Clipping")
+
+            # Find waveform median
+            med = (np.amax(y) - abs(np.amin(y))) / 2   # Waveform median
+
+            # Shift waveform to be centered around zero
+            y = (y - med) + 0
+
+            # Apply threshold to waveform values
+            y[y > 0] = 1
+            y[y < 0] = 0
+        
+
+        # Make processed waveforms available for exporting
+        self.processed_waveforms.append({
+            "header": w,
+            "data": y
+        })
+
+
+        # Render data on plot
+        self.plot(
+            x,
+            y,
+            pen=pg.mkPen(
+                "#fff",#self.config['colours'][0],
+                width=self.config['line_width']
             )
+        )
 
         # Set left Y axis label
+        """
         self.setLabel(
             'left',
             Units(self.waveforms[0]['header'].y_units).name,
             units=UnitAbbr(self.waveforms[0]['header'].y_units).name
         )
+        """
 
         #TODO: Set right axis label based on units for waveforms 2/3/4
 
