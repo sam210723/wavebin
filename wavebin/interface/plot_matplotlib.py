@@ -52,4 +52,4 @@ class WaveformPlot(FigureCanvasQTAgg):
         self.axes.spines['top'].set_color('white') 
         self.axes.spines['right'].set_color('white')
         self.axes.spines['left'].set_color('white')
-        self.axes.plot(np.linspace(0, self.waveform.duration, self.waveform.points), self.waveform.trace)
+        self.axes.plot(self.waveform.trace[0], self.waveform.trace[1])

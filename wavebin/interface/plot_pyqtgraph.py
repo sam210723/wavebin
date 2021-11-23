@@ -52,16 +52,12 @@ class WaveformPlot(PlotWidget):
         self.config['clipping'] = None
 
         # Subsampling
+        """
         if self.config['subsampling'] >= len(w.trace) or True:
             y = w.trace
         else:
             self.log(f"  Subsampling ({len(w.trace)} -> {int(self.config['subsampling'])})")
             y = w.trace[:: int( len(w.trace) / self.config['subsampling'] )]
-
-        # Generate X points
-        start = 0
-        stop = w.duration
-        x = np.linspace(start, stop, len(y))
 
         # Filtering
         if self.config['filter_type'] == 1 and False:
@@ -93,19 +89,20 @@ class WaveformPlot(PlotWidget):
             # Apply threshold to waveform values
             y[y > 0] = 1
             y[y < 0] = 0
-        
+
 
         # Make processed waveforms available for exporting
         self.processed_waveforms.append({
             "header": w,
             "data": y
         })
+        """
 
 
         # Render data on plot
         self.plot(
-            x,
-            y,
+            w.trace[0],
+            w.trace[1],
             pen=pg.mkPen(
                 self.colour,
                 width=self.config['line_width']

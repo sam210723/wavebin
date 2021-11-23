@@ -142,6 +142,12 @@ class Channel:
         self._digital = digital
         self.plot = None    # Instance of pyqtgraph plot
 
+        # Convert data into 2D NumPy array
+        self._trace = np.array([
+            np.linspace(0, self._duration, self._points),
+            self._trace
+        ])
+
 
     @property
     def trace(self) -> np.array:
