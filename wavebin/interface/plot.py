@@ -22,16 +22,9 @@ class WaveformPlot(PlotWidget):
         self.colour = colour
 
         self.log("Initialising plot widget")
-        self.config['opengl'] = False   #FIXME: TEMP
-
-        # Enable/Disable OpenGL
-        if self.config['opengl']:
-            pg.setConfigOptions(useOpenGL=True)
-            self.config['line_width'] = 1
-            #TODO: Fix slow render with OpenGL enabled and line width > 1
-        else:
-            pg.setConfigOptions(useOpenGL=False)
-            self.config['line_width'] = 1    # See https://github.com/pyqtgraph/pyqtgraph/issues/533
+        self.config['opengl'] = True   #FIXME: TEMP
+        pg.setConfigOptions(useOpenGL=self.config['opengl'], enableExperimental=True)
+        self.config['line_width'] = 2 if self.config['opengl'] else 1
 
         # Set plot properties
         self.view = self.getViewBox()
