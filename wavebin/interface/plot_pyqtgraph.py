@@ -14,6 +14,10 @@ from wavebin.vendor import Channel
 
 
 class WaveformPlot(PlotWidget):
+    """
+    Waveform plotting widget using pyqtgraph backend
+    """
+
     def __init__(self, config: dict, waveform: Channel, colour: tuple):
         super(WaveformPlot, self).__init__()
 
@@ -22,7 +26,7 @@ class WaveformPlot(PlotWidget):
         self.colour = colour
 
         self.log("Initialising plot widget")
-        self.config['opengl'] = True   #FIXME: TEMP
+        self.config['opengl'] = False   #FIXME: TEMP
         pg.setConfigOptions(useOpenGL=self.config['opengl'], enableExperimental=True)
         self.config['line_width'] = 2 if self.config['opengl'] else 1
 

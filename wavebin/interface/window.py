@@ -14,7 +14,9 @@ import webbrowser
 
 from wavebin.interface.toolbar import MainToolBar
 from wavebin.interface.menubar import MainMenuBar
-from wavebin.interface.plot import WaveformPlot
+from wavebin.interface.plot_pyqtgraph import WaveformPlot as WPpyqtgraph
+from wavebin.interface.plot_matplotlib import WaveformPlot as WPmatplotlib
+from wavebin.interface.plot_vispy import WaveformPlot as WPvispy
 
 
 class MainWindow(QApplication):
@@ -232,7 +234,7 @@ class MainWindow(QApplication):
 
         # Add widgets to grid layout
         for i, ch in enumerate(self.config['waveform'].channels):
-            ch.plot = WaveformPlot(self.config, ch, colours[i])
+            ch.plot = WPpyqtgraph(self.config, ch, colours[i])
             self.layout.addWidget(ch.plot, i, 0, 1, 1)
 
             label1 = QLabel(f"WAVE{i} CONTROLS")

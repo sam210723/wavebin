@@ -23,8 +23,9 @@ setuptools.setup(
         'appdirs>=1.4.4',
         'numpy>=1.21.0',
         'pyqt5>=5.15.0',
-        'pyqtgraph>=0.12.3',
-        'pyopengl>=3.1.5',
+        'matplotlib>=3.4.3'
+        #'pyqtgraph>=0.12.3',
+        #'vispy>=0.9.3',
         'qtawesome>=1.1.0',
         'requests>=2.24.0'
     ],
