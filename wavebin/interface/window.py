@@ -83,6 +83,7 @@ class MainWindow(QApplication):
         # Create main layout
         self.log("Creating main grid layout")
         self.layout = QGridLayout()
+        self.layout.setContentsMargins(0, 0, 0, 0)
         self.widget.setLayout(self.layout)
 
         # Create open/save file dialogs
@@ -233,15 +234,31 @@ class MainWindow(QApplication):
         ]
 
         # Add widgets to grid layout
+        """
         for i, ch in enumerate(self.config['waveform'].channels):
             #ch.plot = WPpyqtgraph(self.config, ch, colours[i])
             #ch.plot = WPmatplotlib(self.config, ch, colours[i])
-            ch.plot = WPvispy(self.config, ch, colours[i]).native
             self.layout.addWidget(ch.plot, i, 0, 1, 8)
 
             label1 = QLabel(f"WAVE{i} CONTROLS")
             label1.setStyleSheet("QLabel { color: #FFF; }")
             self.layout.addWidget(label1, i, 8, 1, 2)
+        """
+
+        # Add plot widget to grid layout
+        self.plot = WPvispy(self.config, self.config['waveform']).native
+        self.layout.addWidget(
+            self.plot,
+            0, 0,
+            len(self.config['waveform'].channels), 8
+        )
+
+        # Add channel controls to grid layout
+        for i, c in enumerate(self.config['waveform'].channels):
+            label = QLabel(f"WAVE{i} CONTROLS")
+            label.setStyleSheet("QLabel { color: #FFF; }")
+            self.layout.addWidget(label, i, 8, 1, 2)
+
         
         # Show waveform info in toolbar
         self.tool_bar.set_info(
