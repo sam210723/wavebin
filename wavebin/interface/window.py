@@ -234,12 +234,14 @@ class MainWindow(QApplication):
 
         # Add widgets to grid layout
         for i, ch in enumerate(self.config['waveform'].channels):
+            #ch.plot = WPpyqtgraph(self.config, ch, colours[i])
+            #ch.plot = WPmatplotlib(self.config, ch, colours[i])
             ch.plot = WPvispy(self.config, ch, colours[i]).native
-            self.layout.addWidget(ch.plot, i, 0, 1, 1)
+            self.layout.addWidget(ch.plot, i, 0, 1, 8)
 
             label1 = QLabel(f"WAVE{i} CONTROLS")
             label1.setStyleSheet("QLabel { color: #FFF; }")
-            self.layout.addWidget(label1, i, 1, 1, 1)
+            self.layout.addWidget(label1, i, 8, 1, 2)
         
         # Show waveform info in toolbar
         self.tool_bar.set_info(
