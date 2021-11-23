@@ -12,7 +12,7 @@ import pyqtgraph as pg
 
 from wavebin.vendor import Channel
 
-
+#TODO: This needs a rewrite, it's hacked to bits from v2.1
 class WaveformPlot(PlotWidget):
     """
     Waveform plotting widget using pyqtgraph backend
