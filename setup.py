@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='wavebin',
-    version='2.2',
+    version='3.0',
     packages=['wavebin', 'wavebin.interface', 'wavebin.vendor'],
     entry_points={
         'console_scripts': [
