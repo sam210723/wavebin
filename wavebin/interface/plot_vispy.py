@@ -47,15 +47,27 @@ class WaveformPlot(scene.SceneCanvas):
         self.grid.margin = 0
 
         # Loop through waveform channels
-        views = []
+        self.views = []
         for i, c in enumerate(self.waveform.channels):
-            views.append(self.grid.add_view(row=i, col=0, border_color='#333'))
-            scene.Line(np.swapaxes(c.trace, 0, 1), parent=views[i].scene, color=self.colours[i])
-            #scene.visuals.GridLines(parent=views[i].scene)
-            views[i].camera = 'panzoom'
-            views[i].camera.reset()
-            views[i].camera.set_range()
+            self.views.append(self.grid.add_view(
+                row=i,
+                col=0,
+                border_color='#000'
+            ))
+
+            scene.Line(
+                np.swapaxes(c.trace, 0, 1),
+                parent=self.views[i].scene,
+                color=self.colours[i]
+            )
+
+            self.views[i].camera = 'panzoom'
+            self.views[i].camera.set_range(
+                x=(c.trace[0].min(), c.trace[0].max()),
+                y=(c.trace[1].min(), c.trace[1].max())
+            )
+            scene.visuals.GridLines(parent=self.views[i].scene)
             
-            if i != 0: views[i].camera.link(views[0].camera, axis="x")
+            if i != 0: self.views[i].camera.link(self.views[0].camera, axis="x")
 
         # Camera linking https://github.com/vispy/vispy/blob/main/vispy/scene/cameras/base_camera.py#L383
