@@ -68,6 +68,17 @@ class WaveformPlot(scene.SceneCanvas):
             )
             scene.visuals.GridLines(parent=self.views[i].scene)
             
+            # Link cameras (except 0 to itself)
             if i != 0: self.views[i].camera.link(self.views[0].camera, axis="x")
 
-        # Camera linking https://github.com/vispy/vispy/blob/main/vispy/scene/cameras/base_camera.py#L383
+            # 
+            if i == len(self.waveform.channels) - 1:
+                xaxis = scene.AxisWidget(
+                    orientation='bottom',
+                    #axis_label='X Axis',
+                    axis_font_size=16,
+                    #axis_label_margin=5,
+                    tick_label_margin=10
+                )
+                xaxis.height_max = 20
+                self.grid.add_widget(xaxis, row=i+1, col=0)
