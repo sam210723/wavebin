@@ -83,6 +83,7 @@ class MainWindow(QApplication):
         self.log("Creating main grid layout")
         self.layout = QGridLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
+        self.layout.setSpacing(0)
         self.widget.setLayout(self.layout)
 
         # Create open/save file dialogs
