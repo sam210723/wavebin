@@ -14,9 +14,8 @@ import webbrowser
 
 from wavebin.interface.toolbar import MainToolBar
 from wavebin.interface.menubar import MainMenuBar
-from wavebin.interface.plot_pyqtgraph import WaveformPlot as WPpyqtgraph
-from wavebin.interface.plot_matplotlib import WaveformPlot as WPmatplotlib
-from wavebin.interface.plot_vispy import WaveformPlot as WPvispy
+from wavebin.interface.plot_pyqtgraph import WaveformPlot as PlotPyQtGraph
+from wavebin.interface.plot_vispy import WaveformPlot as PlotVisPy
 
 
 class MainWindow(QApplication):
@@ -73,7 +72,7 @@ class MainWindow(QApplication):
         self.log("Creating main widget")
         self.widget = QWidget()
         self.window.setCentralWidget(self.widget)
-        self.widget.setStyleSheet("background-color: #000;")
+        self.widget.setStyleSheet("background-color: #111;")
         self.widget.setContentsMargins(0, 0, 0, 0)
         self.window.resizeEvent = self.event_resize
         self.window.changeEvent = self.event_change
@@ -234,24 +233,25 @@ class MainWindow(QApplication):
         ]
 
         # Add widgets to grid layout
-        """
         for i, ch in enumerate(self.config['waveform'].channels):
-            #ch.plot = WPpyqtgraph(self.config, ch, colours[i])
-            #ch.plot = WPmatplotlib(self.config, ch, colours[i])
+            ch.plot = PlotPyQtGraph(self.config, ch, colours[i])
             self.layout.addWidget(ch.plot, i, 0, 1, 8)
 
+            #FIXME: TEMP
             label1 = QLabel(f"WAVE{i} CONTROLS")
             label1.setStyleSheet("QLabel { color: #FFF; }")
             self.layout.addWidget(label1, i, 8, 1, 2)
-        """
+
 
         # Add plot widget to grid layout
+        """
         self.plot = WPvispy(self.config, self.config['waveform']).native
         self.layout.addWidget(
             self.plot,
             0, 0,
             len(self.config['waveform'].channels), 8
         )
+        """
 
         # Add channel controls to grid layout
         for i, c in enumerate(self.config['waveform'].channels):
