@@ -225,38 +225,20 @@ class MainWindow(QApplication):
         # Set file name in window title
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
-        colours = [
-            (242, 242, 0),
-            (100, 149, 237),
-            (255, 0, 0),
-            (255, 165, 0)
-        ]
-
-        # Add widgets to grid layout
-        for i, ch in enumerate(self.config['waveform'].channels):
-            ch.plot = PlotPyQtGraph(self.config, ch, colours[i])
-            self.layout.addWidget(ch.plot, i, 0, 1, 8)
-
-            #FIXME: TEMP
-            label1 = QLabel(f"WAVE{i} CONTROLS")
-            label1.setStyleSheet("QLabel { color: #FFF; }")
-            self.layout.addWidget(label1, i, 8, 1, 2)
-
-
         # Add plot widget to grid layout
-        """
-        self.plot = WPvispy(self.config, self.config['waveform']).native
+        self.plot = PlotPyQtGraph(self.config, self.config['waveform'])
+        #self.plot = PlotVisPy(self.config, self.config['waveform']).native
         self.layout.addWidget(
             self.plot,
             0, 0,
             len(self.config['waveform'].channels), 8
         )
-        """
 
         # Add channel controls to grid layout
         for i, c in enumerate(self.config['waveform'].channels):
             label = QLabel(f"WAVE{i} CONTROLS")
             label.setStyleSheet("QLabel { color: #FFF; }")
+            label.setAlignment(Qt.AlignCenter)
             self.layout.addWidget(label, i, 8, 1, 2)
 
         
