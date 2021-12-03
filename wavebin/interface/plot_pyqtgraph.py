@@ -10,6 +10,8 @@ import pyqtgraph as pg
 
 from wavebin.vendor import Vendor
 
+# https://pyqtgraph.readthedocs.io/en/latest/plotting.html#organization-of-plotting-classes
+
 
 class WaveformPlot(GraphicsLayoutWidget):
     """
@@ -37,3 +39,8 @@ class WaveformPlot(GraphicsLayoutWidget):
             (255, 0, 0),
             (255, 165, 0)
         ]
+
+        pg.setConfigOptions(
+            antialias=True,
+            useOpenGL=True
+        )
