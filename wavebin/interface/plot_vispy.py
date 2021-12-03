@@ -45,6 +45,10 @@ class WaveformPlot(scene.SceneCanvas):
         self.grid = self.central_widget.add_grid()
         self.grid.spacing = 0
         self.grid.margin = 0
+        self.grid.bgcolor = "#000"
+
+        # Setup events
+        self.events.key_press.connect(self.key_press)
 
         # Loop through waveform channels
         self.views = []
@@ -82,3 +86,14 @@ class WaveformPlot(scene.SceneCanvas):
                 )
                 xaxis.height_max = 20
                 self.grid.add_widget(xaxis, row=i+1, col=0)
+
+
+    def key_press(self, event):
+        """
+        Handle canvas key press events
+
+        Args:
+            event (KeyEvent): Key press event object
+        """
+
+        if event.key == 'r': self.views[0].camera.set_range()
