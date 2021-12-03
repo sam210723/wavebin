@@ -5,8 +5,8 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from pyqtgraph import GraphicsLayoutWidget
 import pyqtgraph as pg
+from pyqtgraph import GraphicsLayoutWidget, PlotItem
 
 from wavebin.vendor import Vendor
 
@@ -29,6 +29,10 @@ class WaveformPlot(GraphicsLayoutWidget):
 
         # Initialise parent class
         super(WaveformPlot, self).__init__()
+        pg.setConfigOptions(
+            antialias=True,
+            useOpenGL=True
+        )
 
         # Set globals
         self.config = config
@@ -40,7 +44,6 @@ class WaveformPlot(GraphicsLayoutWidget):
             (255, 165, 0)
         ]
 
-        pg.setConfigOptions(
-            antialias=True,
-            useOpenGL=True
-        )
+        for i, c in enumerate(self.waveform.channels):
+            c.plot = PlotItem()
+            self.addItem(c.plot, row=i, col=0)
