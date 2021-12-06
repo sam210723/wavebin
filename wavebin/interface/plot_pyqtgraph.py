@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+from PyQt5.QtCore import left
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph import GraphicsLayoutWidget, PlotItem, ViewBox, AxisItem
@@ -46,6 +47,12 @@ class WaveformPlot(GraphicsLayoutWidget):
             (255, 165, 0)
         ]
         self.axis_pen = pg.mkPen(color="#969696", width=1)
+        self.axis_style = {
+            'color': '#969696',
+            'font-size': '14px',
+            'font-weight': 'bold'
+        }
+        self.axis_size = 40
 
         # Loop through waveform channels
         for i, c in enumerate(self.waveform.channels):
@@ -73,12 +80,8 @@ class WaveformPlot(GraphicsLayoutWidget):
 
             # Setup plot axes
             c.plot.showAxes((True, False, False, True))
-            c.plot.getAxis('bottom').setHeight(40)
-            c.plot.getAxis('bottom').setLabel(text=c.x_unit.name, units=UnitAbbr(c.x_unit.value).name)
-            c.plot.getAxis('bottom').setPen(self.axis_pen)
-            c.plot.getAxis('left').setWidth(40)
-            c.plot.getAxis('left').setLabel(text=c.y_unit.name, units=UnitAbbr(c.y_unit.value).name)
-            c.plot.getAxis('left').setPen(self.axis_pen)
+            self.setup_axis(c.plot.getAxis('bottom'), c.x_unit)
+            self.setup_axis(c.plot.getAxis('left'), c.y_unit)
 
             #FIXME: showGrid() causes zoom to center on X origin rather than mouse location
             #FIXME: See pyqtgraph/pyqtgraph #1937, #1975, #2034 and #2057
@@ -111,3 +114,25 @@ class WaveformPlot(GraphicsLayoutWidget):
             # Link views and add to layout
             if i != 0: c.plot.setXLink(self.waveform.channels[0].plot.getViewBox())
             self.addItem(c.plot, row=i, col=0, rowspan=1, colspan=1)
+
+
+    def setup_axis(self, axis: AxisItem, unit: Unit) -> None:
+        """
+        Setup styling and options for plot AxisItems
+
+        Args:
+            axis (AxisItem): Axis object to configure
+            unit (Unit): Axis unit
+        """
+
+        if axis.orientation in ["left", "right"]:
+            axis.setWidth(self.axis_size)
+        elif axis.orientation in ["top", "bottom"]:
+            axis.setHeight(self.axis_size)
+
+        axis.setPen(self.axis_pen)
+        axis.setLabel(
+            text=unit.name,
+            units=UnitAbbr(unit.value).name,
+            **self.axis_style
+        )
