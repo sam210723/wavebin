@@ -103,13 +103,13 @@ class Unit(Enum):
     Waveform units
     """
 
-    UNKNOWN     = 0
-    Volts       = 1
-    Seconds     = 2
-    Constant    = 3
-    Amps        = 4
-    Decibels    = 5
-    Hertz       = 6
+    UNKNOWN  = 0
+    Volts    = 1
+    Time     = 2
+    Constant = 3
+    Amps     = 4
+    Decibels = 5
+    Hertz    = 6
 
 
 class UnitAbbr(Enum):
@@ -117,13 +117,13 @@ class UnitAbbr(Enum):
     Waveform unit abbreviations
     """
 
-    UNKNOWN     = 0
-    V           = 1
-    s           = 2
-    C           = 3
-    A           = 4
-    dB          = 5
-    Hz          = 6
+    UNKNOWN = 0
+    V       = 1
+    s       = 2
+    C       = 3
+    A       = 4
+    dB      = 5
+    Hz      = 6
 
 
 class Channel:
