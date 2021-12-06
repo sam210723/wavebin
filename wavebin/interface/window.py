@@ -238,11 +238,18 @@ class MainWindow(QApplication):
         # Add channel controls to grid layout
         for i, c in enumerate(self.config['waveform'].channels):
             label = QLabel(f"WAVE{i} CONTROLS")
-            label.setStyleSheet("QLabel { color: #FFF; }")
             label.setAlignment(Qt.AlignCenter)
+            label.setStyleSheet(
+                """
+                QLabel {
+                    color: #FFF;
+                    border-top: 1px solid #555;
+                    border-left: 1px solid #555;
+                }
+                """
+            )
             self.layout.addWidget(label, i, 8, 1, 2)
 
-        
         # Show waveform info in toolbar
         self.tool_bar.set_info(
             self.config['waveform'].channels[0].sample_rate_pretty,
