@@ -53,8 +53,9 @@ class MainWindow(QApplication):
 
         # Window styling and state
         self.log("Updating window style")
-        self.icon = str(Path(__file__).parents[2] / "icon.ico")
-        self.window.setWindowIcon(QIcon(self.icon))
+        icon_path = Path(__file__).parent / "assets" / "icon.ico"
+        self.icon = QIcon(str(icon_path))
+        self.window.setWindowIcon(self.icon)
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 500)
 
