@@ -122,7 +122,7 @@ class WaveformPlot(GraphicsLayoutWidget):
 
         Args:
             axis (AxisItem): Axis object to configure
-            unit (Unit): Axis unit
+            unit (Unit): Axis measurement unit
         """
 
         if axis.orientation in ["left", "right"]:
