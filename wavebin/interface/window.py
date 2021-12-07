@@ -8,7 +8,7 @@ Oscilloscope waveform capture viewer
 from pathlib import Path
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
 from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QIcon
+from PyQt5.QtGui import QFontDatabase, QIcon
 import qtawesome as qta
 import webbrowser
 
@@ -51,10 +51,15 @@ class MainWindow(QApplication):
         self.log("Creating main Qt window")
         self.window = QMainWindow()
 
+        # Add Roboto font
+        font_dir = Path(__file__).parent / "assets" / "Roboto"
+        QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Regular.ttf"))
+        QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Bold.ttf"))
+
         # Window styling and state
         self.log("Updating window style")
-        icon_path = Path(__file__).parent / "assets" / "icon.ico"
-        self.icon = QIcon(str(icon_path))
+        self.icon_path = Path(__file__).parent / "assets" / "icon.ico"
+        self.icon = QIcon(str(self.icon_path))
         self.window.setWindowIcon(self.icon)
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 500)
@@ -149,7 +154,7 @@ class MainWindow(QApplication):
 
             <div id='container'>
             """ +
-          f"    <img src='{self.icon}'><span> wavebin</span>" +
+          f"    <img src='{self.icon_path}'><span> wavebin</span>" +
             """
                 <p>
                     Get started by opening a waveform file or capturing a new waveform
@@ -256,6 +261,7 @@ class MainWindow(QApplication):
             self.config['waveform'].channels[0].sample_rate_pretty,
             self.config['waveform'].channels[0].duration_pretty
         )
+        self.tool_bar.set_props(self.config['waveform'])
 
         # Enable export and properties tool bar buttons
         self.tool_bar.items['export'].setEnabled(True)
