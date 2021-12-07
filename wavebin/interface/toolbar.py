@@ -6,14 +6,14 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QToolBar, QDialog, QAction, QLabel, QMessageBox, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QWidget, QToolBar, QAction, QLabel, QMessageBox, QSizePolicy
 from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon
 import qtawesome as qta
 import sys
 import webbrowser
-from urllib import request
 
+from wavebin.interface.properties import WaveformProperties
 from wavebin.vendor import Vendor
 
 
@@ -95,15 +95,7 @@ class MainToolBar(QToolBar):
         if not self.app.config['update']: self.removeAction(self.items['update'])
         
         # Create waveform properties dialog
-        self.props_dialog = QDialog(None, Qt.WindowCloseButtonHint)
-        self.props_dialog.setWindowTitle("Waveform Properties")
-        self.props_dialog.setWindowIcon(self.app.icon)
-        self.props_dialog.setSizeGripEnabled(False)
-        self.props_dialog.setAcceptDrops(False)
-        self.props_dialog.setFixedWidth(600)
-        self.props_dialog.setFixedHeight(400)
-        self.props_dialog.setContentsMargins(15, 5, 10, 10)
-        self.props_dialog.setStyleSheet("background: #111;")
+        self.props_dialog = WaveformProperties(self.app)
 
         # Add waveform info label
         spacer = QWidget()
@@ -246,47 +238,11 @@ class MainToolBar(QToolBar):
         Update waveform properties
         """
 
-        self.props_layout = QGridLayout()
-        self.props_layout.setContentsMargins(0, 0, 0, 0)
-        self.props_layout.setSpacing(0)
-        self.props_dialog.setLayout(self.props_layout)
-
-        # Download device image
-        vendor = waveform.vendor_name.lower().replace("/agilent", '')
-        model = waveform.model.replace('-', '').replace(' ', '')
-        url = f"https://vksdr.com/download/wavebin/devices/{vendor}/{model}.png"
-        image = request.urlopen(url).read()
-
-        # Add device image to dialog
-        pixmap = QPixmap()
-        pixmap.loadFromData(image)
-        device_image = QLabel()
-        device_image.setPixmap(pixmap)
-        self.props_layout.addWidget(device_image, 0, 0, 2, 2, Qt.AlignTop)
-
-        # Add vendor logo to dialog
-        pixmap = QPixmap(str(Path(__file__).parent / "assets" / f"{vendor}.png"))
-        vendor_logo = QLabel()
-        vendor_logo.setPixmap(pixmap)
-        self.props_layout.addWidget(vendor_logo, 0, 2, 1, 2, Qt.AlignCenter)
-
-        # Add device info to dialog
-        device_info = QLabel()
-        device_info.setTextFormat(Qt.TextFormat.RichText)
-        device_info.setStyleSheet("font-family: Roboto; font-size: 15px; color: #FFF;")
-        device_info.setText(
-            f"""
-            <div align='center'>
-                <h1>{waveform.model}</h1>
-                {waveform.serial}
-            </div>
-            """
+        self.props_dialog.update(
+            waveform.vendor_name,
+            waveform.model,
+            waveform.serial
         )
-        self.props_layout.addWidget(device_info, 1, 2, 1, 2, Qt.AlignTop | Qt.AlignCenter)
-
-        # Add waveform info table
-        waveform_info = QLabel()
-        self.props_layout.addWidget(waveform_info, 2, 0, 2, 4, Qt.AlignCenter)
 
 
     def log(self, msg: str):
