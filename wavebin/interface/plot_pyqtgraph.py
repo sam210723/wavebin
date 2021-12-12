@@ -49,6 +49,7 @@ class WaveformPlot(GraphicsLayoutWidget):
         self.axis_pen = pg.mkPen(color="#969696", width=1)
         self.axis_style = {
             'color': '#969696',
+            'font-family': 'Roboto',
             'font-size': '14px',
             'font-weight': 'bold'
         }
