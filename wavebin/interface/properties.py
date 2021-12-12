@@ -48,9 +48,14 @@ class WaveformProperties(QDialog):
             serial (str): Device serial
         """
 
+        # Remove widgets in grid layout
+        while self.grid_layout.count():
+            child = self.grid_layout.takeAt(0)
+            if child.widget(): child.widget().deleteLater()
+
         # Standardise vendor and model strings
         vendor_clean = vendor.lower()
-        vendor_clean = vendor_clean.replace('/agilent', '')
+        vendor_clean = vendor_clean.replace('/agilent', '')     #FIXME
         model_clean = model.replace('-', '')
         model_clean = model_clean.replace(' ', '')
 
