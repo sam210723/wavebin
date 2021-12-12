@@ -22,39 +22,50 @@ class MainMenuBar(QMenuBar):
 
         # Parent application instance
         self.app = app
-        
-        # Root menu bar items
-        self.menus = {
-            "file": QMenu("File"),
-            "view": QMenu("View"),
-            "help": QMenu("Help")
-        }
-
-        # Add root items to menu bar
-        for m in self.menus: self.addMenu(self.menus[m])
 
         # Menu actions
         self.menu_actions = {
+            "file": {
+                "open":   QAction("Open waveform..."),
+                "cap":    QAction("Capture waveform..."),
+                "export": QAction("Export waveform..."),
+                "----":   None,
+                "exit":   QAction("Exit")
+            },
+            "view": {
+
+            },
             "help": {
-                "docs":  QAction("Documentation"),
-                "bug":   QAction("Report a bug"),
-                "----":  None,
-                "about": QAction("About")
+                "docs":   QAction("Documentation"),
+                "bug":    QAction("Report a bug"),
+                "----":   None,
+                "about":  QAction("About")
             }
         }
 
-        # Add actions to root items
+        # Build menubar
+        self.menus = {}
         for root in self.menu_actions:
+            # Add root menus
+            self.menus[root] = QMenu(root.title())
+            self.addMenu(self.menus[root])
+
+            # Add actions to root menus
             for action in self.menu_actions[root]:
                 # Insert separator
                 if action == "----":
                     self.menus[root].addSeparator()
                     continue
-            
+
+                # Attach mouse click event
                 self.menu_actions[root][action].triggered.connect(eval(f"self.menu_{root}_{action}"))
                 self.menus[root].addAction(self.menu_actions[root][action])
 
 
+    def menu_file_open(self): print("open")
+    def menu_file_cap(self): print("capture")
+    def menu_file_export(self): print("export")
+    def menu_file_exit(self): print("exit")
     def menu_help_docs(self): print("docs")
     def menu_help_bug(self): print("bug")
     def menu_help_about(self): print("about")
