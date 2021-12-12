@@ -65,7 +65,16 @@ class MainMenuBar(QMenuBar):
     def menu_file_open(self): print("open")
     def menu_file_cap(self): print("capture")
     def menu_file_export(self): print("export")
-    def menu_file_exit(self): print("exit")
+
+
+    def menu_file_exit(self):
+        """
+        Gracefully exits the application
+        """
+
+        self.app.safe_exit(self.app.config)
+
+
     def menu_help_docs(self): print("docs")
     def menu_help_bug(self): print("bug")
     def menu_help_about(self): print("about")
