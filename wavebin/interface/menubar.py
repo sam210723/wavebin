@@ -6,6 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from PyQt5.QtWidgets import QAction, QApplication, QMenuBar, QMenu
+import qtawesome as qta
 
 
 class MainMenuBar(QMenuBar):
@@ -26,40 +27,54 @@ class MainMenuBar(QMenuBar):
         # Menu actions
         self.menu_actions = {
             "file": {
-                "open":   QAction("Open waveform..."),
-                "cap":    QAction("Capture waveform..."),
-                "export": QAction("Export waveform..."),
+                "open":   ["Open waveform", "folder-open"],
+                "cap":    ["Capture waveform", "wave-square"],
+                "export": ["Export waveform", "file-export"],
                 "----":   None,
-                "exit":   QAction("Exit")
+                "exit":   ["Exit", "power-off"]
             },
             "view": {
 
             },
             "help": {
-                "docs":   QAction("Documentation"),
-                "bug":    QAction("Report a bug"),
+                "docs":   ["Documentation", "bookmark"],
+                "bug":    ["Report a bug", "bug"],
+                "update": ["Update wavebin", "sync-alt"],
                 "----":   None,
-                "about":  QAction("About")
+                "about":  ["About", "question"]
             }
         }
 
         # Build menubar
         self.menus = {}
-        for root in self.menu_actions:
+        for m in self.menu_actions:
             # Add root menus
-            self.menus[root] = QMenu(root.title())
-            self.addMenu(self.menus[root])
+            self.menus[m] = QMenu(m.title())
+            self.addMenu(self.menus[m])
 
             # Add actions to root menus
-            for action in self.menu_actions[root]:
+            for a in self.menu_actions[m]:
                 # Insert separator
-                if action == "----":
-                    self.menus[root].addSeparator()
+                if a == "----":
+                    self.menus[m].addSeparator()
                     continue
 
-                # Attach mouse click event
-                self.menu_actions[root][action].triggered.connect(eval(f"self.menu_{root}_{action}"))
-                self.menus[root].addAction(self.menu_actions[root][action])
+                # Get icon from Font Awesome
+                icon = qta.icon(
+                    f"fa5s.{self.menu_actions[m][a][1]}",
+                    color="#000",
+                    color_active="#444"
+                )
+
+                # Build action object
+                action = QAction(self)
+                action.setIcon(icon)
+                action.setText(self.menu_actions[m][a][0])
+                action.triggered.connect(eval(f"self.menu_{m}_{a}"))
+                self.menus[m].addAction(action)
+
+                # Replace list in dict with QAction instance
+                self.menu_actions[m][a] = action
 
 
     def menu_file_open(self):   self.app.button_open()
@@ -68,6 +83,7 @@ class MainMenuBar(QMenuBar):
     def menu_file_exit(self):   self.app.safe_exit(self.app.config)
     def menu_help_docs(self):   self.app.button_docs()
     def menu_help_bug(self):    self.app.tool_bar.button_bug()
+    def menu_help_update(self): self.app.tool_bar.button_update()
     def menu_help_about(self):  print("ABOUT")
 
 
