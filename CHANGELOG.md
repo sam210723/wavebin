@@ -8,14 +8,19 @@ All notable changes to this project will be documented in this file.
   - Persistent configuration options
   - Base class for vendor specific file parsers
   - Welcome screen with starting actions
+  - Device image in waveform properties dialog
   - Tool bar for common operations
-  - Toggle menu bar visibility with `Alt` key
+  - Capture sample rate and duration info in tool bar
+  - Bug report button using GitHub API and issue templates
   - Update checker using GitHub API
-  - Update installer using `pip`
+  - Single-click update installer using `pip`
+  - Toggle menu bar visibility with `Alt` key
 
 ### Changed
+  - Separate plots for each waveform capture channel
   - Rearrange PyQt5 interface code into multiple classes
-  - Better documentation and type hinting
+  - Use `Roboto` font for most UI elements
+  - Better docstrings and type hinting
   - Global configuration object for all classes
 
 ### Fixed
