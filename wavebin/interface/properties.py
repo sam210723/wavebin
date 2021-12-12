@@ -89,7 +89,7 @@ class WaveformProperties(QDialog):
             f"""
             <div align='center'>
                 <h1>{model}</h1>
-                {serial}
+                <p>{serial}</p>
             </div>
             """
         )
@@ -124,6 +124,7 @@ class WaveformProperties(QDialog):
             if r.status_code == 200:
                 self.device_image_pixmap.loadFromData(r.content)
                 self.device_image_label.setPixmap(self.device_image_pixmap)
+                return True
             else:
                 # Reposition top row of widgets so vendor logo and device model are centered
                 if r.status_code == 403:
