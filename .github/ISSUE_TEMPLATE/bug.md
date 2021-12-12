@@ -28,7 +28,7 @@ assignees: 'sam210723'
 *- OS: Ubuntu 20.04*
 *- Arch: 64-bit*
 *- Python: 3.8 32-bit*
-*- wavebin: 2.2*
+*- wavebin: 3.0*
 
 
 ### Anything else:
