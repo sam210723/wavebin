@@ -318,7 +318,7 @@ class MainWindow(QApplication):
         Trigger waveform capture via USB-TMC / PyVISA
         """
         #TODO: Waveform capture via PyVISA
-        pass
+        print("CAPTURE")
 
 
     def button_docs(self):
