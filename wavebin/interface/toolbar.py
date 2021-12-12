@@ -109,8 +109,9 @@ class MainToolBar(QToolBar):
             """
             QLabel {
                 color: #FFF;
-                font-size: 11pt;
-                padding-right: 10px;
+                font-family: Roboto;
+                font-size: 15px;
+                padding-right: 5px;
             }
             """
         )
