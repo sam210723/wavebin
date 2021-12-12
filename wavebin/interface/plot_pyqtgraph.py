@@ -52,7 +52,6 @@ class WaveformPlot(GraphicsLayoutWidget):
             'font-size': '14px',
             'font-weight': 'bold'
         }
-        self.axis_size = 40
 
         # Loop through waveform channels
         for i, c in enumerate(self.waveform.channels):
@@ -126,9 +125,9 @@ class WaveformPlot(GraphicsLayoutWidget):
         """
 
         if axis.orientation in ["left", "right"]:
-            axis.setWidth(self.axis_size)
+            axis.setWidth(50)
         elif axis.orientation in ["top", "bottom"]:
-            axis.setHeight(self.axis_size)
+            axis.setHeight(40)
 
         axis.setPen(self.axis_pen)
         axis.setLabel(
