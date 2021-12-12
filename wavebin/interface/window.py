@@ -78,7 +78,7 @@ class MainWindow(QApplication):
         self.log("Creating main widget")
         self.widget = QWidget()
         self.window.setCentralWidget(self.widget)
-        self.widget.setStyleSheet("background-color: #111;")
+        self.widget.setStyleSheet("background-color: #000;")
         self.widget.setContentsMargins(0, 0, 0, 0)
         self.window.resizeEvent = self.event_resize
         self.window.changeEvent = self.event_change
@@ -249,6 +249,7 @@ class MainWindow(QApplication):
                 """
                 QLabel {
                     color: #FFF;
+                    background: #111;
                     border-top: 1px solid #555;
                     border-left: 1px solid #555;
                 }
