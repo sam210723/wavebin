@@ -20,6 +20,7 @@ class WaveformProperties(QDialog):
 
     def __init__(self, app: QApplication) -> None:
         super(WaveformProperties, self).__init__(parent=None, flags=Qt.WindowCloseButtonHint)
+        self.app = app
 
         # Set dialog properties
         self.setWindowTitle("Waveform Properties")
@@ -124,6 +125,7 @@ class WaveformProperties(QDialog):
             if r.status_code == 200:
                 self.device_image_pixmap.loadFromData(r.content)
                 self.device_image_label.setPixmap(self.device_image_pixmap)
+                self.log(f"Downloaded properties dialog device image")
                 return True
             else:
                 # Reposition top row of widgets so vendor logo and device model are centered
@@ -135,8 +137,19 @@ class WaveformProperties(QDialog):
                     self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignCenter)
                     self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignTop | Qt.AlignCenter)
 
-                print(f"Failed to download device image (HTTP {r.status_code})")
+                self.log(f"Failed to download device image (HTTP {r.status_code})")
                 return False
         except Exception as e:
-            print(f"Failed to download device image ({e})")
+            self.log(f"Failed to download device image ({e})")
             return False
+
+
+    def log(self, msg: str):
+        """
+        Print message to console if verbose mode enabled
+
+        Args:
+            msg (str): Message to print to console
+        """
+
+        if self.app.config['verbose']: print(msg)
