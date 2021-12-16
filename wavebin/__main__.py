@@ -180,7 +180,7 @@ def update_check() -> bool:
     return False
 
 
-def open_waveform(path: Path) -> Vendor | None:
+def open_waveform(path: Path) -> Vendor:
     """
     Open waveform file, parse, then update UI
 

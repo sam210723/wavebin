@@ -58,7 +58,7 @@ class Vendor:
         return True
 
 
-    def human_format(self, num: int | float, binary: bool = False, sep=' ', unit: str = "") -> str:
+    def human_format(self, num: int, binary: bool = False, sep=' ', unit: str = "") -> str:
         """
         Format numbers as human-readable strings
 
