@@ -15,7 +15,7 @@ import webbrowser
 from wavebin.interface.toolbar import MainToolBar
 from wavebin.interface.menubar import MainMenuBar
 from wavebin.interface.plot_pyqtgraph import WaveformPlot as PlotPyQtGraph
-from wavebin.interface.plot_vispy import WaveformPlot as PlotVisPy
+#from wavebin.interface.plot_vispy import WaveformPlot as PlotVisPy
 
 
 class MainWindow(QApplication):
