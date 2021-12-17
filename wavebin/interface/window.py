@@ -40,7 +40,7 @@ class MainWindow(QApplication):
         self.config = config
         self.safe_exit = safe_exit
         self.open_waveform = open_waveform
-        self.name = f"wavebin v{self.config['version']}"
+        self.name = f"wavebin {self.config['version']}"
 
         # Setup main Qt application
         self.log("Initialising Qt application")
@@ -363,6 +363,7 @@ class MainWindow(QApplication):
         if event.key() == Qt.Key.Key_Alt:
             self.menu_bar.setHidden(not self.menu_bar.isHidden())
             self.menu_bar.setFocus(not self.menu_bar.isHidden())
+        #TODO: More hotkeys
 
 
     def log(self, msg: str):
