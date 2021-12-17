@@ -73,6 +73,7 @@ class MainToolBar(QToolBar):
                 self.insertSeparator(None)
                 continue
 
+            # Get icon from Font Awesome
             icon = qta.icon(
                 f"fa5s.{self.items[t][1]}",
                 color="#FFF",
@@ -244,6 +245,7 @@ class MainToolBar(QToolBar):
             waveform.model,
             waveform.serial
         )
+        #TODO: Pass waveform properties to dialog
 
 
     def log(self, msg: str):
