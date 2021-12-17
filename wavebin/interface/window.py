@@ -44,6 +44,7 @@ class MainWindow(QApplication):
 
         # Setup main Qt application
         self.log("Initialising Qt application")
+        self.setApplicationName(self.name)
         self.setApplicationDisplayName(self.name)
         self.setApplicationVersion(str(self.config['version']))
 
