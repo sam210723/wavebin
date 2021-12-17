@@ -174,8 +174,7 @@ class MainToolBar(QToolBar):
         Open documentation in browser
         """
 
-        self.log("Opening documentation in default web browser")
-        webbrowser.open("https://vksdr.com/wavebin")
+        self.app.button_docs()
 
 
     def button_bug(self):

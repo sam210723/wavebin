@@ -327,7 +327,7 @@ class MainWindow(QApplication):
         """
 
         self.log("Opening documentation in default web browser")
-        webbrowser.open("https://vksdr.com/wavebin")
+        webbrowser.open("https://wavebin.app")
 
 
     def event_resize(self, event):
