@@ -24,7 +24,7 @@ All notable changes to this project will be documented in this file.
   - Global configuration object for all classes
 
 ### Fixed
-  - Launcher executable script (`> wavebin` instead of `python3 -m wavebin`)
+  - Launcher executable script (`> wavebin` instead of `> python3 -m wavebin`)
   - Minimum dependency versions
   - Minimum Python version check
 </details>
