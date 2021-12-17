@@ -24,7 +24,7 @@ class KeysightWaveform(Vendor):
         super(KeysightWaveform, self).__init__(
             "Keysight/Agilent",
             "https://www.keysight.com",
-            "https://vksdr.com/download/wavebin/manuals/Agilent%20MSO-X%20User%20Manual.pdf#page=342",
+            "https://wavebin.app/cloud/manuals/Agilent%20MSO-X%20User%20Manual.pdf#page=342",
             ["DSO-X 1102G", "MSO-X 4154A"],
             ["*.bin", "*.csv"],
             data
