@@ -14,8 +14,7 @@ import webbrowser
 
 from wavebin.interface.toolbar import MainToolBar
 from wavebin.interface.menubar import MainMenuBar
-from wavebin.interface.plot_pyqtgraph import WaveformPlot as PlotPyQtGraph
-#from wavebin.interface.plot_vispy import WaveformPlot as PlotVisPy
+from wavebin.interface.plot import WaveformPlot
 
 
 class MainWindow(QApplication):
@@ -234,8 +233,7 @@ class MainWindow(QApplication):
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
 
         # Add plot widget to grid layout
-        self.plot = PlotPyQtGraph(self.config, self.config['waveform'])
-        #self.plot = PlotVisPy(self.config, self.config['waveform']).native
+        self.plot = WaveformPlot(self.config, self.config['waveform'])
         self.layout.addWidget(
             self.plot,
             0, 0,
