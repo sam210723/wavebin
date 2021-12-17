@@ -64,7 +64,7 @@ class WaveformProperties(QDialog):
         self.download_thread = Thread(
             target=self.download_device_image,
             args=(
-                f"https://vksdr.com/download/wavebin/devices/{vendor_clean}/{model_clean}.png",
+                f"https://wavebin.app/cloud/devices/{vendor_clean}/{model_clean}.png",
             )
         )
         self.download_thread.start()
