@@ -30,7 +30,7 @@ class MainMenuBar(QMenuBar):
                 "open":   ["Open waveform", "folder-open"],
                 "cap":    ["Capture waveform", "wave-square"],
                 "export": ["Export waveform", "file-export"],
-                "----":   None,
+                "sep0":   None,
                 "exit":   ["Exit", "power-off"]
             },
             "view": {
@@ -40,7 +40,7 @@ class MainMenuBar(QMenuBar):
                 "docs":   ["Documentation", "bookmark"],
                 "bug":    ["Report a bug", "bug"],
                 "update": ["Update wavebin", "sync-alt"],
-                "----":   None,
+                "sep0":   None,
                 "about":  ["About", "question"]
             }
         }
@@ -55,7 +55,7 @@ class MainMenuBar(QMenuBar):
             # Add actions to root menus
             for a in self.menu_actions[m]:
                 # Insert separator
-                if a == "----":
+                if self.menu_actions[m][a] == None:
                     self.menus[m].addSeparator()
                     continue
 
