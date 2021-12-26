@@ -204,7 +204,7 @@ class Channel:
         return self._digital
 
 
-def vendor_detect(path: Path) -> Vendor | None:
+def vendor_detect(path: Path) -> Vendor:
     """
     Detect vendor of waveform capture
 
