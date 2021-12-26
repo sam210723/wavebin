@@ -94,7 +94,7 @@ class KeysightWaveform(Vendor):
         # Print file header info
         print(
             f"Found {self.count} waveform{'s' if self.count > 1 else ''}" +
-            f" in {self.human_format(self._file_header.size, binary=True, unit='B')}\n"
+            f" in {self.human_format(self._file_header.size, binary=True, unit='B')}"
         )
 
         return True
