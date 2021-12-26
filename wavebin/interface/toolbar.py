@@ -147,7 +147,7 @@ class MainToolBar(QToolBar):
         file_path = self.app.save_dialog.getSaveFileName(
             self,
             "Export waveform",
-            str(initial.with_suffix(".sr").absolute()),
+            str(initial.with_suffix("").absolute()),
             "PulseView session (*.sr);;WAV file (*.wav)"
         )[0]
 
