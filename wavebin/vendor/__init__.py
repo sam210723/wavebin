@@ -8,6 +8,7 @@ Oscilloscope waveform capture viewer
 from enum import Enum
 import numpy as np
 from pathlib import Path
+import pyqtgraph
 
 
 class Vendor:
@@ -15,23 +16,23 @@ class Vendor:
     Base class for vendor-specific capture file parsers
     """
 
-    def __init__(self, name: str, site: str, docs: str, devices: list, exts: list, data: bytes):
-        self.vendor_name: str = name    # Plain-text vendor name
-        self.vendor_site: str = site    # Vendor website URL
-        self.vendor_docs: str = docs    # File format documentation URL
-        self.devices: list = devices    # List of vendor devices tested with wavebin
-        self.extensions: list = exts    # List of supported file extensions
+    def __init__(self, name: str, site: str, docs: str, devices: list, exts: list, data: bytes) -> None:
+        self.vendor_name: str = name        # Plain-text vendor name
+        self.vendor_site: str = site        # Vendor website URL
+        self.vendor_docs: str = docs        # File format documentation URL
+        self.devices: list = devices        # List of vendor devices tested with wavebin
+        self.extensions: list = exts        # List of supported file extensions
         print(f"Detected {self.vendor_name} waveform file")
 
-        self.data = data                # Capture file byte array
-        self.offset = 0                 # Current byte offset in data array
-        self.parsed = False             # Flag set when parsing finished
-        self.model = ""                 # Capture device model
-        self.serial = ""                # Capture device serial
-        self.channels = []              # Capture channel list
+        self.data = data                    # Capture file byte array
+        self.offset = 0                     # Current byte offset in data array
+        self.parsed = False                 # Flag set when parsing finished
+        self.model = ""                     # Capture device model
+        self.serial = ""                    # Capture device serial
+        self.channels: list[Channel] = []   # Capture channel list
 
 
-    def info(self):
+    def info(self) -> None:
         """
         Print vendor information
         """
@@ -131,16 +132,16 @@ class Channel:
     Vendor-independent waveform channel class
     """
 
-    def __init__(self, trace: np.array, points: int, sample_rate: float, duration: float, x_unit: Unit, y_unit: Unit, digital: bool):
+    def __init__(self, trace: np.array, points: int, sample_rate: float, duration: float, x_unit: Unit, y_unit: Unit, digital: bool) -> None:
         # Set properties
-        self._trace = trace
-        self._points = points
-        self._sample_rate = sample_rate
-        self._duration = duration
-        self._x_unit = x_unit
-        self._y_unit = y_unit
-        self._digital = digital
-        self.plot = None    # Instance of pyqtgraph plot
+        self._trace: np.array = trace
+        self._points: int = points
+        self._sample_rate: float = sample_rate
+        self._duration: float = duration
+        self._x_unit: Unit = x_unit
+        self._y_unit: Unit = y_unit
+        self._digital: bool = digital
+        self.plot: pyqtgraph.GraphicsLayoutWidget = None
 
         # Convert data into 2D NumPy array
         self._trace = np.array([
@@ -162,7 +163,7 @@ class Channel:
 
 
     @property
-    def sample_rate(self) -> str:
+    def sample_rate(self) -> float:
         """Waveform sample rate"""
         self._sample_rate
 
@@ -174,7 +175,7 @@ class Channel:
 
 
     @property
-    def duration(self) -> str:
+    def duration(self) -> float:
         """Waveform capture duration"""
         return self._duration
 
@@ -203,7 +204,7 @@ class Channel:
         return self._digital
 
 
-def vendor_detect(path: Path) -> Vendor:
+def vendor_detect(path: Path) -> Vendor | None:
     """
     Detect vendor of waveform capture
 

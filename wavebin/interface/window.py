@@ -6,9 +6,10 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
+from typing import Callable
 from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
 from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QFontDatabase, QIcon
+from PyQt5.QtGui import QFontDatabase, QIcon, QKeyEvent, QResizeEvent
 import qtawesome as qta
 import webbrowser
 
@@ -22,7 +23,7 @@ class MainWindow(QApplication):
     Main application window
     """
 
-    def __init__(self, config: dict, safe_exit, open_waveform):
+    def __init__(self, config: dict, safe_exit: Callable, open_waveform: Callable) -> None:
         """
         Initialise main application window
 
@@ -106,7 +107,7 @@ class MainWindow(QApplication):
             self.welcome()
 
 
-    def run(self):
+    def run(self) -> int:
         """
         Launch main application window
         """
@@ -114,10 +115,10 @@ class MainWindow(QApplication):
         self.log("Starting Qt application")
         self.window.show()
         if self.config['maximised']: self.window.setWindowState(Qt.WindowState.WindowMaximized)
-        self.exec()
+        return self.exec()
 
 
-    def welcome(self):
+    def welcome(self) -> None:
         """
         Builds welcome screen when no waveforms are loaded
         """
@@ -217,7 +218,7 @@ class MainWindow(QApplication):
         self.layout.addWidget(button_docs, 1, 5, 1, 1, Qt.AlignLeft | Qt.AlignTop)
 
 
-    def update(self):
+    def update(self) -> None:
         """
         Update UI for new waveform capture
         """
@@ -268,7 +269,7 @@ class MainWindow(QApplication):
         self.tool_bar.items['props'].setEnabled(True)
 
 
-    def button_open(self):
+    def button_open(self) -> bool:
         """
         Launch open file dialog
         """
@@ -290,7 +291,7 @@ class MainWindow(QApplication):
         # Handle cancelled dialog
         if file_path == "":
             self.log("Open file dialog cancelled")
-            return
+            return False
         else:
             file_path = Path(file_path)
 
@@ -301,6 +302,7 @@ class MainWindow(QApplication):
             self.config['file'] = file_path
             self.config['waveform'] = waveform
             self.update()
+            return True
         else:
             # Show error message
             msgbox = QMessageBox()
@@ -310,9 +312,10 @@ class MainWindow(QApplication):
             msgbox.setStandardButtons(QMessageBox.Ok)
             msgbox.setDefaultButton(QMessageBox.Ok)
             msgbox.exec()
+            return False
 
 
-    def button_capture(self):
+    def button_capture(self) -> None:
         """
         Trigger waveform capture via USB-TMC / PyVISA
         """
@@ -320,16 +323,16 @@ class MainWindow(QApplication):
         print("CAPTURE")
 
 
-    def button_docs(self):
+    def button_docs(self) -> bool:
         """
         Open documentation in browser
         """
 
         self.log("Opening documentation in default web browser")
-        webbrowser.open("https://wavebin.app")
+        return webbrowser.open("https://wavebin.app")
 
 
-    def event_resize(self, event):
+    def event_resize(self, event: QResizeEvent) -> None:
         """
         Handle window resize event
         """
@@ -342,7 +345,7 @@ class MainWindow(QApplication):
             self.config['height'] = self.window.height()
     
 
-    def event_change(self, event):
+    def event_change(self, event: QEvent) -> None:
         """
         Handle window state change event
         """
@@ -353,7 +356,7 @@ class MainWindow(QApplication):
             self.config['maximised'] = self.window.isMaximized()
 
 
-    def event_keypress(self, event):
+    def event_keypress(self, event: QKeyEvent) -> None:
         """
         Handle keyboard hotkey events
         """
@@ -365,7 +368,7 @@ class MainWindow(QApplication):
         #TODO: More hotkeys
 
 
-    def log(self, msg: str):
+    def log(self, msg: str) -> None:
         """
         Print message to console if verbose mode enabled
 

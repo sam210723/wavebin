@@ -22,7 +22,7 @@ class MainToolBar(QToolBar):
     Main window tool bar
     """
 
-    def __init__(self, app: QApplication):
+    def __init__(self, app: QApplication) -> None:
         # Initialise base class
         super(MainToolBar, self).__init__()
 
@@ -119,15 +119,15 @@ class MainToolBar(QToolBar):
         self.addWidget(self.info)
 
 
-    def button_open(self):
+    def button_open(self) -> bool:
         """
         Launch open file dialog
         """
         
-        self.app.button_open()
+        return self.app.button_open()
 
 
-    def button_capture(self):
+    def button_capture(self) -> None:
         """
         Trigger waveform capture via USB-TMC / PyVISA
         """
@@ -135,7 +135,7 @@ class MainToolBar(QToolBar):
         self.app.button_capture()
 
 
-    def button_export(self):
+    def button_export(self) -> None:
         """
         Launch export file dialog
         """
@@ -161,29 +161,29 @@ class MainToolBar(QToolBar):
         #TODO: Call export class
 
 
-    def button_props(self):
+    def button_props(self) -> int:
         """
         Show current waveform properties
         """
 
-        self.props_dialog.exec()
+        return self.props_dialog.exec()
 
 
-    def button_docs(self):
+    def button_docs(self) -> bool:
         """
         Open documentation in browser
         """
 
-        self.app.button_docs()
+        return self.app.button_docs()
 
 
-    def button_bug(self):
+    def button_bug(self) -> bool:
         """
         Open issue form on GitHub
         """
 
         self.log("Opening GitHub issue form in default web browser")
-        webbrowser.open(
+        return webbrowser.open(
             "https://github.com/sam210723/wavebin/issues/new" +
             "?template=bug.md" +
             "&labels=bug,from+app" +
@@ -192,7 +192,7 @@ class MainToolBar(QToolBar):
         )
 
 
-    def button_update(self):
+    def button_update(self) -> bool:
         """
         Update wavebin via PyPI
         """
@@ -204,14 +204,14 @@ class MainToolBar(QToolBar):
         msgbox.setTextFormat(Qt.TextFormat.RichText)
         msgbox.setText(
             "An update is available for wavebin via the Python Package Index (PyPI)<br>" +
-            "<a href=\"https://github.com/sam210723/wavebin/blob/master/CHANGELOG.md\">View changelog on GitHub</a><br><br>"
+            "<a href=\"https://github.com/sam210723/wavebin/blob/master/CHANGELOG.md\">View changelog on GitHub</a><br><br>" +
             "Are you sure you want to update wavebin?"
         )
         msgbox.setIcon(QMessageBox.Icon.Question)
         msgbox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
         msgbox.setDefaultButton(QMessageBox.No)
         msgbox.exec()
-        if msgbox.result() == QMessageBox.No: return
+        if msgbox.result() == QMessageBox.No: return False
 
         # Launch separate process to update
         import subprocess
@@ -222,7 +222,7 @@ class MainToolBar(QToolBar):
         self.app.safe_exit(self.app.config)
 
 
-    def set_info(self, sr: str, dur: str):
+    def set_info(self, sr: str, dur: str) -> None:
         """
         Update info widget in toolbar
 
@@ -234,7 +234,7 @@ class MainToolBar(QToolBar):
         self.info.setText(f"{sr}\n{dur}")
 
 
-    def set_props(self, waveform: Vendor):
+    def set_props(self, waveform: Vendor) -> None:
         """
         Update waveform properties
         """
@@ -247,7 +247,7 @@ class MainToolBar(QToolBar):
         #TODO: Pass waveform properties to dialog
 
 
-    def log(self, msg: str):
+    def log(self, msg: str) -> None:
         """
         Print message to console if verbose mode enabled
 

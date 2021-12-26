@@ -19,7 +19,7 @@ __version__ = "3.0"
 description = "Oscilloscope waveform capture viewer"
 
 
-def main():
+def main() -> None:
     print( "                              __    _        ")
     print( "   _      ______ __   _____  / /_  (_)___    ")
     print( "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")

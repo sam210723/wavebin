@@ -144,7 +144,7 @@ class WaveformProperties(QDialog):
             return False
 
 
-    def log(self, msg: str):
+    def log(self, msg: str) -> None:
         """
         Print message to console if verbose mode enabled
 

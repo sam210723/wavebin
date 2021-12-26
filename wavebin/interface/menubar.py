@@ -14,7 +14,7 @@ class MainMenuBar(QMenuBar):
     Main window menu bar
     """
 
-    def __init__(self, app: QApplication):
+    def __init__(self, app: QApplication) -> None:
         # Initialise base class
         super(MainMenuBar, self).__init__()
 
@@ -77,17 +77,17 @@ class MainMenuBar(QMenuBar):
                 self.menu_actions[m][a] = action
 
 
-    def menu_file_open(self):   self.app.button_open()
-    def menu_file_cap(self):    self.app.button_capture()
-    def menu_file_export(self): self.app.tool_bar.button_export()
-    def menu_file_exit(self):   self.app.safe_exit(self.app.config)
-    def menu_help_docs(self):   self.app.button_docs()
-    def menu_help_bug(self):    self.app.tool_bar.button_bug()
-    def menu_help_update(self): self.app.tool_bar.button_update()
-    def menu_help_about(self):  print("ABOUT")
+    def menu_file_open(self) -> bool:   return self.app.button_open()
+    def menu_file_cap(self) -> None:    self.app.button_capture()
+    def menu_file_export(self) -> None: self.app.tool_bar.button_export()
+    def menu_file_exit(self) -> None:   self.app.safe_exit(self.app.config)
+    def menu_help_docs(self) -> bool:   return self.app.button_docs()
+    def menu_help_bug(self) -> bool:    return self.app.tool_bar.button_bug()
+    def menu_help_update(self) -> bool: return self.app.tool_bar.button_update()
+    def menu_help_about(self) -> None:  print("ABOUT")
 
 
-    def log(self, msg: str):
+    def log(self, msg: str) -> None:
         """
         Print message to console if verbose mode enabled
 
