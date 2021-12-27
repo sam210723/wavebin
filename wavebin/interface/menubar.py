@@ -34,7 +34,7 @@ class MainMenuBar(QMenuBar):
                 "exit":   ["Exit", "power-off"]
             },
             "view": {
-
+                "props":  ["Waveform properties", "list"]
             },
             "help": {
                 "docs":   ["Documentation", "bookmark"],
@@ -76,11 +76,16 @@ class MainMenuBar(QMenuBar):
                 # Replace list in dict with QAction instance
                 self.menu_actions[m][a] = action
 
+        # Set default action states
+        self.menu_actions['file']['export'].setEnabled(False)
+        self.menu_actions['view']['props'].setEnabled(False)
+
 
     def menu_file_open(self) -> bool:   return self.app.button_open()
     def menu_file_cap(self) -> None:    self.app.button_capture()
     def menu_file_export(self) -> None: self.app.tool_bar.button_export()
     def menu_file_exit(self) -> None:   self.app.safe_exit(self.app.config)
+    def menu_view_props(self) -> int:   return self.app.tool_bar.props_dialog.exec()
     def menu_help_docs(self) -> bool:   return self.app.button_docs()
     def menu_help_bug(self) -> bool:    return self.app.tool_bar.button_bug()
     def menu_help_update(self) -> bool: return self.app.tool_bar.button_update()

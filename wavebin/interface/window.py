@@ -264,9 +264,13 @@ class MainWindow(QApplication):
         )
         self.tool_bar.set_props(self.config['waveform'])
 
-        # Enable export and properties tool bar buttons
+        # Enable export and properties toolbar buttons
         self.tool_bar.items['export'].setEnabled(True)
         self.tool_bar.items['props'].setEnabled(True)
+        
+        # Enable export and properties menu actions
+        self.menu_bar.menu_actions['file']['export'].setEnabled(True)
+        self.menu_bar.menu_actions['view']['props'].setEnabled(True)
 
 
     def button_open(self) -> bool:
