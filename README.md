@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/sam210723/wavebin/master/icon.ico" width=24 /> Oscilloscope Waveform Capture Viewer
+# <img src="https://raw.githubusercontent.com/sam210723/wavebin/master/wavebin/interface/assets/icon.ico" width=24 /> Oscilloscope Waveform Capture Viewer
 
 [![GitHub release](https://img.shields.io/github/release/sam210723/wavebin.svg)](https://pypi.org/project/wavebin/)
 [![PyPI - Python Version](https://img.shields.io/pypi/pyversions/wavebin)](https://pypi.org/project/wavebin/)
