@@ -57,6 +57,10 @@ class MainWindow(QApplication):
         QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Regular.ttf"))
         QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Bold.ttf"))
 
+        # Use high DPI scaling and icons
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+
         # Window styling and state
         self.log("Updating window style")
         self.icon_path = Path(__file__).parent / "assets" / "icon.ico"
