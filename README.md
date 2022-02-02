@@ -55,7 +55,7 @@ For more information about the **wavebin** command-line arguments run:
    _      ______ __   _____  / /_  (_)___
   | | /| / / __ `/ | / / _ \/ __ \/ / __ \
   | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /
-  |__/|__/\__,_/ |___/\___/_.___/_/_/ /_/  v2.2
+  |__/|__/\__,_/ |___/\___/_.___/_/_/ /_/  v3.0
 
     Oscilloscope waveform capture viewer
              vksdr.com/wavebin
