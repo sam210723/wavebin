@@ -2,7 +2,7 @@
 name: Bug Report
 about: Report a bug or issue
 title: Brief issue description
-labels: Bug, From App
+labels: bug, from app
 assignees: 'sam210723'
 
 ---
