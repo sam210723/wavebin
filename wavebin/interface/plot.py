@@ -106,7 +106,7 @@ class WaveformPlot(GraphicsLayoutWidget):
                 skipFiniteCheck=True,
                 pen=pg.mkPen(
                     self.colours[i],
-                    width=2     # See pyqtgraph/pyqtgraph #533
+                    width=2     # See pyqtgraph/pyqtgraph #533 and #2011
                 )
             )
 
