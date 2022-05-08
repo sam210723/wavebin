@@ -81,11 +81,6 @@ class WaveformPlot(GraphicsLayoutWidget):
             c.plot.showAxes((True, False, False, True))
             self.setup_axis(c.plot.getAxis('bottom'), c.x_unit)
             self.setup_axis(c.plot.getAxis('left'), c.y_unit)
-
-            #FIXME: showGrid() causes zoom to center on X origin rather than mouse location
-            #FIXME: See pyqtgraph/pyqtgraph #1937, #1975, #2034 and #2057
-            #FIXME: This is fixed in the dev version of pyqtgraph, not yet released
-            #FIXME: setuptools can not install deps from GitHub when package is being installed from PyPI
             c.plot.showGrid(x=True, y=True, alpha=0.75)
 
             # Subsample large waveform captures
@@ -106,8 +101,12 @@ class WaveformPlot(GraphicsLayoutWidget):
                 skipFiniteCheck=True,
                 pen=pg.mkPen(
                     self.colours[i],
-                    width=2     # See pyqtgraph/pyqtgraph #533 and #2011
+                    width=2
                 )
+
+                #TODO: Add optional trace fill
+                #fillLevel=0,
+                #brush=(*self.colours[i], 32)
             )
 
             # Link views and add to layout
