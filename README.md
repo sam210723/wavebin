@@ -112,6 +112,15 @@ Below is a 62.5 MHz wave being rendered with all `20,000` points in the capture 
 
 By default, waveforms with over `50,000` points will automatically be subsampled. This can be overridden using the `--no-limit` switch.
 
+
+# Hotkeys
+| Hotkey | Function                                 |
+| ------ | ---------------------------------------- |
+| `F`    | Toggle filled area under waveform traces |
+| `F1`   | Show **wavebin** About dialog            |
+| `Alt`  | Toggle top menu bar visibility           |
+
+
 ## Resources
   - [FaustinCarter/agilent_read_binary](https://github.com/FaustinCarter/agilent_read_binary)
   - [yodalee/keysightBin](https://github.com/yodalee/keysightBin/)
