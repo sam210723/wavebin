@@ -24,7 +24,7 @@ setuptools.setup(
         'numpy>=1.21.0',
         'pyqt5>=5.15.0',
         'pyopengl>=3.1.6',
-        'pyopengl-accelerate>=3.1.6'
+        'pyopengl-accelerate>=3.1.6',
         'pyqtgraph>=0.12.4',
         'qtawesome>=1.1.0',
         'requests>=2.24.0'
