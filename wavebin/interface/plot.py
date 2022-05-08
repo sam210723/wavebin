@@ -52,6 +52,7 @@ class WaveformPlot(GraphicsLayoutWidget):
             'font-size': '14px',
             'font-weight': 'bold'
         }
+        self.filled = False
 
         # Loop through waveform channels
         for i, c in enumerate(self.waveform.channels):
@@ -134,3 +135,24 @@ class WaveformPlot(GraphicsLayoutWidget):
             units=UnitAbbr(unit.value).name,
             **self.axis_style
         )
+
+
+    def toggle_trace_fill(self):
+        """
+        Toggle filled area under waveform traces
+        """
+
+        for i, c in enumerate(self.waveform.channels):
+            c.plot.plot(
+                c.trace[0],
+                c.trace[1],
+                clear=True,
+                skipFiniteCheck=True,
+                pen=pg.mkPen(
+                    self.colours[i],
+                    width=2
+                ),
+                fillLevel=0,
+                brush=(*self.colours[i], 32) if not self.filled else None
+            )
+        self.filled = not self.filled
