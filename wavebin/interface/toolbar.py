@@ -63,7 +63,8 @@ class MainToolBar(QToolBar):
             "sep0":    None,
             "docs":    ["Open documentation", "bookmark"],
             "bug":     ["Report a bug", "bug"],
-            "update":  ["An update is available for wavebin", "sync-alt"]
+            "update":  ["An update is available for wavebin", "sync-alt"],
+            "about":   ["About wavebin", "question"]
         }
 
         # Build tool bar
@@ -220,6 +221,14 @@ class MainToolBar(QToolBar):
 
         # Exit current instance
         self.app.safe_exit(self.app.config)
+
+
+    def button_about(self) -> bool:
+        """
+        Launch wavebin About dialog
+        """
+
+        print("ABOUT")
 
 
     def set_info(self, sr: str, dur: str) -> None:
