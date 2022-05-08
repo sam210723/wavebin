@@ -104,10 +104,6 @@ class WaveformPlot(GraphicsLayoutWidget):
                     self.colours[i],
                     width=2
                 )
-
-                #TODO: Add optional trace fill
-                #fillLevel=0,
-                #brush=(*self.colours[i], 32)
             )
 
             # Link views and add to layout
