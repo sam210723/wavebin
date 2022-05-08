@@ -18,7 +18,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/sam210723/wavebin",
-    python_requires = '>3.6',
+    python_requires = '>3.8',
     install_requires = [
         'appdirs>=1.4.4',
         'numpy>=1.21.0',
@@ -39,8 +39,6 @@ setuptools.setup(
         "Natural Language :: English",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.6",
-        "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10"
