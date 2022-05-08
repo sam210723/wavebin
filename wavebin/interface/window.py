@@ -33,6 +33,10 @@ class MainWindow(QApplication):
             open_waveform (function): Waveform file handling function
         """
 
+        # Use high DPI scaling and icons
+        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
+        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
+
         # Initialise parent class
         super(MainWindow, self).__init__([])
 
@@ -56,10 +60,6 @@ class MainWindow(QApplication):
         font_dir = Path(__file__).parent / "assets" / "Roboto"
         QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Regular.ttf"))
         QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Bold.ttf"))
-
-        # Use high DPI scaling and icons
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
         # Window styling and state
         self.log("Updating window style")
