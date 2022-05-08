@@ -369,11 +369,25 @@ class MainWindow(QApplication):
         Handle keyboard hotkey events
         """
 
-        # Show/Hide menubar
-        if event.key() == Qt.Key.Key_Alt:
+        # Ignore key repeats
+        if event.isAutoRepeat(): return
+    
+        key = event.key()
+        mod = event.modifiers()
+        mod = None if mod == Qt.KeyboardModifier.NoModifier else mod
+
+        if mod == Qt.KeyboardModifier.AltModifier and key == Qt.Key.Key_Alt:
+            # Toggle top menu bar visibility
             self.menu_bar.setHidden(not self.menu_bar.isHidden())
             self.menu_bar.setFocus(not self.menu_bar.isHidden())
-        #TODO: More hotkeys
+
+        elif mod == None and key == Qt.Key.Key_F1:
+            # Show wavebin About dialog
+            self.menu_bar.menu_help_about()
+        
+        elif mod == None and key == Qt.Key.Key_F:
+            # Toggle filled area under waveform traces 
+            self.plot.toggle_trace_fill()
 
 
     def log(self, msg: str) -> None:
