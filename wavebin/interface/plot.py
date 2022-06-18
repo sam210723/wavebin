@@ -110,6 +110,17 @@ class WaveformPlot(GraphicsLayoutWidget):
             if i != 0: c.plot.setXLink(self.waveform.channels[0].plot.getViewBox())
             self.addItem(c.plot, row=i, col=0, rowspan=1, colspan=1)
 
+            # Add infinite crosshair
+            c.crosshair = [
+                pg.InfiniteLine(angle=90, movable=False),
+                pg.InfiniteLine(angle=0, movable=False)
+            ]
+            for line in c.crosshair:
+                line.setPen("#FFFFFF")
+                view.addItem(line, ignoreBounds=True)
+            self.proxy = pg.SignalProxy(self.sceneObj.sigMouseMoved, rateLimit=60, slot=self.update_crosshair)
+            #TODO: Move signal to parent widget (QWidget:wavebin.interface.window.widget)
+
 
     def setup_axis(self, axis: AxisItem, unit: Unit) -> None:
         """
@@ -160,3 +171,20 @@ class WaveformPlot(GraphicsLayoutWidget):
                 brush=(*self.colours[i], 32) if not self.filled else None
             )
         self.filled = not self.filled
+
+
+    def update_crosshair(self, e):
+        """
+        Update infinite line crosshair position on plots
+        """
+
+        for i, c in enumerate(self.waveform.channels):
+            if c.plot.sceneBoundingRect().contains(e[0]):
+                # Set crosshair position within plot
+                mousePoint = c.plot.vb.mapSceneToView(e[0])
+                c.crosshair[0].setPos(mousePoint.x())
+                c.crosshair[1].setPos(mousePoint.y())
+            else:
+                # Move lines far off-screen
+                c.crosshair[0].setPos(1e9)
+                c.crosshair[1].setPos(1e9)
