@@ -351,7 +351,7 @@ class MainWindow(QApplication):
         if self.window.width() != self.primaryScreen().size().width():
             self.config['width'] = self.window.width()
             self.config['height'] = self.window.height()
-    
+
 
     def event_change(self, event: QEvent) -> None:
         """
@@ -371,7 +371,7 @@ class MainWindow(QApplication):
 
         # Ignore key repeats
         if event.isAutoRepeat(): return
-    
+
         key = event.key()
         mod = event.modifiers()
         mod = None if mod == Qt.KeyboardModifier.NoModifier else mod
@@ -384,7 +384,7 @@ class MainWindow(QApplication):
         elif mod == None and key == Qt.Key.Key_F1:
             # Show wavebin About dialog
             self.menu_bar.menu_help_about()
-        
+
         elif mod == None and key == Qt.Key.Key_F:
             # Toggle filled area under waveform traces 
             self.plot.toggle_trace_fill()
