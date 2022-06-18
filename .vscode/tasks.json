@@ -10,6 +10,12 @@
             "problemMatcher": []
         },
         {
+            "label": "Build Package (PyInstaller)",
+            "type": "shell",
+            "command": "pyinstaller --clean wavebin.spec",
+            "problemMatcher": []
+        },
+        {
             "label": "Install Package (local)",
             "type": "shell",
             "command": "python3 setup.py install",
