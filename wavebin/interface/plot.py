@@ -80,9 +80,9 @@ class WaveformPlot(GraphicsLayoutWidget):
 
             # Setup plot axes
             c.plot.showAxes((True, False, False, True))
-            self.setup_axis(c.plot.getAxis('bottom'), c.x_unit)
-            self.setup_axis(c.plot.getAxis('left'), c.y_unit)
             c.plot.showGrid(x=True, y=True, alpha=0.75)
+            self.setup_axis(c.plot.getAxis('bottom'), c.x_unit)
+            self.setup_axis(c.plot.getAxis('left'), "DIGITAL" if c.is_digital else c.y_unit)
 
             # Subsample large waveform captures
             limit = 250000
@@ -117,7 +117,7 @@ class WaveformPlot(GraphicsLayoutWidget):
 
         Args:
             axis (AxisItem): Axis object to configure
-            unit (Unit): Axis measurement unit
+            unit (Unit | str): Axis measurement unit
         """
 
         if axis.orientation in ["left", "right"]:
@@ -126,11 +126,19 @@ class WaveformPlot(GraphicsLayoutWidget):
             axis.setHeight(40)
 
         axis.setPen(self.axis_pen)
-        axis.setLabel(
-            text=unit.name,
-            units=UnitAbbr(unit.value).name,
-            **self.axis_style
-        )
+
+        if type(unit) == Unit:
+            axis.setLabel(
+                text=unit.name,
+                units=UnitAbbr(unit.value).name,
+                **self.axis_style
+            )
+        elif type(unit) == str:
+            axis.setLabel(
+                text=unit,
+                units=None,
+                **self.axis_style
+            )
 
 
     def toggle_trace_fill(self):
