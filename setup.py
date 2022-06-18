@@ -20,14 +20,14 @@ setuptools.setup(
     url="https://github.com/sam210723/wavebin",
     python_requires = '>3.8',
     install_requires = [
-        'appdirs>=1.4.4',
-        'numpy>=1.21.0',
-        'pyqt5>=5.15.0',
+        'numpy>=1.22.4',
+        'pyqt5>=5.15.6',
         'pyopengl>=3.1.6',
         'pyopengl-accelerate>=3.1.6',
         'pyqtgraph>=0.12.4',
-        'qtawesome>=1.1.0',
-        'requests>=2.24.0'
+        'qtawesome>=1.1.1',
+        'appdirs>=1.4.4',
+        'requests>=2.28.0'
     ],
     classifiers=[
         "Topic :: Scientific/Engineering :: Visualization",
