@@ -26,7 +26,7 @@ class WaveParser():
         # Parse file header
         if not self.parse_file_header(self.file.read(0x0C)):
             return False
-        
+
         # Loop through waveforms
         self.waveforms = []
         for i in range(self.file_header.waveforms):
@@ -142,7 +142,7 @@ class WaveParser():
             "size data_type bpp length"
         )
         fields = struct.unpack("i2hi", data)
-        
+
         return waveform_data_header_tuple(*fields)
 
 
@@ -156,13 +156,13 @@ class WaveParser():
             div = 1024.0
         else:
             div = 1000.0
-        
+
         num = float('{:.3g}'.format(num))
         mag = 0
         while abs(num) >= div:
             mag += 1
             num /= div
-        
+
         digits = '{:f}'.format(round(num, 2)).rstrip('0').rstrip('.')
         return f"{digits}{sep}{['', 'k', 'M', 'G', 'T'][mag]}"
 

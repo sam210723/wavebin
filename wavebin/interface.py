@@ -61,7 +61,7 @@ class QtApp(qt.QApplication):
     def update(self):
         self.log("Updating UI")
         self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
-        
+
         # Limit number of points for large captures
         points = len(self.config['wave'].waveforms[0]['data'])
         if points > self.config['limit']:
@@ -132,7 +132,7 @@ class QtApp(qt.QApplication):
                 continue
             self.menu_actions[a].triggered.connect(eval(f"self.menu_{a}"))
             self.menus[a.split("_")[0]].addAction(self.menu_actions[a])
-        
+
         # Attach keyboard event handler
         self.window.keyPressEvent = self.keyPressEvent
 
@@ -151,7 +151,7 @@ class QtApp(qt.QApplication):
             char = chr(key)
         except ValueError:
             char = None
-        
+
         if char == 'B':
             self.menu_actions['view_sidebar'].toggle()
             self.sidebar.toggle()
@@ -176,7 +176,7 @@ class QtApp(qt.QApplication):
         if file_path == "":
             self.log("Open file dialog cancelled")
             return
-        
+
         # Reset sidebar controls
         self.sidebar.update(0, False, -1)
 
@@ -213,7 +213,7 @@ class QtApp(qt.QApplication):
             self.config['plot'].processed_waveforms,
             self.sidebar.config['parts'][1]['widget'].isChecked()
         )
-    
+
 
     def menu_file_export_wav(self):
         # Check waveform has been clipped
@@ -298,7 +298,7 @@ class QtApp(qt.QApplication):
 
             increment = round(header.x_increment * float(10**9), 3)
             info += f"  - X Increment:\t\t{increment} ns\n"
-            
+
             origin = round(header.x_origin * float(10**6), 3)
             info += f"  - X Origin:\t\t{origin} μs\n"
 
@@ -307,7 +307,7 @@ class QtApp(qt.QApplication):
             info += f"  - Frame Serial:\t\t{frame[1]}\n"
             info += f"  - Date:\t\t\t{header.date.decode()}\n"
             info += f"  - Time:\t\t\t{header.time.decode()}\n"
-            
+
             info += f"  - Waveform Label:\t{header.label.decode()}\n"
             info += f"  - Time Tags:\t\t{header.time_tags}\n"
             info += f"  - Segment Number:\t{header.segment}\n"
@@ -390,7 +390,7 @@ class QtSidebar(qt.QTableWidget):
         self.config = {}
         self.config['parts'] = []
         self.build()
-    
+
 
     def build(self):
         self.config['parts'].append({"name": "Filter Type", "widget": qt.QComboBox()})
@@ -418,13 +418,13 @@ class QtSidebar(qt.QTableWidget):
             # Set row name
             self.setItem(i, 0, qt.QTableWidgetItem(p['name']))
             self.setCellWidget(i, 1, p['widget'])
-        
+
         # Bold left column
         f = qtg.QFont()
         f.setBold(True)
         for i, p in enumerate(self.config['parts']):
             self.item(i, 0).setFont(f)
-        
+
         # Remove focus from sidebar widgets
         self.config['parts'][0]['widget'].clearFocus()
         self.config['parts'][1]['widget'].clearFocus()
@@ -435,11 +435,11 @@ class QtSidebar(qt.QTableWidget):
         if f != None:
             self.config['parts'][0]['widget'].setCurrentIndex(f)
             self.filter_changed(f)
-        
+
         if c != None:
             self.config['parts'][1]['widget'].setChecked(c)
             self.clipping_changed(c)
-        
+
         if p != None:
             # Set subsampling spin box min/max
             self.config['parts'][2]['widget'].setMinimum(2)
@@ -467,7 +467,7 @@ class QtSidebar(qt.QTableWidget):
         else:
             btn.setStyleSheet("background: red; color: white;")
             btn.setText("OFF")
-        
+
         self.config['plot'].config['clipping'] = btn.isChecked()
         btn.clearFocus()
 
@@ -479,7 +479,7 @@ class QtSidebar(qt.QTableWidget):
 
     def subsampling_changed(self, value):
         self.config['plot'].config['subsampling'] = value
-        
+
         try:
             self.config['plot'].update()
         except AttributeError:

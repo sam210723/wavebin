@@ -146,7 +146,7 @@ class WaveFile():
 
         self.log("Finished exporting")
 
-    
+
     def get_sample_rate(self, i):
         # Check if waveform is subsampled
         if self.waveforms[i]['header'].points != len(self.waveforms[i]['data']):
@@ -157,7 +157,7 @@ class WaveFile():
         else:
             # Use increment value from waveform header
             sr  = 1 / self.waveforms[i]['header'].x_increment
-        
+
         return sr
 
 
