@@ -8,8 +8,8 @@ Waveform capture viewer for oscilloscopes.
 from pathlib import Path
 import numpy
 import wave
+import struct
 import zipfile
-
 
 class PulseView():
     def __init__(self, verbose, path, waveforms, clipped):
@@ -44,14 +44,21 @@ class PulseView():
         meta +=  "\r\n"
 
         meta +=  "[device 1]\r\n"
-        meta +=  "capturefile=logic-1\r\n"
-        meta +=  "unitsize=1\r\n"
-        meta += f"total probes={len(self.waveforms)}\r\n"
-        meta += f"samplerate={round(self.get_sample_rate(), 4) / 1e6} MHz\r\n"
-        meta +=  "total analog=0\r\n"       #TODO: Use 'clipped' flag to export analog waveforms
-        
-        for i in range(len(self.waveforms)):
-            meta +=  f"probe{i + 1}=D{i}\r\n"
+        if self.clipped:
+            meta +=  "capturefile=logic-1\r\n"
+            meta +=  "unitsize=1\r\n"
+            meta += f"total probes={len(self.waveforms)}\r\n"
+        else:
+            meta += f"total analog={len(self.waveforms)}\r\n"
+        meta += f"samplerate={int(round(self.get_sample_rate(), 4) / 1e3)} kHz\r\n"
+
+        if self.clipped:
+            for i in range(len(self.waveforms)):
+                meta +=  f"probe{i + 1}=D{i}\r\n"
+        else:
+            for i in range(len(self.waveforms)):
+                meta += f"analog{i + 1}=A{i}\r\n"
+
         meta +=  "\r\n"
 
         return meta
@@ -59,26 +66,33 @@ class PulseView():
 
     def write_data(self):
         num = len(self.waveforms[0]['data'])
-        data = bytearray(b'')
 
-        # Loop through waveform samples
-        for i in range(num):
-            sample = 0x00
+        if self.clipped:
+            data = bytearray(b'')
 
-            # Loop through waveforms
-            for j, w in enumerate(self.waveforms):
-                # Get current sample
-                point = w['data'][i]
+            # Loop through waveform samples
+            for i in range(num):
+                sample = 0x00
 
-                # Set bit for waveform
-                if point == 1: sample |= 1 << j
-            
-            # Add byte to data buffer
-            data.append(sample)
+                # Loop through waveforms
+                for j, w in enumerate(self.waveforms):
+                    # Get current sample
+                    point = w['data'][i]
 
-        # Write data to ZIP file
-        self.zipf.writestr(f"logic-1", bytes(data))
+                    # Set bit for waveform
+                    if point == 1: sample |= 1 << j
 
+                # Add byte to data buffer
+                data.append(sample)
+
+            # Write data to ZIP file
+            self.zipf.writestr(f"logic-1", bytes(data))
+        else:
+            for i, waveform in enumerate(self.waveforms):
+                data = bytearray(b'')
+                for point in waveform['data']:
+                    data.extend(struct.pack("f", point))
+                self.zipf.writestr(f"analog-1-{i + 1}-1", bytes(data))
 
     def get_sample_rate(self):
         # Check if waveform is subsampled
@@ -90,7 +104,7 @@ class PulseView():
         else:
             # Use increment value from waveform header
             sr  = 1 / self.waveforms[0]['header'].x_increment
-        
+
         return sr
 
 

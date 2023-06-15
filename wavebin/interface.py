@@ -193,16 +193,6 @@ class QtApp(qt.QApplication):
 
 
     def menu_file_export_pv(self):
-        # Check waveform has been clipped
-        if not self.sidebar.config['parts'][1]['widget'].isChecked():
-            msgbox = qt.QMessageBox()
-            msgbox.setWindowTitle("Error")
-            msgbox.setIcon(qt.QMessageBox.Critical)
-            msgbox.setStandardButtons(qt.QMessageBox.Ok)
-            msgbox.setText("Enable waveform clipping before exporting to PulseView")
-            msgbox.exec_()
-            return
-
         # Show save file dialog
         file_path = self.sfd.getSaveFileName(
             self.window,
