@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
 </details>
 
 
+## [v2.2](https://github.com/sam210723/wavebin/releases/tag/v2.2) - 2023-06-18
+Add support for analog waveforms in Sigrok exports.
+
+
 ## [v2.1](https://github.com/sam210723/wavebin/releases/tag/v2.1) - 2021-02-27
 Add support for Rigol waveform captures, plus some minor fixes.
 
