@@ -58,7 +58,7 @@ class QtPlot(PlotWidget):
             # Filtering
             if self.config['filter_type'] == 1:
                 self.log(f"  Filtering (Savitzky-Golay)")
-                
+
                 # Calculate window length
                 window = round(len(y) * 0.025)
                 if window % 2 == 0: window += 1
@@ -85,7 +85,7 @@ class QtPlot(PlotWidget):
                 # Apply threshold to waveform values
                 y[y > 0] = 1
                 y[y < 0] = 0
-            
+
 
             # Make processed waveforms available for exporting
             self.processed_waveforms.append({
@@ -168,7 +168,7 @@ class Filters():
         W.H. Press, S.A. Teukolsky, W.T. Vetterling, B.P. Flannery
         Cambridge University Press ISBN-13: 9780521880688
         """
-        
+
         import numpy as np
         from math import factorial
 
@@ -190,11 +190,11 @@ class Filters():
         # Precompute coefficients
         b = np.mat([[k**i for i in order_range] for k in range(-half_window, half_window+1)])
         m = np.linalg.pinv(b).A[deriv] * rate**deriv * factorial(deriv)
-        
+
         # Pad the signal at the extremes with values taken from the signal itself
         firstvals = y[0] - np.abs( y[1:half_window+1][::-1] - y[0] )
         lastvals = y[-1] + np.abs(y[-half_window-1:-1][::-1] - y[-1])
-        
+
         y = np.concatenate((firstvals, y, lastvals))
 
         return np.convolve( m[::-1], y, mode='valid')

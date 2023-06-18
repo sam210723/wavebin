@@ -26,7 +26,7 @@ def init():
 
     # Parse CLI arguments
     args = parse_args()
-    
+
     # Print startup info
     print_info(args)
 
@@ -37,9 +37,9 @@ def init():
 
     # Get subsampling limit
     if args.no_limit:
-        limit = 10e6
+        limit = int(10e6)
     else:
-        limit = 50e3
+        limit = int(50e3)
 
     # Create Qt application
     app = QtApp({
