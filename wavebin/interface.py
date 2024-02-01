@@ -396,6 +396,9 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'].append({"name": "Filter Type", "widget": qt.QComboBox()})
         self.config['parts'].append({"name": "Clipping", "widget": qt.QPushButton("OFF")})
         self.config['parts'].append({"name": "Subsampling", "widget": qt.QSpinBox()})
+        #self.config['parts'].append({"name": "Sinc interpolation", "widget": qt.QPushButton("OFF")})
+        self.config['parts'].append({"name": "Channel", "widget": qt.QComboBox()})
+        self.config['parts'].append({"name": "Scale", "widget": qt.QSpinBox()})
 
         # Add filter dropdown options
         self.config['parts'][0]['widget'].addItem("None")
@@ -411,6 +414,15 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'][2]['widget'].setMinimum(2)
         self.config['parts'][2]['widget'].valueChanged.connect(self.subsampling_changed)
 
+        # Set channel selection box properties
+        for i in range(4): #self.config['plot'].waveforms
+            self.config['parts'][3]['widget'].addItem("CH"+str(i+1))
+        self.config['parts'][3]['widget'].currentIndexChanged.connect(self.channel_changed)
+
+        #set voltage scaling box properties
+        self.config['parts'][4]['widget'].setMinimum(1)
+        self.config['parts'][4]['widget'].setMaximum(100000)
+        self.config['parts'][4]['widget'].valueChanged.connect(self.gain_changed)
         for i, p in enumerate(self.config['parts']):
             # Add new table row
             self.setRowCount(self.rowCount() + 1)
@@ -485,6 +497,18 @@ class QtSidebar(qt.QTableWidget):
         except AttributeError:
             return
 
+    def channel_changed(self, value):
+        self.selectedChannel=value
+        self.config['parts'][3]['widget'].clearFocus()
+        #self.config['parts'][4]['widget'].setText("CH"+str(value+1)+" scale")
+        self.config['parts'][4]['widget'].setValue(self.config['plot'].config['channel_gain'][self.selectedChannel])
+
+    def gain_changed(self, value):
+        self.config['plot'].config['channel_gain'][self.selectedChannel]=value
+        try:
+            self.config['plot'].update()
+        except AttributeError:
+            return
 
     def toggle(self):
         if self.isHidden():
