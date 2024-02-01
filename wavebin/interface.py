@@ -367,7 +367,8 @@ class QtApp(qt.QApplication):
 class QtSidebar(qt.QTableWidget):
     def __init__(self):
         super(QtSidebar, self).__init__()
-
+        
+        self.selectedChannel=0
         self.setFixedWidth(300)
         self.setColumnCount(2)
         self.setRowCount(0)
