@@ -22,7 +22,7 @@ Add support for Rigol DHO800 waveform captures, plus some minor fixes.
 <summary>Details</summary>
 
 ### Added
-  - Support for Rigol waveform DHO800 captures
+  - Support for Rigol DHO800 captures
   - Waveform scaling option
 
 ### Changed
