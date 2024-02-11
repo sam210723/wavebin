@@ -24,12 +24,8 @@ class WaveParser():
         self.file = open(self.config['file'], mode="rb")
 
         # Parse file header
-        if self.config['DHO800']:
-            if not self.parse_file_header(self.file.read(0x10)): #DHO804 has longer header
-                return False
-        else:
-            if not self.parse_file_header(self.file.read(0x0C)):
-                return False
+        if not self.parse_file_header(): return False
+
         # Loop through waveforms
         self.waveforms = []
         for i in range(self.file_header.waveforms):
@@ -68,23 +64,10 @@ class WaveParser():
         return True
 
 
-    def parse_file_header(self, data):
-        # Unpack file header
-        if self.config['DHO800']:
-            file_header_tuple = namedtuple(
-                "FileHeader",
-                "magic version size z waveforms" #DHO804 has longer header
-            )
-        else:
-            file_header_tuple = namedtuple(
-                "FileHeader",
-                "magic version size waveforms" #DHO804 has longer header
-            )
-        unpackStr="2s2s2i"
-        if self.config['DHO800']:
-            unpackStr="2s2s3i"
-        fields = struct.unpack(unpackStr, data)
-        self.file_header = file_header_tuple(*fields)
+    def parse_file_header(self):
+        # Read file magic and format version
+        magic = self.file.read(2)
+        version = self.file.read(2)
 
         # Get vendor based on file magic
         vendor = {
@@ -93,9 +76,31 @@ class WaveParser():
         }
 
         # Check file magic
-        if not self.file_header.magic in vendor:
+        if not magic in vendor:
             print("Unknown file format")
             return False
+
+        # Set unpack format for file version
+        if version == b'01':
+            size = self.file.read(4)
+            count = self.file.read(4)
+        elif version == b'03':
+            size = self.file.read(8)
+            count = self.file.read(4)
+        else:
+            print("Unknown file format")
+            return False
+
+        # Unpack file header
+        file_header_tuple = namedtuple(
+            "FileHeader",
+            "magic version size waveforms"
+        )
+        self.file_header = file_header_tuple(
+            magic, version,
+            int.from_bytes(size, byteorder='little'),
+            int.from_bytes(count, byteorder='little')
+        )
 
         # Print file header info
         self.log("File Header:")
