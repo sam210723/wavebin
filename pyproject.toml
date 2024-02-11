@@ -1,0 +1,54 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "wavebin"
+dynamic = ["version"]
+description = "Oscilloscope waveform capture viewer"
+readme = "README.md"
+license = "MIT"
+requires-python = ">3.8"
+authors = [
+    { name = "sam210723", email = "pypi@vksdr.com" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Topic :: Scientific/Engineering :: Visualization",
+]
+dependencies = [
+    "appdirs>=1.4.4",
+    "numpy>=1.22.4",
+    "pyopengl-accelerate>=3.1.6",
+    "pyopengl>=3.1.6",
+    "pyqt5>=5.15.6",
+    "pyqtgraph>=0.12.4",
+    "qtawesome>=1.1.1",
+    "requests>=2.28.0",
+]
+
+[project.scripts]
+wavebin = "wavebin.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/sam210723/wavebin"
+
+[tool.hatch.version]
+path = "wavebin/__main__.py"
+
+[tool.hatch.build.targets.sdist]
+include = ["/wavebin"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["wavebin"]
