@@ -73,7 +73,8 @@ class QtApp(qt.QApplication):
         self.sidebar.update(
             None,
             None,
-            subsampling
+            subsampling,
+            len(self.config['wave'].waveforms)
         )
 
         # Enable export options
@@ -397,7 +398,6 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'].append({"name": "Filter Type", "widget": qt.QComboBox()})
         self.config['parts'].append({"name": "Clipping", "widget": qt.QPushButton("OFF")})
         self.config['parts'].append({"name": "Subsampling", "widget": qt.QSpinBox()})
-        #self.config['parts'].append({"name": "Sinc interpolation", "widget": qt.QPushButton("OFF")})
         self.config['parts'].append({"name": "Channel", "widget": qt.QComboBox()})
         self.config['parts'].append({"name": "Scale", "widget": qt.QSpinBox()})
 
@@ -416,8 +416,6 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'][2]['widget'].valueChanged.connect(self.subsampling_changed)
 
         # Set channel selection box properties
-        for i in range(4): #self.config['plot'].waveforms
-            self.config['parts'][3]['widget'].addItem("CH"+str(i+1))
         self.config['parts'][3]['widget'].currentIndexChanged.connect(self.channel_changed)
 
         #set voltage scaling box properties
@@ -444,7 +442,7 @@ class QtSidebar(qt.QTableWidget):
         self.config['parts'][2]['widget'].clearFocus()
 
 
-    def update(self, f, c, p):
+    def update(self, f, c, p, w):
         if f != None:
             self.config['parts'][0]['widget'].setCurrentIndex(f)
             self.filter_changed(f)
@@ -459,6 +457,12 @@ class QtSidebar(qt.QTableWidget):
             self.config['parts'][2]['widget'].setMaximum(p)
             self.config['parts'][2]['widget'].setValue(p)
             self.subsampling_changed(p)
+        
+        if w != None:
+            # Update channel selector dropdown
+            self.config['parts'][3]['widget'].clear()
+            for i in range(w):
+                self.config['parts'][3]['widget'].addItem("CH" + str(i + 1))
 
 
     def filter_changed(self, value):
