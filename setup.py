@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name='wavebin',
-    version='2.2',
+    version='2.3',
     packages=['wavebin'],
     author="sam210723",
     author_email="pypi@vksdr.com",
