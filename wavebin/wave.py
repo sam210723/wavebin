@@ -81,7 +81,7 @@ class WaveParser():
             return False
 
         # Set unpack format for file version
-        if version == 1:
+        if version == 1 or version == 10:
             size = self.file.read(4)
             count = self.file.read(4)
         elif version == 3:
@@ -157,7 +157,7 @@ class WaveParser():
             "WaveformDataHeader",
             "size data_type bpp length"
         )
-        if self.file_header.version == 1:
+        if self.file_header.version == 1 or self.file_header.version == 10:
             fields = struct.unpack("i2hi", data)
         elif self.file_header.version == 3:
             fields = struct.unpack("i2hQ", data)
