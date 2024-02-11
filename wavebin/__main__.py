@@ -60,7 +60,8 @@ def init():
             (0, 151, 224),
             (255, 0, 215),
             (0, 255, 64)
-        ]
+        ],
+        "channel_gain": [1, 1, 1, 1]
     })
 
     # Set class instances
