@@ -14,7 +14,6 @@ import pyqtgraph as pg
 class QtPlot(PlotWidget):
     def __init__(self, config):
         self.config = config
-        self.config["channel_gain"]=[1,1,1,1] #set gains for 4 channels
         self.log("Initialising plot widget")
         super().__init__()
 
@@ -43,13 +42,17 @@ class QtPlot(PlotWidget):
         # Loop through waveforms and render traces
         for i, w in enumerate(self.waveforms):
             self.log(f"Rendering waveform {i + 1}")
+
             # Subsampling
             if self.config['subsampling'] >= len(w['data']):
                 y = w['data']
             else:
                 self.log(f"  Subsampling ({len(w['data'])} -> {int(self.config['subsampling'])})")
                 y = w['data'][:: int( len(w['data']) / self.config['subsampling'] )]
-            y=y*self.config['channel_gain'][i]
+
+            # Scale waveform
+            y = y * self.config['channel_gain'][i]
+
             # Generate X points
             start = w['header'].x_d_origin
             stop = w['header'].x_d_origin + w['header'].x_d_range
