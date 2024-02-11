@@ -67,7 +67,7 @@ class WaveParser():
     def parse_file_header(self):
         # Read file magic and format version
         magic = self.file.read(2)
-        version = self.file.read(2)
+        version = int(self.file.read(2).decode('utf-8'))
 
         # Get vendor based on file magic
         vendor = {
@@ -81,10 +81,10 @@ class WaveParser():
             return False
 
         # Set unpack format for file version
-        if version == b'01':
+        if version == 1:
             size = self.file.read(4)
             count = self.file.read(4)
-        elif version == b'03':
+        elif version == 3:
             size = self.file.read(8)
             count = self.file.read(4)
         else:
@@ -153,20 +153,14 @@ class WaveParser():
         data = bytes([length]) + self.file.read(length - 1)
 
         # Unpack waveform data header
-        if self.config['DHO800']:
-            waveform_data_header_tuple = namedtuple(
-                "WaveformDataHeader",
-                "size data_type bpp length z" #longer header
-            )
-        else:
-            waveform_data_header_tuple = namedtuple(
-                "WaveformDataHeader",
-                "size data_type bpp length" #longer header
-            )
-        unpackStr="i2hi"
-        if self.config['DHO800']:
-            unpackStr="i2h2i"
-        fields = struct.unpack(unpackStr, data)
+        waveform_data_header_tuple = namedtuple(
+            "WaveformDataHeader",
+            "size data_type bpp length"
+        )
+        if self.file_header.version == 1:
+            fields = struct.unpack("i2hi", data)
+        elif self.file_header.version == 3:
+            fields = struct.unpack("i2hQ", data)
 
         return waveform_data_header_tuple(*fields)
 
