@@ -6,7 +6,6 @@ Waveform capture viewer for oscilloscopes.
 """
 
 from argparse import ArgumentParser
-from pathlib import Path
 import sys
 
 from wavebin.interface import QtApp
@@ -31,10 +30,7 @@ def init():
     print_info(args)
 
     # Setup waveform capture parser
-    wave = WaveParser({
-        "verbose":     args.v,
-        "DHO800":     args.DHO800
-    })
+    wave = WaveParser({ "verbose":     args.v })
 
     # Get subsampling limit
     if args.no_limit:
@@ -92,7 +88,6 @@ def parse_args():
     argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
     argp.add_argument("--no-opengl", action="store_true", help="disable hardware accelerated rendering with OpenGL")
     argp.add_argument("--no-limit", action="store_true", help="disable subsampling limit (may cause slow frame rates with large captures)")
-    argp.add_argument("--DHO800", action="store_true", help="The Rigol DHO800 family has slightly different header formats")
     return argp.parse_args()
 
 
