@@ -24,9 +24,12 @@ class WaveParser():
         self.file = open(self.config['file'], mode="rb")
 
         # Parse file header
-        if not self.parse_file_header(self.file.read(0x0C)):
-            return False
-
+        if self.config['DHO800']:
+            if not self.parse_file_header(self.file.read(0x10)): #DHO804 has longer header
+                return False
+        else:
+            if not self.parse_file_header(self.file.read(0x0C)):
+                return False
         # Loop through waveforms
         self.waveforms = []
         for i in range(self.file_header.waveforms):
@@ -67,11 +70,20 @@ class WaveParser():
 
     def parse_file_header(self, data):
         # Unpack file header
-        file_header_tuple = namedtuple(
-            "FileHeader",
-            "magic version size waveforms"
-        )
-        fields = struct.unpack("2s2s2i", data)
+        if self.config['DHO800']:
+            file_header_tuple = namedtuple(
+                "FileHeader",
+                "magic version size z waveforms" #DHO804 has longer header
+            )
+        else:
+            file_header_tuple = namedtuple(
+                "FileHeader",
+                "magic version size waveforms" #DHO804 has longer header
+            )
+        unpackStr="2s2s2i"
+        if self.config['DHO800']:
+            unpackStr="2s2s3i"
+        fields = struct.unpack(unpackStr, data)
         self.file_header = file_header_tuple(*fields)
 
         # Get vendor based on file magic
@@ -127,7 +139,6 @@ class WaveParser():
 
         # Parse buffer into numpy array
         arr = np.frombuffer(data, dtype=data_type)
-
         return arr
 
 
@@ -137,11 +148,20 @@ class WaveParser():
         data = bytes([length]) + self.file.read(length - 1)
 
         # Unpack waveform data header
-        waveform_data_header_tuple = namedtuple(
-            "WaveformDataHeader",
-            "size data_type bpp length"
-        )
-        fields = struct.unpack("i2hi", data)
+        if self.config['DHO800']:
+            waveform_data_header_tuple = namedtuple(
+                "WaveformDataHeader",
+                "size data_type bpp length z" #longer header
+            )
+        else:
+            waveform_data_header_tuple = namedtuple(
+                "WaveformDataHeader",
+                "size data_type bpp length" #longer header
+            )
+        unpackStr="i2hi"
+        if self.config['DHO800']:
+            unpackStr="i2h2i"
+        fields = struct.unpack(unpackStr, data)
 
         return waveform_data_header_tuple(*fields)
 
