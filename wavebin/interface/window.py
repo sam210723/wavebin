@@ -7,9 +7,9 @@ Oscilloscope waveform capture viewer
 
 from pathlib import Path
 from typing import Callable
-from PyQt5.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
-from PyQt5.QtCore import Qt, QEvent
-from PyQt5.QtGui import QFontDatabase, QIcon, QKeyEvent, QResizeEvent
+from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
+from PyQt6.QtCore import Qt, QEvent
+from PyQt6.QtGui import QFontDatabase, QIcon, QKeyEvent, QResizeEvent
 import qtawesome as qta
 import webbrowser
 
@@ -32,10 +32,6 @@ class MainWindow(QApplication):
             safe_exit (function): Graceful application exit function
             open_waveform (function): Waveform file handling function
         """
-
-        # Use high DPI scaling and icons
-        QApplication.setAttribute(Qt.AA_EnableHighDpiScaling, True)
-        QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps, True)
 
         # Initialise parent class
         super(MainWindow, self).__init__([])
