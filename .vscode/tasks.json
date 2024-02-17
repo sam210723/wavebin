@@ -4,15 +4,15 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "Create Virtual Environment",
+            "label": "Build Package",
             "type": "shell",
-            "command": "python -m venv .env",
+            "command": "hatch build",
             "problemMatcher": []
         },
         {
-            "label": "Build Package (source + wheel)",
+            "label": "Clean Build Artifacts",
             "type": "shell",
-            "command": "python setup.py sdist bdist_wheel",
+            "command": "hatch clean",
             "problemMatcher": []
         },
         {
@@ -22,81 +22,57 @@
             "problemMatcher": []
         },
         {
-            "label": "Install Package (local)",
+            "label": "Create Virtual Environment",
             "type": "shell",
-            "command": "python setup.py install",
+            "command": "hatch env create",
             "problemMatcher": []
         },
         {
-            "label": "Install Package (TestPyPI)",
+            "label": "Delete Virtual Environment",
             "type": "shell",
-            "command": "pip install -i https://test.pypi.org/simple/ --no-cache-dir wavebin",
+            "command": "hatch env remove",
             "problemMatcher": []
         },
         {
-            "label": "Develop Package",
+            "label": "Run wavebin",
             "type": "shell",
-            "command": "python setup.py develop",
+            "command": "hatch run wavebin -v",
             "problemMatcher": []
         },
         {
-            "label": "Uninstall Package",
+            "label": "Run wavebin (reset configuration)",
             "type": "shell",
-            "command": "pip uninstall -y wavebin",
+            "command": "hatch run wavebin -v -r",
             "problemMatcher": []
         },
         {
-            "label": "Upload Package (TestPyPI)",
+            "label": "Run wavebin (single waveform)",
             "type": "shell",
-            "command": "twine upload --repository-url https://test.pypi.org/legacy/ dist/*",
+            "command": "hatch run wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_1MSPS_2Kpts_SINGLE.bin\"",
             "problemMatcher": []
         },
         {
-            "label": "Run Module",
+            "label": "Run wavebin (dual waveform)",
             "type": "shell",
-            "command": "wavebin -v",
+            "command": "hatch run wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_2CH_2GSPS_4Kpts_DUAL.bin\"",
             "problemMatcher": []
         },
         {
-            "label": "Run Module (reset configuration)",
+            "label": "Run wavebin (quad waveform)",
             "type": "shell",
-            "command": "wavebin -v -r",
+            "command": "hatch run wavebin -v -i \"${workspaceFolder}\\samples\\Agilent\\Agilent_MSOX4154A_4CH_1.25GSPS_2Mpts.bin\"",
             "problemMatcher": []
         },
         {
-            "label": "Run Module (single waveform)",
+            "label": "Run wavebin (UART waveform)",
             "type": "shell",
-            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_1MSPS_2Kpts_SINGLE.bin\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Run Module (dual waveform)",
-            "type": "shell",
-            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_2CH_2GSPS_4Kpts_DUAL.bin\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Run Module (quad waveform)",
-            "type": "shell",
-            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Agilent\\Agilent_MSOX4154A_4CH_1.25GSPS_2Mpts.bin\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Run Module (UART waveform)",
-            "type": "shell",
-            "command": "wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_20MSPS_1Mpts_UART.bin\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Clean (Windows)",
-            "type": "shell",
-            "command": "rmdir /S /Q wavebin.egg-info && rmdir /S /Q build && rmdir /S /Q dist",
+            "command": "hatch run wavebin -v -i \"${workspaceFolder}\\samples\\Keysight\\Keysight_DSOX1102G_1CH_20MSPS_1Mpts_UART.bin\"",
             "problemMatcher": []
         },
         {
             "label": "pip show",
             "type": "shell",
-            "command": "pip show wavebin",
+            "command": "hatch run pip show wavebin",
             "problemMatcher": []
         }
     ]
