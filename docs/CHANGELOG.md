@@ -6,11 +6,11 @@ All notable changes to this project will be documented in this file.
 
 ### Added
   - Persistent configuration options
-  - Base class for vendor specific file parsers
   - Welcome screen with starting actions
-  - Device image in waveform properties dialog
   - Tool bar for common operations
   - Capture sample rate and duration info in tool bar
+  - Device image in waveform properties dialog
+  - Base class for vendor specific file parsers
   - Bug report button using GitHub API and issue templates
   - Update checker using GitHub API
   - Single-click update installer using `pip`
@@ -18,10 +18,12 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
   - Separate plots for each waveform capture channel
-  - Rearrange PyQt5 interface code into multiple classes
-  - Use `Roboto` font for most UI elements
+  - Use **Roboto** font for most UI elements
+  - Rearrange interface code into multiple classes
   - Better docstrings and type hinting
   - Global configuration object for all classes
+  - Migrated build system from `setuptools` to `hatch`
+  - Migrated user interface from `PyQt5` to `PtQt6`
 
 ### Fixed
   - Launcher executable script (`> wavebin` instead of `> python3 -m wavebin`)
