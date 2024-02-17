@@ -29,8 +29,8 @@ def main() -> None:
     print( "             vksdr.com/wavebin\n\n")
 
     # Check minimum Python version requirement
-    if sys.version_info[1] < 6:
-        print("Python 3.6 or newer is required to run wavebin")
+    if sys.version_info[1] < 10:
+        print("Python 3.10 or newer is required to run wavebin")
         exit(1)
 
     # Parse CLI arguments
