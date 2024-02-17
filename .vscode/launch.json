@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Single Waveform",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "wavebin",
             "args": [
@@ -16,7 +16,7 @@
         },
         {
             "name": "Dual Waveform",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "module": "wavebin",
             "args": [
