@@ -25,9 +25,9 @@ assignees: 'sam210723'
 
 ### Environment
 *Example:*
-*- OS: Ubuntu 20.04*
+*- OS: Ubuntu 22.04*
 *- Arch: 64-bit*
-*- Python: 3.8 32-bit*
+*- Python: 3.10 64-bit*
 *- wavebin: 3.0*
 
 
