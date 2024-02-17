@@ -6,9 +6,9 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QDialog, QGridLayout, QLabel
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QPixmap
+from PyQt6.QtWidgets import QApplication, QDialog, QGridLayout, QLabel
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QPixmap
 from threading import Thread
 import requests
 
@@ -19,7 +19,7 @@ class WaveformProperties(QDialog):
     """
 
     def __init__(self, app: QApplication) -> None:
-        super(WaveformProperties, self).__init__(parent=None, flags=Qt.WindowCloseButtonHint)
+        super(WaveformProperties, self).__init__(parent=None, flags=Qt.WindowType.WindowCloseButtonHint)
         self.app = app
 
         # Set dialog properties
@@ -72,7 +72,7 @@ class WaveformProperties(QDialog):
         # Add device image widget to dialog
         self.device_image_pixmap = QPixmap()
         self.device_image_label = QLabel()
-        self.grid_layout.addWidget(self.device_image_label, 0, 0, 2, 2, Qt.AlignTop)
+        self.grid_layout.addWidget(self.device_image_label, 0, 0, 2, 2, Qt.AlignmentFlag.AlignTop)
 
         # Add vendor logo to dialog
         self.vendor_image_pixmap = QPixmap()
@@ -80,7 +80,7 @@ class WaveformProperties(QDialog):
         self.vendor_image_pixmap.load(self.vendor_image_path)
         self.vendor_image_label = QLabel()
         self.vendor_image_label.setPixmap(self.vendor_image_pixmap)
-        self.grid_layout.addWidget(self.vendor_image_label, 0, 2, 1, 2, Qt.AlignCenter)
+        self.grid_layout.addWidget(self.vendor_image_label, 0, 2, 1, 2, Qt.AlignmentFlag.AlignCenter)
 
         # Add device info to dialog
         self.device_info_label = QLabel()
@@ -94,13 +94,13 @@ class WaveformProperties(QDialog):
             </div>
             """
         )
-        self.grid_layout.addWidget(self.device_info_label, 1, 2, 1, 2, Qt.AlignTop | Qt.AlignCenter)
+        self.grid_layout.addWidget(self.device_info_label, 1, 2, 1, 2, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
 
         # Add waveform info table
         self.waveform_props_widget = QLabel()
         self.waveform_props_widget.setText("PLACEHOLDER")
         self.waveform_props_widget.setStyleSheet("color: #FFF;")
-        self.grid_layout.addWidget(self.waveform_props_widget, 2, 0, 2, 4, Qt.AlignCenter)
+        self.grid_layout.addWidget(self.waveform_props_widget, 2, 0, 2, 4, Qt.AlignmentFlag.AlignCenter)
 
 
     def download_device_image(self, url: str) -> bool:
@@ -134,8 +134,8 @@ class WaveformProperties(QDialog):
                     self.grid_layout.removeItem(self.grid_layout.itemAt(1))
                     self.grid_layout.removeItem(self.grid_layout.itemAt(2))
 
-                    self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignCenter)
-                    self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignTop | Qt.AlignCenter)
+                    self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignmentFlag.AlignCenter)
+                    self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
 
                 self.log(f"Failed to download device image (HTTP {r.status_code})")
                 return False

@@ -5,7 +5,8 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from PyQt5.QtWidgets import QAction, QApplication, QMenuBar, QMenu
+from PyQt6.QtGui import QAction
+from PyQt6.QtWidgets import QApplication, QMenuBar, QMenu
 import qtawesome as qta
 
 

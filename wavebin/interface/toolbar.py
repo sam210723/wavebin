@@ -6,9 +6,9 @@ Oscilloscope waveform capture viewer
 """
 
 from pathlib import Path
-from PyQt5.QtWidgets import QApplication, QWidget, QToolBar, QAction, QLabel, QMessageBox, QSizePolicy
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QIcon
+from PyQt6.QtWidgets import QApplication, QWidget, QToolBar, QLabel, QMessageBox, QSizePolicy
+from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QIcon, QAction
 import qtawesome as qta
 import sys
 import webbrowser
@@ -32,7 +32,7 @@ class MainToolBar(QToolBar):
         # Set tool bar properties
         self.setMovable(False)
         self.setFloatable(False)
-        self.setContextMenuPolicy(Qt.PreventContextMenu)
+        self.setContextMenuPolicy(Qt.ContextMenuPolicy.PreventContextMenu)
         self.setStyleSheet(
             """
             QToolBar {
@@ -101,11 +101,11 @@ class MainToolBar(QToolBar):
 
         # Add waveform info label
         spacer = QWidget()
-        spacer.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        spacer.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
         self.addWidget(spacer)
         self.info = QLabel()
         self.info.setFixedWidth(150)
-        self.info.setAlignment(Qt.AlignRight | Qt.AlignCenter)
+        self.info.setAlignment(Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignCenter)
         self.info.setToolTip("Sample rate and capture duration")
         self.info.setStyleSheet(
             """
