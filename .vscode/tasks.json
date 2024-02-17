@@ -4,9 +4,15 @@
     "version": "2.0.0",
     "tasks": [
         {
+            "label": "Create Virtual Environment",
+            "type": "shell",
+            "command": "python -m venv .env",
+            "problemMatcher": []
+        },
+        {
             "label": "Build Package (source + wheel)",
             "type": "shell",
-            "command": "python3 setup.py sdist bdist_wheel",
+            "command": "python setup.py sdist bdist_wheel",
             "problemMatcher": []
         },
         {
@@ -18,25 +24,25 @@
         {
             "label": "Install Package (local)",
             "type": "shell",
-            "command": "python3 setup.py install",
+            "command": "python setup.py install",
             "problemMatcher": []
         },
         {
             "label": "Install Package (TestPyPI)",
             "type": "shell",
-            "command": "pip3 install -i https://test.pypi.org/simple/ --no-cache-dir wavebin",
+            "command": "pip install -i https://test.pypi.org/simple/ --no-cache-dir wavebin",
             "problemMatcher": []
         },
         {
             "label": "Develop Package",
             "type": "shell",
-            "command": "python3 setup.py develop",
+            "command": "python setup.py develop",
             "problemMatcher": []
         },
         {
             "label": "Uninstall Package",
             "type": "shell",
-            "command": "pip3 uninstall -y wavebin",
+            "command": "pip uninstall -y wavebin",
             "problemMatcher": []
         },
         {
@@ -90,7 +96,7 @@
         {
             "label": "pip show",
             "type": "shell",
-            "command": "pip3 show wavebin",
+            "command": "pip show wavebin",
             "problemMatcher": []
         }
     ]
