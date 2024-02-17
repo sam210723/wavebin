@@ -47,6 +47,9 @@ Homepage = "https://github.com/sam210723/wavebin"
 [tool.hatch.version]
 path = "wavebin/__main__.py"
 
+[tool.hatch.envs.default]
+path = ".hatch"
+
 [tool.hatch.build.targets.sdist]
 include = ["/wavebin"]
 

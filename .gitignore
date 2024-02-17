@@ -103,5 +103,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+# Hatch virtual environment
+.hatch
+
 web
 *.old.*

@@ -1,3 +1,6 @@
 {
-    "python.linting.enabled": true
+    //"python.defaultInterpreterPath": ".hatch\\Scripts\\python.exe",
+    "python.terminal.activateEnvironment": true,
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.typeCheckingMode": "basic"
 }
