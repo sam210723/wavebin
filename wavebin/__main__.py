@@ -15,7 +15,8 @@ import sys
 from wavebin.interface.window import MainWindow
 from wavebin.vendor import Vendor, vendor_detect
 
-__version__ = "3.0"
+__version__ = "3.0"     # Application version
+__min_py__ = (3, 10)    # Minimum Python version
 description = "Oscilloscope waveform capture viewer"
 
 
@@ -29,8 +30,8 @@ def main() -> None:
     print( "             vksdr.com/wavebin\n\n")
 
     # Check minimum Python version requirement
-    if sys.version_info[1] < 10:
-        print("Python 3.10 or newer is required to run wavebin")
+    if sys.version_info[1] < __min_py__[1]:
+        print(f"Python {__min_py__[0]}.{__min_py__[1]} or newer is required to run wavebin")
         exit(1)
 
     # Parse CLI arguments
