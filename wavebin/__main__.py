@@ -114,7 +114,7 @@ def load_config(args: argparse.Namespace, update: bool = False) -> dict:
 
         # Save default configuration to file
         save_config(config_dict)
-    
+
     # Add non-persistent options
     config_dict['version'] = __version__
     config_dict['verbose'] = args.v
