@@ -73,7 +73,7 @@ class MainWindow(QApplication):
         # Add tool bar to main window
         self.log("Building tool bar")
         self.tool_bar = MainToolBar(self)
-        self.window.addToolBar(Qt.TopToolBarArea, self.tool_bar)
+        self.window.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.tool_bar)
 
         # Create main widget
         self.log("Creating main widget")
@@ -113,8 +113,9 @@ class MainWindow(QApplication):
         """
 
         self.log("Starting Qt application")
-        self.window.show()
         if self.config['maximised']: self.window.setWindowState(Qt.WindowState.WindowMaximized)
+        self.window.show()
+
         return self.exec()
 
 
@@ -163,7 +164,7 @@ class MainWindow(QApplication):
             </div>
             """
         )
-        self.layout.addWidget(banner, 0, 0, 1, 9, Qt.AlignBottom)
+        self.layout.addWidget(banner, 0, 0, 1, 9, Qt.AlignmentFlag.AlignBottom)
 
         # Button style
         style = """
@@ -197,7 +198,7 @@ class MainWindow(QApplication):
         button_open.setStyleSheet(style)
         button_open.setIcon(qta.icon("fa5s.folder-open", color="#FFF"))
         button_open.clicked.connect(self.button_open)
-        self.layout.addWidget(button_open, 1, 3, 1, 1, Qt.AlignRight | Qt.AlignTop)
+        self.layout.addWidget(button_open, 1, 3, 1, 1, Qt.AlignmentFlag.AlignRight | Qt.AlignmentFlag.AlignTop)
 
         # Capture waveform button
         button_capture = QPushButton()
@@ -206,7 +207,7 @@ class MainWindow(QApplication):
         button_capture.setStyleSheet(style)
         button_capture.setIcon(qta.icon("fa5s.wave-square", color="#FFF"))
         button_capture.clicked.connect(self.button_capture)
-        self.layout.addWidget(button_capture, 1, 4, 1, 1, Qt.AlignCenter | Qt.AlignTop)
+        self.layout.addWidget(button_capture, 1, 4, 1, 1, Qt.AlignmentFlag.AlignCenter | Qt.AlignmentFlag.AlignTop)
 
         # Documentation button
         button_docs = QPushButton()
@@ -215,7 +216,7 @@ class MainWindow(QApplication):
         button_docs.setStyleSheet(style)
         button_docs.setIcon(qta.icon("fa5s.bookmark", color="#FFF"))
         button_docs.clicked.connect(self.button_docs)
-        self.layout.addWidget(button_docs, 1, 5, 1, 1, Qt.AlignLeft | Qt.AlignTop)
+        self.layout.addWidget(button_docs, 1, 5, 1, 1, Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignTop)
 
 
     def update(self) -> None:
@@ -244,7 +245,7 @@ class MainWindow(QApplication):
         # Add channel controls to grid layout
         for i, c in enumerate(self.config['waveform'].channels):
             label = QLabel(f"WAVE{i} CONTROLS")
-            label.setAlignment(Qt.AlignCenter)
+            label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             label.setStyleSheet(
                 """
                 QLabel {
@@ -313,8 +314,8 @@ class MainWindow(QApplication):
             msgbox.setText(f"Error opening \"{file_path.name}\"\n\nUnknown file format.")
             msgbox.setWindowIcon(QIcon("icon.ico"))
             msgbox.setIcon(QMessageBox.Icon.Critical)
-            msgbox.setStandardButtons(QMessageBox.Ok)
-            msgbox.setDefaultButton(QMessageBox.Ok)
+            msgbox.setStandardButtons(QMessageBox.StandardButton.Ok)
+            msgbox.setDefaultButton(QMessageBox.StandardButton.Ok)
             msgbox.exec()
             return False
 
@@ -375,7 +376,12 @@ class MainWindow(QApplication):
         if mod == Qt.KeyboardModifier.AltModifier and key == Qt.Key.Key_Alt:
             # Toggle top menu bar visibility
             self.menu_bar.setHidden(not self.menu_bar.isHidden())
-            self.menu_bar.setFocus(not self.menu_bar.isHidden())
+
+            # Update menu bar focus
+            if self.menu_bar.isHidden():
+                self.menu_bar.clearFocus()
+            else:
+                self.menu_bar.setFocus()
 
         elif mod == None and key == Qt.Key.Key_F1:
             # Show wavebin About dialog
