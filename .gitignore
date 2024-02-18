@@ -106,5 +106,5 @@ venv.bak/
 # Hatch virtual environment
 .hatch
 
-web
+# Temporary old files
 *.old.*
