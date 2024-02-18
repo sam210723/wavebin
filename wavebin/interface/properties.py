@@ -64,7 +64,7 @@ class WaveformProperties(QDialog):
         self.download_thread = Thread(
             target=self.download_device_image,
             args=(
-                f"https://wavebin.app/cloud/devices/{vendor_clean}/{model_clean}.png",
+                f"https://wavebin.vksdr.com/devices/{vendor_clean}/{model_clean}.png",
             )
         )
         self.download_thread.start()
@@ -137,7 +137,7 @@ class WaveformProperties(QDialog):
                     self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignmentFlag.AlignCenter)
                     self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
 
-                self.log(f"Failed to download device image (HTTP {r.status_code})")
+                self.log(f"Failed to download device image \"{url}\" (HTTP {r.status_code})")
                 return False
         except Exception as e:
             self.log(f"Failed to download device image ({e})")
