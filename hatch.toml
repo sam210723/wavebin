@@ -1,0 +1,5 @@
+version.path = "wavebin/__main__.py"
+envs.default.path = ".hatch"
+
+build.targets.sdist.include = ["/wavebin"]
+build.targets.wheel.packages = ["wavebin"]
