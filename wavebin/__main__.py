@@ -8,10 +8,8 @@ Oscilloscope waveform capture viewer
 import appdirs
 import argparse
 import configparser
-import ctypes
 import os
 from pathlib import Path
-import requests
 import sys
 
 from wavebin.interface.window import MainWindow
@@ -22,8 +20,9 @@ __min_py__ = (3, 10)    # Minimum Python version
 description = "Oscilloscope waveform capture viewer"
 
 # Fix for Windows taskbar icon
-appid = 'com.vksdr.wavebin'
 if os.name == "nt":
+    import ctypes
+    appid = f'com.vksdr.wavebin.{__version__}'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 
 
@@ -46,6 +45,9 @@ def main() -> None:
 
     # Check for update on GitHub
     update = update_check()
+    if update:
+        print(f"A new version of wavebin is available")
+        print("Run \"pip install --upgrade wavebin\" to install it\n")
 
     # Load configuration from file
     config = load_config(args, update)
@@ -171,21 +173,24 @@ def update_check() -> bool:
         bool: True if update available
     """
 
+    import json
+    import urllib.request
+    import urllib.error
+
+    # Build update check request
+    url = "https://api.github.com/repos/sam210723/wavebin/releases/latest"
+    headers = { "User-Agent": "sam210723/wavebin update_check" }
+    req = urllib.request.Request(url, None, headers)
+    
+    # Send update check request and parse response
     try:
-        r = requests.get(
-            "https://api.github.com/repos/sam210723/wavebin/releases/latest",
-            headers = {
-                "User-Agent": "sam210723/wavebin update_check"
-            }
-        )
-
-        if r.status_code == 200 and f"v{__version__}" != r.json()['tag_name']:
-            print("A new version of wavebin is available\nRun \"pip3 install --upgrade wavebin\" to install it\n")
-            return True
-        elif r.status_code == 403: print("Update check failed due to GitHub API rate limit")
-    except Exception: pass
-
-    return False
+        res = urllib.request.urlopen(req)
+        data = json.loads(res.read())
+        return f"v{__version__}" != data['tag_name']
+        
+    except urllib.error.HTTPError as e:
+        print(f"Failed to check for updates on GitHub ({e})")
+        return False
 
 
 def open_waveform(path: Path) -> Vendor:
