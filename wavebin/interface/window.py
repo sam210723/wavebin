@@ -52,6 +52,12 @@ class MainWindow(QApplication):
         self.log("Creating main Qt window")
         self.window = QMainWindow()
 
+        # Apply window style for Windows platforms
+        try:
+            import pywinstyles
+            pywinstyles.apply_style(self.window, "dark")
+        except ImportError: pass
+
         # Add Roboto font
         font_dir = Path(__file__).parent / "assets" / "Roboto"
         QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Regular.ttf"))
