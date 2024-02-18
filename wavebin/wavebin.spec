@@ -44,3 +44,10 @@ exe = EXE(
     icon='interface/assets/icon-multi.ico',
     version='wavebin.rc'
 )
+
+app = BUNDLE(
+    exe,
+    name='wavebin.app',
+    icon='interface/assets/icon.ico',
+    bundle_identifier=None
+)
