@@ -24,13 +24,18 @@ class WaveformProperties(QDialog):
 
         # Set dialog properties
         self.setWindowTitle("Waveform Properties")
-        self.setWindowIcon(app.icon)
         self.setSizeGripEnabled(False)
         self.setAcceptDrops(False)
         self.setFixedWidth(600)
         self.setFixedHeight(400)
         self.setContentsMargins(15, 5, 10, 10)
         self.setStyleSheet("background: #111;")
+
+        # Apply window style for Windows platforms
+        try:
+            import pywinstyles
+            pywinstyles.apply_style(self, "dark")
+        except ImportError: pass
 
         # Setup dialog layout
         self.grid_layout = QGridLayout()
