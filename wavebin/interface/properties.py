@@ -10,7 +10,6 @@ from PyQt6.QtWidgets import QApplication, QDialog, QGridLayout, QLabel
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from threading import Thread
-import requests
 
 
 class WaveformProperties(QDialog):
@@ -119,33 +118,32 @@ class WaveformProperties(QDialog):
             bool: True on success
         """
 
+        import urllib.request
+        import urllib.error
+
+        # Build device image request
+        headers = { "User-Agent": "sam210723/wavebin download_device_image" }
+        req = urllib.request.Request(url, None, headers)
+        
+        # Send update check request and parse response
         try:
-            r = requests.get(
-                url,
-                headers = {
-                    "User-Agent": "sam210723/wavebin download_device_image"
-                }
-            )
+            res = urllib.request.urlopen(req)
+            self.device_image_pixmap.loadFromData(res.read())
+            self.device_image_label.setPixmap(self.device_image_pixmap)
+            self.log(f"Downloaded properties dialog device image")
 
-            if r.status_code == 200:
-                self.device_image_pixmap.loadFromData(r.content)
-                self.device_image_label.setPixmap(self.device_image_pixmap)
-                self.log(f"Downloaded properties dialog device image")
-                return True
-            else:
-                # Reposition top row of widgets so vendor logo and device model are centered
-                if r.status_code == 403:
-                    self.grid_layout.removeItem(self.grid_layout.itemAt(0))
-                    self.grid_layout.removeItem(self.grid_layout.itemAt(1))
-                    self.grid_layout.removeItem(self.grid_layout.itemAt(2))
+            return True
 
-                    self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignmentFlag.AlignCenter)
-                    self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
+        except urllib.error.HTTPError as e:
+            # Reposition top row of widgets so vendor logo and device model are centered
+            self.grid_layout.removeItem(self.grid_layout.itemAt(0))
+            self.grid_layout.removeItem(self.grid_layout.itemAt(1))
+            self.grid_layout.removeItem(self.grid_layout.itemAt(2))
 
-                self.log(f"Failed to download device image \"{url}\" (HTTP {r.status_code})")
-                return False
-        except Exception as e:
-            self.log(f"Failed to download device image ({e})")
+            self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignmentFlag.AlignCenter)
+            self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
+
+            self.log(f"Failed to download device image \"{url}\" ({e})")
             return False
 
 
