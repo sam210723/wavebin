@@ -1,5 +1,9 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+arch = 'x86_64'
+ver = 3.0
+name = f'wavebin-{ver}.{arch}'
+
 a = Analysis(
     ['__main__.py'],
     pathex=[],
@@ -24,7 +28,7 @@ exe = EXE(
     a.zipfiles,
     a.datas,
     [],
-    name='wavebin.x86_64',
+    name=name,
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -34,9 +38,9 @@ exe = EXE(
     console=False,
     disable_windowed_traceback=False,
     argv_emulation=False,
-    target_arch='x86_64',
+    target_arch=arch,
     codesign_identity=None,
     entitlements_file=None,
     icon='interface/assets/icon-multi.ico',
-    version='version.rc'
+    version='wavebin.rc'
 )

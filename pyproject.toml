@@ -49,3 +49,10 @@ scripts.wavebin = "wavebin.__main__:main"
 [project.urls]
 Homepage = "https://wavebin.vksdr.com/"
 Repository = "https://github.com/sam210723/wavebin"
+
+[tool.hatch]
+version.path = "wavebin/__main__.py"
+envs.default.path = ".hatch"
+build.targets.wheel.packages = ["wavebin"]
+build.targets.sdist.include = ["/wavebin"]
+build.targets.sdist.exclude = ["wavebin.spec", "wavebin.rc",]

@@ -22,8 +22,6 @@ VSVersionInfo(
           StringStruct(u'FileDescription', u'wavebin'),
           StringStruct(u'FileVersion', u'3.0'),
           StringStruct(u'InternalName', u'wavebin'),
-          StringStruct(u'LegalCopyright', u''),
-          StringStruct(u'OriginalFilename', u'wavebin.x86_64.exe'),
           StringStruct(u'ProductName', u'wavebin'),
           StringStruct(u'ProductVersion', u'3.0')])
     ]), 
