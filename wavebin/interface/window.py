@@ -383,7 +383,11 @@ class MainWindow(QApplication):
 
         elif mod == None and key == Qt.Key.Key_F:
             # Toggle filled area under waveform traces 
-            self.plot.toggle_trace_fill()
+            if self.config['file']: self.plot.toggle_trace_fill()
+        
+        elif mod == None and key == Qt.Key.Key_I:
+            # Show waveform properties dialog
+            if self.config['file']: self.menu_bar.menu_view_props()
 
 
     def log(self, msg: str) -> None:
