@@ -48,6 +48,6 @@ exe = EXE(
 app = BUNDLE(
     exe,
     name='wavebin.app',
-    icon='interface/assets/icon.ico',
+    icon='interface/assets/icon-multi.ico',
     bundle_identifier=None
 )

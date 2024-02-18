@@ -66,7 +66,8 @@ class MainWindow(QApplication):
         # Window styling and state
         self.log("Updating window style")
         self.icon_path = Path(__file__).parent / "assets" / "icon.ico"
-        self.icon = QIcon(str(self.icon_path))
+        self.icon_path_multi = Path(__file__).parent / "assets" / "icon-multi.ico"
+        self.icon = QIcon(str(self.icon_path_multi))
         self.setWindowIcon(self.icon)
         self.window.resize(self.config['width'], self.config['height'])
         self.window.setMinimumSize(800, 500)
@@ -162,7 +163,7 @@ class MainWindow(QApplication):
 
             <div id='container'>
             """ +
-          f"    <img src='{self.icon_path}'><span> wavebin</span>" +
+          f"    <img src='{self.icon_path}'><span>&nbsp;&nbsp;wavebin</span>" +
             """
                 <p>
                     Get started by opening a waveform file or capturing a new waveform
