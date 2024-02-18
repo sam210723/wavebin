@@ -8,7 +8,6 @@ Oscilloscope waveform capture viewer
 import appdirs
 import argparse
 import configparser
-import os
 from pathlib import Path
 import sys
 
@@ -20,20 +19,23 @@ __min_py__ = (3, 10)    # Minimum Python version
 description = "Oscilloscope waveform capture viewer"
 
 # Fix for Windows taskbar icon
-if os.name == "nt":
+from os import name as os_name
+if os_name == "nt":
     import ctypes
     appid = f'com.vksdr.wavebin.{__version__}'
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 
 
 def main() -> None:
-    print( "                              __    _        ")
-    print( "   _      ______ __   _____  / /_  (_)___    ")
-    print( "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\")
-    print( "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   ")
-    print(f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n")
-    print(f"    {description}")
-    print( "             wavebin.vksdr.com\n\n")
+    print(
+        "                              __    _        \n" +
+        "   _      ______ __   _____  / /_  (_)___    \n" +
+        "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\\n" +
+        "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   \n" +
+       f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n\n" +
+       f"    {description}\n" +
+        "         https://wavebin.vksdr.com\n\n"
+    )
 
     # Check minimum Python version requirement
     if sys.version_info[1] < __min_py__[1]:
