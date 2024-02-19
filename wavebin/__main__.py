@@ -11,12 +11,13 @@ import configparser
 from pathlib import Path
 import sys
 
+__version__ = "3.0"     # Application version
+__min_py__ = (3, 10)    # Minimum Python version
+
+from wavebin.config import config
 from wavebin.interface.window import MainWindow
 from wavebin.vendor import Vendor, vendor_detect
 
-__version__ = "3.0"     # Application version
-__min_py__ = (3, 10)    # Minimum Python version
-description = "Oscilloscope waveform capture viewer"
 
 # Fix for Windows taskbar icon
 from os import name as os_name
@@ -33,7 +34,7 @@ def main() -> None:
         "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\\n" +
         "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   \n" +
        f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n\n" +
-       f"    {description}\n" +
+       f"    {config.app.desc}\n" +
         "         https://wavebin.vksdr.com\n\n"
     )
 
@@ -46,22 +47,22 @@ def main() -> None:
     args = parse_args()
 
     # Check for update on GitHub
-    update = update_check()
-    if update:
+    config.app.update = update_check()
+    if config.app.update:
         print(f"A new version of wavebin is available")
         print("Run \"pip install --upgrade wavebin\" to install it\n")
 
     # Load configuration from file
-    config = load_config(args, update)
+    #config = load_config(args, update)
 
     # Load file from -i argument
-    if config['file']:
-        waveform = open_waveform(config['file'])
+    if config.file:
+        waveform = open_waveform(config.file)
         if not waveform: safe_exit(code=1)
         config['waveform'] = waveform
 
     # Create Qt application
-    app = MainWindow(config, safe_exit, open_waveform)
+    app = MainWindow(safe_exit, open_waveform)
 
     # Run application
     app.run()
@@ -78,12 +79,12 @@ def parse_args() -> argparse.Namespace:
         argparse.Namespace: List of arguments
     """
 
-    argp = argparse.ArgumentParser(description=description)
+    argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
 
-    argp.add_argument("-i", action="store", help="Path to waveform capture file", default=None, dest="file")
-    argp.add_argument("-v", action="store_true", help="Enable verbose logging mode")
-    argp.add_argument("-r", action="store_true", help="Reset configuration to defaults")
+    argp.add_argument("-i", action="store", help="path to waveform capture file", default=None, dest="file")
+    argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
+    argp.add_argument("-r", action="store_true", help="reset configuration to defaults")
 
     return argp.parse_args()
 
@@ -130,7 +131,7 @@ def load_config(args: argparse.Namespace, update: bool = False) -> dict:
     # Add non-persistent options
     config_dict['version'] = __version__
     config_dict['verbose'] = args.v
-    config_dict['description'] = description
+    config_dict['config.app.desc'] = config.app.desc
     config_dict['update'] = update
     config_dict['file'] = Path(args.file) if args.file else None
 
@@ -153,7 +154,7 @@ def save_config(config: dict) -> bool:
     config_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Remove non-persistent options
-    rmkeys = ["verbose", "description", "update", "file", "waveform"]
+    rmkeys = ["verbose", "config.app.desc", "update", "file", "waveform"]
     for _, key in enumerate(rmkeys):
         if key in config: del config[key]
 

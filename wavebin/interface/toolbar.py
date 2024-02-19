@@ -13,6 +13,7 @@ import qtawesome as qta
 import sys
 import webbrowser
 
+from wavebin.config import config
 from wavebin.interface.properties import WaveformProperties
 from wavebin.vendor import Vendor
 
@@ -94,8 +95,8 @@ class MainToolBar(QToolBar):
         # Set default button states
         self.items['export'].setEnabled(False)
         self.items['props'].setEnabled(False)
-        if not self.app.config['update']: self.removeAction(self.items['update'])
-        
+        if not config.app.update: self.removeAction(self.items['update'])
+
         # Create waveform properties dialog
         self.props_dialog = WaveformProperties(self.app)
 

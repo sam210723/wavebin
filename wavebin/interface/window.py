@@ -13,6 +13,7 @@ from PyQt6.QtGui import QFontDatabase, QIcon, QKeyEvent, QResizeEvent
 import qtawesome as qta
 import webbrowser
 
+from wavebin.config import config
 from wavebin.interface.toolbar import MainToolBar
 from wavebin.interface.menubar import MainMenuBar
 from wavebin.interface.plot import WaveformPlot
@@ -23,12 +24,11 @@ class MainWindow(QApplication):
     Main application window
     """
 
-    def __init__(self, config: dict, safe_exit: Callable, open_waveform: Callable) -> None:
+    def __init__(self, safe_exit: Callable, open_waveform: Callable) -> None:
         """
         Initialise main application window
 
         Args:
-            config (dict): Configuration options
             safe_exit (function): Graceful application exit function
             open_waveform (function): Waveform file handling function
         """
@@ -37,16 +37,15 @@ class MainWindow(QApplication):
         super(MainWindow, self).__init__([])
 
         # Set globals
-        self.config = config
         self.safe_exit = safe_exit
         self.open_waveform = open_waveform
-        self.name = f"wavebin {self.config['version']}"
+        self.name = f"wavebin {config.app.version}"
 
         # Setup main Qt application
         self.log("Initialising Qt application")
         self.setApplicationName(self.name)
         self.setApplicationDisplayName(self.name)
-        self.setApplicationVersion(str(self.config['version']))
+        self.setApplicationVersion(config.app.version)
 
         # Create main Qt window
         self.log("Creating main Qt window")
@@ -69,7 +68,7 @@ class MainWindow(QApplication):
         self.icon_path_multi = Path(__file__).parent / "assets" / "icon-multi.ico"
         self.icon = QIcon(str(self.icon_path_multi))
         self.setWindowIcon(self.icon)
-        self.window.resize(self.config['width'], self.config['height'])
+        self.window.resize(config.ui.width, config.ui.height)
         self.window.setMinimumSize(800, 500)
 
         # Add menu bar to main window
@@ -106,7 +105,7 @@ class MainWindow(QApplication):
         self.save_dialog = QFileDialog()
 
         # If file already loaded from CLI args
-        if self.config['file']:
+        if config.file:
             # Prepare to render waveform
             self.update()
         else:
@@ -120,7 +119,7 @@ class MainWindow(QApplication):
         """
 
         self.log("Starting Qt application")
-        if self.config['maximised']: self.window.setWindowState(Qt.WindowState.WindowMaximized)
+        if config.ui.maximised: self.window.setWindowState(Qt.WindowState.WindowMaximized)
         self.window.show()
 
         return self.exec()
@@ -353,8 +352,8 @@ class MainWindow(QApplication):
 
         # Update window size and state in configuration
         if self.window.width() != self.primaryScreen().size().width():
-            self.config['width'] = self.window.width()
-            self.config['height'] = self.window.height()
+            config.ui.width = self.window.width()
+            config.ui.height = self.window.height()
 
 
     def event_change(self, event: QEvent) -> None:
@@ -365,7 +364,7 @@ class MainWindow(QApplication):
         QMainWindow.changeEvent(self.window, event)
 
         if event.type() == QEvent.WindowStateChange:
-            self.config['maximised'] = self.window.isMaximized()
+            config.ui.maximised = self.window.isMaximized()
 
 
     def event_keypress(self, event: QKeyEvent) -> None:
@@ -411,4 +410,4 @@ class MainWindow(QApplication):
             msg (str): Message to print to console
         """
 
-        if self.config['verbose']: print(msg)
+        if config.app.verbose: print(msg)
