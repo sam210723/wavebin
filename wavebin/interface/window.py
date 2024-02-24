@@ -57,10 +57,10 @@ class MainWindow(QApplication):
             pywinstyles.apply_style(self.window, "dark")
         except ImportError: pass
 
-        # Add Roboto font
-        font_dir = Path(__file__).parent / "assets" / "Roboto"
-        QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Regular.ttf"))
-        QFontDatabase.addApplicationFont(str( font_dir / "Roboto-Bold.ttf"))
+        # Add Inter font
+        font_dir = Path(__file__).parent / "assets" / "Inter"
+        QFontDatabase.addApplicationFont(str( font_dir / "Inter-Regular.ttf"))
+        QFontDatabase.addApplicationFont(str( font_dir / "Inter-Bold.ttf"))
 
         # Window styling and state
         self.log("Updating window style")
@@ -155,14 +155,14 @@ class MainWindow(QApplication):
                 p {
                     margin-top: 90px;
                     color: #BBB;
-                    font-family: Roboto;
+                    font-family: Inter;
                     font-size: 12pt;
                 }
             </style>
 
             <div id='container'>
             """ +
-          f"    <img src='{self.icon_path}'><span>&nbsp;&nbsp;wavebin</span>" +
+          f"    <img src='{self.icon_path}'>" +
             """
                 <p>
                     Get started by opening a waveform file or capturing a new waveform
@@ -181,7 +181,7 @@ class MainWindow(QApplication):
                 color: #FFF;
                 background: #222;
 
-                font-family: Roboto;
+                font-family: Inter;
                 font-size: 12pt;
 
                 border: 1px solid #444;
@@ -340,7 +340,7 @@ class MainWindow(QApplication):
         """
 
         self.log("Opening documentation in default web browser")
-        return webbrowser.open("https://wavebin.app")
+        return webbrowser.open("https://wavebin.vksdr.com")
 
 
     def event_resize(self, event: QResizeEvent) -> None:
