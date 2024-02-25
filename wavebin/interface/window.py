@@ -147,7 +147,7 @@ class MainWindow(QApplication):
 
                 span {
                     color: #FFF;
-                    font-family: Arial;
+                    font-family: Inter;
                     font-size: 60px;
                     font-weight: bold;
                 }
@@ -162,7 +162,7 @@ class MainWindow(QApplication):
 
             <div id='container'>
             """ +
-          f"    <img src='{self.icon_path}'>" +
+          f"    <img src='{self.icon_path}'><span>&nbsp;&nbsp;wavebin</span>" +
             """
                 <p>
                     Get started by opening a waveform file or capturing a new waveform
