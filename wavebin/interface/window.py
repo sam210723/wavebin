@@ -238,18 +238,18 @@ class MainWindow(QApplication):
                 child.widget().deleteLater()
 
         # Set file name in window title
-        self.window.setWindowTitle(f"\"{self.config['file'].name}\"")
+        self.window.setWindowTitle(f"\"{config.file.name}\"")
 
         # Add plot widget to grid layout
-        self.plot = WaveformPlot(self.config, self.config['waveform'])
+        self.plot = WaveformPlot(config.waveform)
         self.layout.addWidget(
             self.plot,
             0, 0,
-            len(self.config['waveform'].channels), 8
+            len(config.waveform.channels), 8
         )
 
         # Add channel controls to grid layout
-        for i, c in enumerate(self.config['waveform'].channels):
+        for i, c in enumerate(config.waveform.channels):
             label = QLabel(f"WAVE{i} CONTROLS")
             label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             label.setStyleSheet(
@@ -266,10 +266,10 @@ class MainWindow(QApplication):
 
         # Show waveform info in toolbar
         self.tool_bar.set_info(
-            self.config['waveform'].channels[0].sample_rate_pretty,
-            self.config['waveform'].channels[0].duration_pretty
+            config.waveform.channels[0].sample_rate_pretty,
+            config.waveform.channels[0].duration_pretty
         )
-        self.tool_bar.set_props(self.config['waveform'])
+        self.tool_bar.set_props(config.waveform)
 
         # Enable export and properties toolbar buttons
         self.tool_bar.items['export'].setEnabled(True)
@@ -286,8 +286,8 @@ class MainWindow(QApplication):
         """
 
         # Get initial path
-        if self.config['file']:
-            initial = self.config['file'].parent
+        if config.file:
+            initial = config.file.parent
         else:
             initial = Path.home()
 
@@ -310,8 +310,8 @@ class MainWindow(QApplication):
         waveform = self.open_waveform(file_path)
         if waveform:
             # Prepare to render waveform
-            self.config['file'] = file_path
-            self.config['waveform'] = waveform
+            config.file = file_path
+            config.waveform = waveform
             self.update()
             return True
         else:
@@ -395,11 +395,11 @@ class MainWindow(QApplication):
 
         elif mod == None and key == Qt.Key.Key_F:
             # Toggle filled area under waveform traces 
-            if self.config['file']: self.plot.toggle_trace_fill()
+            if config.file: self.plot.toggle_trace_fill()
         
         elif mod == None and key == Qt.Key.Key_I:
             # Show waveform properties dialog
-            if self.config['file']: self.menu_bar.menu_view_props()
+            if config.file: self.menu_bar.menu_view_props()
 
 
     def log(self, msg: str) -> None:

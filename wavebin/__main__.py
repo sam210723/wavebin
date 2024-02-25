@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+from tokenize import _all_string_prefixes
 import appdirs
 import argparse
 import configparser
@@ -34,7 +35,7 @@ def main() -> None:
         "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\\n" +
         "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   \n" +
        f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n\n" +
-       f"    {config.app.desc}\n" +
+       f"    Oscilloscope waveform capture viewer\n" +
         "         https://wavebin.vksdr.com\n\n"
     )
 
@@ -57,9 +58,8 @@ def main() -> None:
 
     # Load file from -i argument
     if config.file:
-        waveform = open_waveform(config.file)
-        if not waveform: safe_exit(code=1)
-        config['waveform'] = waveform
+        config.waveform = open_waveform(config.file)
+        if not config.waveform: safe_exit(code=1)
 
     # Create Qt application
     app = MainWindow(safe_exit, open_waveform)
@@ -68,7 +68,7 @@ def main() -> None:
     app.run()
 
     # Gracefully exit application
-    safe_exit(config)
+    safe_exit()
 
 
 def parse_args() -> argparse.Namespace:
@@ -85,8 +85,11 @@ def parse_args() -> argparse.Namespace:
     argp.add_argument("-i", action="store", help="path to waveform capture file", default=None, dest="file")
     argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
     argp.add_argument("-r", action="store_true", help="reset configuration to defaults")
+    args = argp.parse_args()
+    
+    if args.file: config.file = Path(args.file)
 
-    return argp.parse_args()
+    return args
 
 
 def load_config(args: argparse.Namespace, update: bool = False) -> dict:
@@ -148,6 +151,8 @@ def save_config(config: dict) -> bool:
     Returns:
         bool: Success flag
     """
+
+    #FIXME
 
     # Create folders for configuration file
     config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
@@ -223,22 +228,17 @@ def open_waveform(path: Path) -> Vendor:
         return None
 
 
-def safe_exit(config: dict = None, code=0) -> None:
+def safe_exit(code: int = 0) -> None:
     """
     Gracefully exit the application
 
     Args:
-        config (dict): Configuration options. Defaults to None.
-        code (int, optional): Code to exit with. Defaults to 0.
+        code (int, optional): Exit code, defaults to 0
     """
 
-    # Save configuration to file
-    if config:
-        verbose = config['verbose']
-        if verbose: print("Saving configuration...")
-        save_config(config)
+    #TODO: Save configuration to file
 
-    if verbose: print("Exiting...")
+    if config.app.verbose: print("Exiting...")
     sys.exit(code)
 
 

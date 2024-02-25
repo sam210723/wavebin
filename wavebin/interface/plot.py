@@ -9,6 +9,7 @@ import numpy as np
 import pyqtgraph as pg
 from pyqtgraph import GraphicsLayoutWidget, PlotItem, ViewBox, AxisItem
 
+from wavebin.config import config
 from wavebin.vendor import Vendor, Unit, UnitAbbr
 
 # https://pyqtgraph.readthedocs.io/en/latest/plotting.html#organization-of-plotting-classes
@@ -19,12 +20,11 @@ class WaveformPlot(GraphicsLayoutWidget):
     Waveform plotting widget using PyQtGraph backend
     """
 
-    def __init__(self, config: dict, waveform: Vendor) -> None:
+    def __init__(self, waveform: Vendor) -> None:
         """
         Initialise waveform plot
 
         Args:
-            config (dict): Configuration options
             waveform (Vendor): Waveform data in Vendor-based class
         """
 
@@ -37,7 +37,6 @@ class WaveformPlot(GraphicsLayoutWidget):
         )
 
         # Set globals
-        self.config = config
         self.waveform = waveform
         self.colours = [
             (242, 242, 0),

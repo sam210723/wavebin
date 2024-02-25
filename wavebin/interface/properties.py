@@ -11,6 +11,8 @@ from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from threading import Thread
 
+from wavebin.config import config
+
 
 class WaveformProperties(QDialog):
     """
@@ -155,4 +157,4 @@ class WaveformProperties(QDialog):
             msg (str): Message to print to console
         """
 
-        if self.app.config['verbose']: print(msg)
+        if config.app.verbose: print(msg)
