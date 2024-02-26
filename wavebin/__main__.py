@@ -5,31 +5,37 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-from tokenize import _all_string_prefixes
-import appdirs
-import argparse
-import configparser
-from pathlib import Path
-import sys
+__version__: str = "3.0"    # Application version
+__min__: tuple = (3, 10)    # Minimum Python version
 
-__version__ = "3.0"     # Application version
-__min_py__ = (3, 10)    # Minimum Python version
+import argparse
+import logging
+from pathlib import Path
+import platform
+import sys
 
 from wavebin.config import config
 from wavebin.interface.window import MainWindow
 from wavebin.vendor import Vendor, vendor_detect
 
 
-# Fix for Windows taskbar icon
-from os import name as os_name
-if os_name == "nt":
-    import ctypes
-    appid = f'com.vksdr.wavebin.{__version__}'
-    ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
-
-
 def main() -> None:
-    print(
+    # Configure file logging
+    logging.basicConfig(
+        filename=str(config.app.log),
+        filemode="w",
+        level=logging.DEBUG,
+        format="[%(asctime)s] %(levelname)8s: %(message)s",
+        datefmt="%d/%m/%Y %H:%M:%S"
+    )
+
+    # Configure console logging
+    log_stream = logging.StreamHandler(sys.stdout)
+    log_stream.setLevel(logging.INFO)
+    logging.getLogger().addHandler(log_stream)
+
+    # Print app header
+    logging.info("\n" +
         "                              __    _        \n" +
         "   _      ______ __   _____  / /_  (_)___    \n" +
         "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\\n" +
@@ -39,32 +45,31 @@ def main() -> None:
         "         https://wavebin.vksdr.com\n\n"
     )
 
-    # Check minimum Python version requirement
-    if sys.version_info[1] < __min_py__[1]:
-        print(f"Python {__min_py__[0]}.{__min_py__[1]} or newer is required to run wavebin")
+    # Check Python version
+    if sys.version_info[1] < __min__[1]:
+        logging.critical(f"Python {__min__[0]}.{__min__[1]} or newer is required")
         exit(1)
 
-    # Parse CLI arguments
+    # Log system info (Python, OS, CPU)
+    logging.debug(f"Python {platform.python_version()} on {platform.platform()} {platform.machine()}")
+
+    # Parse args and persistent config
     args = parse_args()
+    config.load(args.reset)
 
-    # Check for update on GitHub
+    # Check for app updates
     config.app.update = update_check()
-    if config.app.update:
-        print(f"A new version of wavebin is available")
-        print("Run \"pip install --upgrade wavebin\" to install it\n")
+    if True: logging.info("A new version of wavebin is available on GitHub"); print()
 
-    # Load configuration from file
-    #config = load_config(args, update)
-
-    # Load file from -i argument
-    if config.file:
+    # Load file from argument
+    if args.file:
+        config.file = Path(args.file)
         config.waveform = open_waveform(config.file)
         if not config.waveform: safe_exit(code=1)
 
-    # Create Qt application
+    # Launch user interface
+    if args.verbose: log_stream.setLevel(logging.DEBUG)
     app = MainWindow(safe_exit, open_waveform)
-
-    # Run application
     app.run()
 
     # Gracefully exit application
@@ -73,104 +78,24 @@ def main() -> None:
 
 def parse_args() -> argparse.Namespace:
     """
-    Parse command-line arguments
+    Handle command-line arguments
 
     Returns:
-        argparse.Namespace: List of arguments
+        argparse.Namespace: Parsed arguments
     """
 
     argp = argparse.ArgumentParser()
     argp.prog = "wavebin"
 
+    # Configure options
     argp.add_argument("-i", action="store", help="path to waveform capture file", default=None, dest="file")
-    argp.add_argument("-v", action="store_true", help="enable verbose logging mode")
-    argp.add_argument("-r", action="store_true", help="reset configuration to defaults")
+    argp.add_argument("-v", action="store_true", help="enable verbose logging mode", dest="verbose")
+    argp.add_argument("-r", action="store_true", help="reset configuration to defaults", dest="reset")
+
     args = argp.parse_args()
-    
-    if args.file: config.file = Path(args.file)
+    logging.debug(f'Arguments {vars(args)}')
 
     return args
-
-
-def load_config(args: argparse.Namespace, update: bool = False) -> dict:
-    """
-    Load configuration options from file
-
-    Args:
-        args (argparse.Namespace): Parsed command line arguments.
-        update (bool): True if update is available on GitHub. Defaults to False.
-
-    Returns:
-        dict: Configuration options
-    """
-
-    # Check for existing configuration file
-    config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
-    if config_path.is_file() and not args.r:
-        if args.v: print(f"Loading configuration \"{config_path}\"")
-
-        # Load configuration from file
-        cfgp = configparser.ConfigParser()
-        cfgp.read(config_path)
-
-        # Create configuration object
-        config_dict = {
-            "width":       cfgp.getint("wavebin", "width"),
-            "height":      cfgp.getint("wavebin", "height"),
-            "maximised":   cfgp.getboolean("wavebin", "maximised")
-        }   
-    else:
-        # Create default configuration object
-        config_dict = {
-            "width":       1400,
-            "height":      800,
-            "maximised":   False
-        }
-        if args.r: print("Configuration reset to defaults") 
-
-        # Save default configuration to file
-        save_config(config_dict)
-
-    # Add non-persistent options
-    config_dict['version'] = __version__
-    config_dict['verbose'] = args.v
-    config_dict['config.app.desc'] = config.app.desc
-    config_dict['update'] = update
-    config_dict['file'] = Path(args.file) if args.file else None
-
-    return config_dict
-
-
-def save_config(config: dict) -> bool:
-    """
-    Save configuration to file
-
-    Args:
-        config (dict): Configuration options
-
-    Returns:
-        bool: Success flag
-    """
-
-    #FIXME
-
-    # Create folders for configuration file
-    config_path = Path(appdirs.user_config_dir("wavebin", "")) / "wavebin.ini"
-    config_path.parent.mkdir(parents=True, exist_ok=True)
-
-    # Remove non-persistent options
-    rmkeys = ["verbose", "config.app.desc", "update", "file", "waveform"]
-    for _, key in enumerate(rmkeys):
-        if key in config: del config[key]
-
-    # Prepare configuration object
-    cfgp = configparser.ConfigParser()
-    cfgp._sections['wavebin'] = config
-
-    # Write configuration to file
-    with open(config_path, "w") as fh:
-        cfgp.write(fh)
-    return True
 
 
 def update_check() -> bool:
@@ -182,22 +107,30 @@ def update_check() -> bool:
     """
 
     import json
+    from packaging.version import Version
     import urllib.request
     import urllib.error
 
     # Build update check request
     url = "https://api.github.com/repos/sam210723/wavebin/releases/latest"
-    headers = { "User-Agent": "sam210723/wavebin update_check" }
+    headers = { 'User-Agent': 'sam210723/wavebin update_check' }
     req = urllib.request.Request(url, None, headers)
     
     # Send update check request and parse response
     try:
-        res = urllib.request.urlopen(req)
-        data = json.loads(res.read())
-        return f"v{__version__}" != data['tag_name']
-        
-    except urllib.error.HTTPError as e:
-        print(f"Failed to check for updates on GitHub ({e})")
+        res = urllib.request.urlopen(req, timeout=2)
+        latest = json.loads(res.read())['tag_name'][1:]
+        update = Version(config.app.version) < Version(latest)
+        ahead = Version(config.app.version) > Version(latest)
+
+        logging.debug(
+            f"Current release version on GitHub is v{latest}" +
+            f", instance {'can be updated' if update else 'is ahead of release' if ahead else 'is up to date'}"
+        )
+        return update
+
+    except Exception as e:
+        logging.warning(f"Failed to check for updates on GitHub ({e})")
         return False
 
 
@@ -213,7 +146,7 @@ def open_waveform(path: Path) -> Vendor:
     """
 
     # Detect waveform vendor
-    print(f"Opening \"{path.name}\"")
+    logging.info(f"Opening \"{path.name}\"")
     waveform = vendor_detect(path)
 
     if waveform:
@@ -221,28 +154,35 @@ def open_waveform(path: Path) -> Vendor:
         if waveform.parsed:
             return waveform
         else:
-            print(f"Unable to parse waveform file \"{path.name}\"")
+            logging.error(f"Unable to parse waveform file \"{path.name}\"")
     else:
         # Unknown file type
-        print(f"Unknown file format \"{path.name}\"")
+        logging.error(f"Unknown file format \"{path.name}\"")
         return None
 
 
 def safe_exit(code: int = 0) -> None:
     """
-    Gracefully exit the application
+    Save configuration and exit the application
 
     Args:
         code (int, optional): Exit code, defaults to 0
     """
 
-    #TODO: Save configuration to file
-
-    if config.app.verbose: print("Exiting...")
+    config.save()
+    logging.info("Exiting...")
     sys.exit(code)
 
 
 try:
-    if __name__ == "__main__": main()
+    if __name__ == "__main__":
+        # Fix for Windows taskbar icon
+        from os import name as os_name
+        if os_name == "nt":
+            import ctypes
+            appid = f"com.vksdr.wavebin.{__version__}"
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
+
+        main()
 except KeyboardInterrupt:
     safe_exit()

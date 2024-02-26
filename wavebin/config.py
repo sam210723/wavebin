@@ -1,5 +1,8 @@
+import appdirs
 from dataclasses import dataclass
+import logging
 from pathlib import Path
+
 from wavebin import __main__ as main
 from wavebin.vendor import Vendor
 
@@ -12,8 +15,8 @@ class App():
 
     name: str = "wavebin"               # Application name
     version: str = main.__version__     # Application version
-    verbose: bool = False               # Output extra log messages
     update: bool = False                # Update available on GitHub
+    log: Path = Path(f'{name}.log')     # Log file path
 
 
 @dataclass
@@ -35,13 +38,29 @@ class Configuration():
     waveform: Vendor = None             # Parsed waveform object
 
 
-    def save(self, path: Path | str):
+    def load(self, reset: bool = False):
+        """
+        Load configuration from file
+        """
+
+        # Log current configuration
+        logging.debug(str(config).replace("Configuration(", "Configuration ("))
+
+        # Reset configuration if requested
+        if reset:
+            #TODO: Apply default configuration
+            logging.info('Resetting configuration')
+
+            # Log default configuration
+            logging.debug(str(config).replace("Configuration(", "Configuration ("))
+
+
+    def save(self):
         """
         Save configuration to file
         """
 
-        # Convert string path to pathlib Path
-        if isinstance(path, str): path = Path(path)
+        pass
 
 
 config = Configuration(App(), UI())
