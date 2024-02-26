@@ -15,20 +15,24 @@ All notable changes to this project will be documented in this file.
   - Update checker using GitHub API
   - Single-click update installer using `pip`
   - Toggle menu bar visibility with `Alt` key
+  - Windows and macOS executable builds
 
 ### Changed
   - Separate plots for each waveform capture channel
-  - Use **Roboto** font for most UI elements
+  - Use **Inter** font for most UI elements
   - Rearrange interface code into multiple classes
-  - Better docstrings and type hinting
-  - Global configuration object for all classes
+  - Global configuration dataclass
+  - Tweaked application icon
   - Migrated build system from `setuptools` to `hatch`
   - Migrated user interface from `PyQt5` to `PtQt6`
 
 ### Fixed
-  - Launcher executable script (`> wavebin` instead of `> python3 -m wavebin`)
+  - Launcher executable script (`> wavebin` instead of `> python -m wavebin`)
+  - Title bar style in Windows 11
   - Minimum dependency versions
   - Minimum Python version check
+  - Better docstrings and type hinting
+  - Better debug logging
 </details>
 
 
