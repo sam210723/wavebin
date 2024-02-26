@@ -59,7 +59,7 @@ def main() -> None:
 
     # Check for app updates
     config.app.update = update_check()
-    if True: logging.info("A new version of wavebin is available on GitHub"); print()
+    if config.app.update: logging.info("A new version of wavebin is available on GitHub"); print()
 
     # Load file from argument
     if args.file:
@@ -127,7 +127,7 @@ def update_check() -> bool:
             f"Current release version on GitHub is v{latest}" +
             f", instance {'can be updated' if update else 'is ahead of release' if ahead else 'is up to date'}"
         )
-        return update
+        return (update and not ahead)
 
     except Exception as e:
         logging.warning(f"Failed to check for updates on GitHub ({e})")
