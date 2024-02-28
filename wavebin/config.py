@@ -1,5 +1,6 @@
 import appdirs
-from dataclasses import dataclass
+import configparser
+from dataclasses import dataclass, asdict, make_dataclass
 import logging
 from pathlib import Path
 
@@ -42,8 +43,17 @@ class UI():
 class Configuration():
     app: App                            # General application settings
     ui: UI                              # User interface settings
-    file: Path = None                   # Path to waveform capture file
-    waveform: Vendor = None             # Parsed waveform object
+    file: Path = None                   # Path to waveform capture file     # type: ignore
+    waveform: Vendor = None             # Parsed waveform object            # type: ignore
+
+    # Configuration file path
+    path: Path = Path(
+        appdirs.user_config_dir(
+            appname="wavebin",
+            appauthor="",
+            roaming=False
+        )
+    ) / "wavebin.ini"
 
 
     def load(self, reset: bool = False):
@@ -51,24 +61,52 @@ class Configuration():
         Load configuration from file
         """
 
+        # Skip if configuration file does not exist
+        if not self.path.is_file(): return True
+
+        # Ignore stored configuration reset requested
+        if reset:
+            logging.info('Resetting configuration')
+            return True
+
+        # Prepare configuration object
+        logging.info('Loading configuration')
+        parser = configparser.ConfigParser()
+        parser.read(str(self.path.absolute()))
+
+        # Update dataclass values
+        self.ui.width = parser.getint('ui', 'width')
+        self.ui.height = parser.getint('ui', 'height')
+        self.ui.maximised = parser.getboolean('ui', 'maximised')
+
         # Log current configuration
         logging.debug(str(config).replace("Configuration(", "Configuration ("))
 
-        # Reset configuration if requested
-        if reset:
-            #TODO: Apply default configuration
-            logging.info('Resetting configuration')
 
-            # Log default configuration
-            logging.debug(str(config).replace("Configuration(", "Configuration ("))
-
-
-    def save(self):
+    def save(self) -> bool:
         """
         Save configuration to file
         """
 
-        pass
+        # Create folders for configuration file
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Prepare configuration object
+        parser = configparser.ConfigParser()
+        parser.add_section('ui')
+
+        # Add configuration options
+        parser['ui'] = asdict(self.ui)
+
+        # Write configuration to file
+        try:
+            with open(str(self.path.absolute()), "w") as fh:
+                parser.write(fh)
+            return True
+
+        except OSError as e:
+            logging.error(e)
+            return False
 
 
 config = Configuration(App(), UI())
