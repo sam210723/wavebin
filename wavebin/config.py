@@ -1,12 +1,12 @@
 import appdirs
 import configparser
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass, asdict, field
 import logging
 from pathlib import Path
 from pprint import pformat
 
 from wavebin import __main__ as main
-from wavebin.vendor import Vendor
+from wavebin.vendor import Vendor, vendor_detect
 
 
 @dataclass
@@ -45,7 +45,6 @@ class Configuration():
     app: App                            # General application settings
     ui: UI                              # User interface settings
     file: Path = None                   # Path to waveform capture file     # type: ignore
-    waveform: Vendor = None             # Parsed waveform object            # type: ignore
 
     # Configuration file path
     path: Path = Path(
@@ -55,6 +54,26 @@ class Configuration():
             roaming=False
         )
     ) / "wavebin.ini"
+
+    # Parsed waveform object
+    _waveform: Vendor = field(
+        repr=False,
+        init=False,
+        default=None    # type: ignore
+    )
+
+    @property
+    def waveform(self) -> Vendor: return self._waveform
+
+    @waveform.setter
+    def waveform(self, path: Path):
+        #TODO: Needs fixing when Vendor class is re-written
+        if isinstance(path, Path):
+            try:
+                w: Vendor = vendor_detect(path)
+                if w.parsed: self._waveform = w
+            except RuntimeError as e:
+                logging.error(e)
 
 
     def load(self, reset: bool = False) -> bool:

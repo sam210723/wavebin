@@ -16,7 +16,6 @@ import sys
 
 from wavebin.config import config
 from wavebin.interface.window import MainWindow
-from wavebin.vendor import Vendor, vendor_detect
 
 
 def main() -> None:
@@ -65,12 +64,12 @@ def main() -> None:
     # Load file from argument
     if args.file:
         config.file = Path(args.file)
-        config.waveform = open_waveform(config.file)
+        config.waveform = config.file
         if not config.waveform: safe_exit(code=1)
 
     # Launch user interface
     if args.verbose: log_stream.setLevel(logging.DEBUG)
-    app = MainWindow(safe_exit, open_waveform)
+    app = MainWindow()
     app.run()
 
     # Gracefully exit application
@@ -133,33 +132,6 @@ def update_check() -> bool:
     except Exception as e:
         logging.warning(f"Failed to check for updates on GitHub ({e})")
         return False
-
-
-def open_waveform(path: Path) -> Vendor:
-    """
-    Open waveform file, parse, then update UI
-
-    Args:
-        path (Path): Path to waveform file as pathlib Path object
-    
-    Returns:
-        Vendor or None: None when file format is unknown, otherwise instance of Vendor
-    """
-
-    # Detect waveform vendor
-    logging.info(f"Opening \"{path.name}\"")
-    waveform = vendor_detect(path)
-
-    if waveform:
-        # Known file type
-        if waveform.parsed:
-            return waveform
-        else:
-            logging.error(f"Unable to parse waveform file \"{path.name}\"")
-    else:
-        # Unknown file type
-        logging.error(f"Unknown file format \"{path.name}\"")
-        return None
 
 
 def safe_exit(code: int = 0) -> None:

@@ -232,4 +232,4 @@ def vendor_detect(path: Path) -> Vendor:
         from wavebin.vendor.siglent import SiglentWaveform
         return SiglentWaveform(data)
     else:
-        return None
+        raise RuntimeError("Unable to parse waveform file")

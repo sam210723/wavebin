@@ -308,11 +308,10 @@ class MainWindow(QApplication):
             file_path = Path(file_path)
 
         # Open waveform file
-        waveform = self.open_waveform(file_path)
-        if waveform:
+        config.waveform = file_path
+        if config.waveform:
             # Prepare to render waveform
             config.file = file_path
-            config.waveform = waveform
             self.update()
             return True
         else:
