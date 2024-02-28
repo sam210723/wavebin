@@ -7,7 +7,6 @@ Oscilloscope waveform capture viewer
 
 import logging
 from pathlib import Path
-from typing import Callable
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
 from PyQt6.QtCore import Qt, QEvent
 from PyQt6.QtGui import QFontDatabase, QIcon, QKeyEvent, QResizeEvent
@@ -25,27 +24,18 @@ class MainWindow(QApplication):
     Main application window
     """
 
-    def __init__(self, safe_exit: Callable, open_waveform: Callable) -> None:
+    def __init__(self) -> None:
         """
         Initialise main application window
-
-        Args:
-            safe_exit (function): Graceful application exit function
-            open_waveform (function): Waveform file handling function
         """
 
         # Initialise parent class
         super(MainWindow, self).__init__([])
 
-        # Set globals
-        self.safe_exit = safe_exit
-        self.open_waveform = open_waveform
-        self.name = f"wavebin {config.app.version}"
-
         # Setup main Qt application
         self.log("Initialising Qt application")
-        self.setApplicationName(self.name)
-        self.setApplicationDisplayName(self.name)
+        self.setApplicationName(config.app.name)
+        self.setApplicationDisplayName(config.app.name)
         self.setApplicationVersion(config.app.version)
 
         # Create main Qt window
