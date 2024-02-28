@@ -1,8 +1,9 @@
 import appdirs
 import configparser
-from dataclasses import dataclass, asdict, make_dataclass
+from dataclasses import dataclass, asdict
 import logging
 from pathlib import Path
+from pprint import pformat
 
 from wavebin import __main__ as main
 from wavebin.vendor import Vendor
@@ -56,7 +57,7 @@ class Configuration():
     ) / "wavebin.ini"
 
 
-    def load(self, reset: bool = False):
+    def load(self, reset: bool = False) -> bool:
         """
         Load configuration from file
         """
@@ -80,7 +81,10 @@ class Configuration():
         self.ui.maximised = parser.getboolean('ui', 'maximised')
 
         # Log current configuration
-        logging.debug(str(config).replace("Configuration(", "Configuration ("))
+        logging.debug(f"Configuration loaded from \"{self.path.absolute()}\"")
+        for l in self.print(): logging.debug(l)
+
+        return True
 
 
     def save(self) -> bool:
@@ -102,11 +106,25 @@ class Configuration():
         try:
             with open(str(self.path.absolute()), "w") as fh:
                 parser.write(fh)
+
+            logging.debug(f"Configuration saved to \"{self.path.absolute()}\"")
             return True
 
         except OSError as e:
-            logging.error(e)
+            logging.error(f"Failed to save configuration file\n{e}")
             return False
+
+
+    def print(self) -> list[str]:
+        """
+        Pretty print configuration options
+        """
+
+        return pformat(
+            config,
+            width=1,
+            sort_dicts=False
+        ).split('\n')
 
 
 config = Configuration(App(), UI())
