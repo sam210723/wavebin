@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+import logging
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QDialog, QGridLayout, QLabel
 from PyQt6.QtCore import Qt
@@ -157,4 +158,4 @@ class WaveformProperties(QDialog):
             msg (str): Message to print to console
         """
 
-        if config.app.verbose: print(msg)
+        logging.debug(msg)
