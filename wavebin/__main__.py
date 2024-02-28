@@ -21,6 +21,7 @@ from wavebin.vendor import Vendor, vendor_detect
 
 def main() -> None:
     # Configure file logging
+    config.app.log.parent.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(
         filename=str(config.app.log),
         filemode="w",

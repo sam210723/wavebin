@@ -16,7 +16,15 @@ class App():
     name: str = "wavebin"               # Application name
     version: str = main.__version__     # Application version
     update: bool = False                # Update available on GitHub
-    log: Path = Path(f'{name}.log')     # Log file path
+
+    # Log file path
+    log: Path = Path(
+        appdirs.user_config_dir(
+            appname="wavebin",
+            appauthor="",
+            roaming=False
+        )
+    ) / "wavebin.log"
 
 
 @dataclass
