@@ -35,6 +35,7 @@ class MainToolBar(QToolBar):
         self.setMovable(False)
         self.setFloatable(False)
         self.setContextMenuPolicy(Qt.ContextMenuPolicy.PreventContextMenu)
+        self.setFixedHeight(40)
         self.setStyleSheet(
             """
             QToolBar {
@@ -46,17 +47,18 @@ class MainToolBar(QToolBar):
             QToolBar::separator {
                 background: #444;
                 width: 1px;
-                margin: 5px 5px 5px 5px;
+                margin: 5px 5px;
             }
 
             QToolButton {
                 color: #FFF;
-                padding: 7px;
+                margin: 5px;
+                padding: 4px;
             }
             """
         )
 
-        # Tool bar items
+        # Tool bar items (hover text, icon)
         self.items = {
             "open":    ["Open waveform", "folder-open"],
             "capture": ["Capture waveform", "wave-square"],
@@ -99,7 +101,7 @@ class MainToolBar(QToolBar):
         if not config.app.update: self.removeAction(self.items['update'])
 
         # Create waveform properties dialog
-        self.props_dialog = WaveformProperties(self.app)
+        self.props_dialog = WaveformProperties()
 
         # Add waveform info label
         spacer = QWidget()
@@ -113,7 +115,7 @@ class MainToolBar(QToolBar):
             """
             QLabel {
                 color: #FFF;
-                font-family: Roboto;
+                font-family: Inter;
                 font-size: 15px;
                 padding-right: 5px;
             }
@@ -144,7 +146,7 @@ class MainToolBar(QToolBar):
         """
 
         # Get initial path
-        initial = self.app.config['file']
+        initial = config.file
 
         # Show export file dialog
         file_path = self.app.save_dialog.getSaveFileName(
@@ -191,7 +193,7 @@ class MainToolBar(QToolBar):
             "?template=bug.md" +
             "&labels=bug,from+app" +
             "&assignees=sam210723" +
-           f"&title=[v{self.app.config['version']} on {sys.version.split(' ')[0]}] *Brief description of issue*"
+           f"&title=[v{config.app.version} on {sys.version.split(' ')[0]}] *Brief description of issue*"
         )
 
 
@@ -242,7 +244,7 @@ class MainToolBar(QToolBar):
             dur (str): Capture duration as human-readable string
         """
 
-        self.info.setText(f"{sr}\n{dur}")
+        self.info.setText(f"{sr}  │  {dur}")
 
 
     def set_props(self, waveform: Vendor) -> None:

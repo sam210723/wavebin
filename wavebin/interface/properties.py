@@ -7,7 +7,7 @@ Oscilloscope waveform capture viewer
 
 import logging
 from pathlib import Path
-from PyQt6.QtWidgets import QApplication, QDialog, QGridLayout, QLabel
+from PyQt6.QtWidgets import QDialog, QGridLayout, QLabel
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QPixmap
 from threading import Thread
@@ -20,9 +20,8 @@ class WaveformProperties(QDialog):
     Dialog box containing waveform properties
     """
 
-    def __init__(self, app: QApplication) -> None:
+    def __init__(self) -> None:
         super(WaveformProperties, self).__init__(parent=None, flags=Qt.WindowType.WindowCloseButtonHint)
-        self.app = app
 
         # Set dialog properties
         self.setWindowTitle("Waveform Properties")
@@ -92,7 +91,7 @@ class WaveformProperties(QDialog):
         # Add device info to dialog
         self.device_info_label = QLabel()
         self.device_info_label.setTextFormat(Qt.TextFormat.RichText)
-        self.device_info_label.setStyleSheet("font-family: Roboto; font-size: 15px; color: #FFF;")
+        self.device_info_label.setStyleSheet("font-family: Inter; font-size: 15px; color: #FFF;")
         self.device_info_label.setText(
             f"""
             <div align='center'>
@@ -128,13 +127,13 @@ class WaveformProperties(QDialog):
         headers = { "User-Agent": "sam210723/wavebin download_device_image" }
         req = urllib.request.Request(url, None, headers)
         
-        # Send update check request and parse response
+        # Load image from GitHub
         try:
             res = urllib.request.urlopen(req)
             self.device_image_pixmap.loadFromData(res.read())
             self.device_image_label.setPixmap(self.device_image_pixmap)
-            logging.debug(f"Downloaded properties dialog device image")
 
+            logging.debug(f"Downloaded properties dialog device image")
             return True
 
         except urllib.error.HTTPError as e:
