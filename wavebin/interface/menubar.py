@@ -35,12 +35,11 @@ class MainMenuBar(QMenuBar):
                 "exit":   ["Exit", "power-off"]
             },
             "view": {
-                "props":  ["Waveform properties", "list"]
+                "props":  ["Properties", "list"]
             },
             "help": {
                 "docs":   ["Documentation", "bookmark"],
                 "bug":    ["Report a bug", "bug"],
-                "update": ["Update wavebin", "sync-alt"],
                 "sep0":   None,
                 "about":  ["About", "question"]
             }
@@ -90,5 +89,4 @@ class MainMenuBar(QMenuBar):
     def menu_view_props(self) -> int:   return self.tool_bar.props_dialog.exec()
     def menu_help_docs(self) -> bool:   return self.tool_bar.button_docs()
     def menu_help_bug(self) -> bool:    return self.tool_bar.button_bug()
-    def menu_help_update(self) -> bool: return self.tool_bar.button_update()
     def menu_help_about(self) -> None:  self.tool_bar.button_about()

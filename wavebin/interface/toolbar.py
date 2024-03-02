@@ -63,11 +63,10 @@ class MainToolBar(QToolBar):
             "open":    ["Open waveform", "folder-open"],
             "capture": ["Capture waveform", "wave-square"],
             "export":  ["Export waveform", "file-export"],
-            "props":   ["Waveform properties", "list"],
+            "props":   ["Properties", "list"],
             "sep0":    None,
             "docs":    ["Open documentation", "bookmark"],
             "bug":     ["Report a bug", "bug"],
-            "update":  ["An update is available for wavebin", "sync-alt"],
             "about":   ["About wavebin", "question"]
         }
 
@@ -98,7 +97,6 @@ class MainToolBar(QToolBar):
         # Set default button states
         self.items['export'].setEnabled(False)
         self.items['props'].setEnabled(False)
-        if not config.app.update: self.removeAction(self.items['update'])
 
         # Create waveform properties dialog
         self.props_dialog = WaveformProperties()
@@ -195,36 +193,6 @@ class MainToolBar(QToolBar):
             "&assignees=sam210723" +
            f"&title=[v{config.app.version} on {sys.version.split(' ')[0]}] *Brief description of issue*"
         )
-
-
-    def button_update(self) -> bool:
-        """
-        Update wavebin via PyPI
-        """
-
-        # Confirm update with user
-        msgbox = QMessageBox()
-        msgbox.setWindowTitle("Update available")
-        msgbox.setWindowIcon(QIcon("icon.ico"))
-        msgbox.setTextFormat(Qt.TextFormat.RichText)
-        msgbox.setText(
-            "An update is available for wavebin via the Python Package Index (PyPI)<br>" +
-            "<a href=\"https://github.com/sam210723/wavebin/blob/master/CHANGELOG.md\">View changelog on GitHub</a><br><br>" +
-            "Are you sure you want to update wavebin?"
-        )
-        msgbox.setIcon(QMessageBox.Icon.Question)
-        msgbox.setStandardButtons(QMessageBox.Yes | QMessageBox.No)
-        msgbox.setDefaultButton(QMessageBox.No)
-        msgbox.exec()
-        if msgbox.result() == QMessageBox.No: return False
-
-        # Launch separate process to update
-        import subprocess
-        subprocess.Popen("python3 -m pip install --no-input --upgrade wavebin && wavebin", shell=True)
-        #TODO: Fix new wavebin process exiting
-
-        # Exit current instance
-        self.app.safe_exit(self.app.config)
 
 
     def button_about(self) -> bool:
