@@ -72,28 +72,28 @@ class MainToolBar(QToolBar):
         }
 
         # Build tool bar
-        for t in self.items:
+        for i in self.items:
             # Insert toolbar separators
-            if self.items[t] == None:
+            if self.items[i] == None:
                 self.insertSeparator(None)
                 continue
 
             # Get icon from Font Awesome
             icon = qta.icon(
-                f"fa5s.{self.items[t][1]}",
+                f"fa5s.{self.items[i][1]}",
                 color="#FFF",
-                color_active="#AAA"
+                color_active="#444"
             )
 
             # Build action object
             action = QAction(self)
             action.setIcon(icon)
-            action.setText(self.items[t][0])
-            action.triggered.connect(eval(f"self.button_{t}"))
+            action.setText(self.items[i][0])
+            action.triggered.connect(eval(f"self.button_{i}"))
             self.addAction(action)
 
             # Replace list in dict with QAction instance
-            self.items[t] = action
+            self.items[i] = action
         
         # Set default button states
         self.items['export'].setEnabled(False)
