@@ -42,6 +42,8 @@ class MainWindow(QApplication):
         logging.debug("Creating main Qt window")
         self.window = QMainWindow()
         self.window.setFocus()
+        self.window.raise_()
+        self.window.activateWindow()
 
         # Add Inter font
         font_dir = Path(__file__).parent / "assets" / "Inter"
