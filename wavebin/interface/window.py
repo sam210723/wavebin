@@ -8,7 +8,7 @@ Oscilloscope waveform capture viewer
 import logging
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QLabel, QMainWindow, QPushButton, QWidget, QGridLayout, QFileDialog, QTextEdit, QMessageBox
-from PyQt6.QtCore import Qt, QEvent
+from PyQt6.QtCore import Qt, QEvent, QRect
 from PyQt6.QtGui import QFontDatabase, QIcon, QKeyEvent, QResizeEvent
 import qtawesome as qta
 import webbrowser
@@ -59,7 +59,6 @@ class MainWindow(QApplication):
         self.icon_path_multi = Path(__file__).parent / "assets" / "icon-multi.ico"
         self.icon = QIcon(str(self.icon_path_multi))
         self.setWindowIcon(self.icon)
-        self.window.resize(config.ui.width, config.ui.height)
         self.window.setMinimumSize(800, 500)
 
         # Add menu bar to main window
@@ -110,9 +109,26 @@ class MainWindow(QApplication):
         """
 
         self.log("Starting Qt application")
-        if config.ui.maximised: self.window.setWindowState(Qt.WindowState.WindowMaximized)
-        self.window.show()
 
+        # Get center of primary screen
+        screen: QRect = self.primaryScreen().geometry()
+        offset: tuple[int, int] = (
+            int(screen.width() / 2 - (config.ui.width / 2)),
+            int(screen.height() / 2 - (config.ui.height / 2))
+        )
+
+        # Update window size and position
+        self.window.setGeometry(
+            *offset,
+            config.ui.width,
+            config.ui.height
+        )
+
+        # Maximise main window
+        if config.ui.maximised:
+            self.window.setWindowState(Qt.WindowState.WindowMaximized)
+
+        self.window.show()
         return self.exec()
 
 
