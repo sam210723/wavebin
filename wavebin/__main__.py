@@ -5,8 +5,6 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
-__version__: str = "3.0"    # Application version
-__min__: tuple = (3, 10)    # Minimum Python version
 
 import argparse
 import logging
@@ -40,14 +38,15 @@ def main() -> None:
         "   _      ______ __   _____  / /_  (_)___    \n" +
         "  | | /| / / __ `/ | / / _ \\/ __ \\/ / __ \\\n" +
         "  | |/ |/ / /_/ /| |/ /  __/ /_/ / / / / /   \n" +
-       f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{__version__}\n\n" +
+       f"  |__/|__/\\__,_/ |___/\\___/_.___/_/_/ /_/  v{config.app.version}\n\n" +
        f"    Oscilloscope waveform capture viewer\n" +
         "         https://wavebin.vksdr.com\n\n"
     )
 
     # Check Python version
-    if sys.version_info[1] < __min__[1]:
-        logging.critical(f"Python {__min__[0]}.{__min__[1]} or newer is required")
+    min_py: tuple = (3, 10)
+    if sys.version_info[1] < min_py[1]:
+        logging.critical(f"Python {min_py[0]}.{min_py[1]} or newer is required")
         exit(1)
 
     # Log system info (Python, OS, CPU)
@@ -153,7 +152,7 @@ try:
         from os import name as os_name
         if os_name == "nt":
             import ctypes
-            appid = f"com.vksdr.wavebin.{__version__}"
+            appid = f"com.vksdr.wavebin.{config.app.version}"
             ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 
         main()

@@ -1,3 +1,10 @@
+"""
+wavebin
+https://github.com/sam210723/wavebin
+
+Oscilloscope waveform capture viewer
+"""
+
 import appdirs
 import configparser
 from dataclasses import dataclass, asdict, field
@@ -5,7 +12,6 @@ import logging
 from pathlib import Path
 from pprint import pformat
 
-from wavebin import __main__ as main
 from wavebin.vendor import Vendor, vendor_detect
 
 
@@ -16,7 +22,7 @@ class App():
     """
 
     name: str = "wavebin"               # Application name
-    version: str = main.__version__     # Application version
+    version: str = "3.0"                # Application version
     update: bool = False                # Update available on GitHub
 
     # Log file path
@@ -90,7 +96,7 @@ class Configuration():
             return True
 
         # Prepare configuration object
-        logging.info('Loading configuration')
+        logging.debug('Loading configuration')
         parser = configparser.ConfigParser()
         parser.read(str(self.path.absolute()))
 

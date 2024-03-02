@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+import logging
 import numpy as np
 import pyqtgraph as pg
 from pyqtgraph import GraphicsLayoutWidget, PlotItem, ViewBox, AxisItem

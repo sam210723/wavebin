@@ -133,7 +133,7 @@ class WaveformProperties(QDialog):
             res = urllib.request.urlopen(req)
             self.device_image_pixmap.loadFromData(res.read())
             self.device_image_label.setPixmap(self.device_image_pixmap)
-            self.log(f"Downloaded properties dialog device image")
+            logging.debug(f"Downloaded properties dialog device image")
 
             return True
 
@@ -146,16 +146,5 @@ class WaveformProperties(QDialog):
             self.grid_layout.addWidget(self.vendor_image_label, 0, 0, 1, 4, Qt.AlignmentFlag.AlignCenter)
             self.grid_layout.addWidget(self.device_info_label, 1, 0, 1, 4, Qt.AlignmentFlag.AlignTop | Qt.AlignmentFlag.AlignCenter)
 
-            self.log(f"Failed to download device image \"{url}\" ({e})")
+            logging.debug(f"Failed to download device image \"{url}\" ({e})")
             return False
-
-
-    def log(self, msg: str) -> None:
-        """
-        Print message to console if verbose mode enabled
-
-        Args:
-            msg (str): Message to print to console
-        """
-
-        logging.debug(msg)

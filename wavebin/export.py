@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+import logging
 from pathlib import Path
 import numpy
 import wave
@@ -18,7 +19,7 @@ class PulseView():
         self.waveforms = waveforms
         self.clipped = clipped
 
-        self.log(f"Exporting PulseView session to \"{self.path}\"")
+        logging.debug(f"Exporting PulseView session to \"{self.path}\"")
 
         # Create ZIP file
         self.zipf = zipfile.ZipFile(self.path, 'w', zipfile.ZIP_DEFLATED)
@@ -35,7 +36,7 @@ class PulseView():
 
         # Close completed ZIP file
         self.zipf.close()
-        self.log("Finished exporting")
+        logging.debug("Finished exporting")
 
 
     def metadata(self):
@@ -94,17 +95,13 @@ class PulseView():
         return sr
 
 
-    def log(self, msg):
-        if self.verbose: print(msg)
-
-
 class WaveFile():
     def __init__(self, verbose, path, waveforms):
         self.verbose = verbose
         self.path = Path(path)
         self.waveforms = waveforms
 
-        self.log(f"Exporting WAV file to \"{self.path}\"")
+        logging.debug(f"Exporting WAV file to \"{self.path}\"")
 
         # Loop through waveforms
         for i, w in enumerate(self.waveforms):
@@ -130,7 +127,7 @@ class WaveFile():
         #TODO: Fix analog waveform exporting
         #TODO: Add max (ulong) data rate check
 
-        self.log("Finished exporting")
+        logging.debug("Finished exporting")
 
     
     def get_sample_rate(self, i):
@@ -145,7 +142,3 @@ class WaveFile():
             sr  = 1 / self.waveforms[i]['header'].x_increment
         
         return sr
-
-
-    def log(self, msg):
-        if self.verbose: print(msg)

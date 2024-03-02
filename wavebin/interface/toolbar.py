@@ -5,6 +5,7 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+import logging
 from pathlib import Path
 from PyQt6.QtWidgets import QApplication, QWidget, QToolBar, QLabel, QMessageBox, QSizePolicy
 from PyQt6.QtCore import Qt
@@ -155,7 +156,7 @@ class MainToolBar(QToolBar):
 
         # Handle cancelled dialog
         if file_path == "":
-            self.log("Export file dialog cancelled")
+            logging.debug("Export file dialog cancelled")
             return
         else:
             file_path = Path(file_path)
@@ -184,7 +185,7 @@ class MainToolBar(QToolBar):
         Open issue form on GitHub
         """
 
-        self.log("Opening GitHub issue form in default web browser")
+        logging.debug("Opening GitHub issue form in default web browser")
         return webbrowser.open(
             "https://github.com/sam210723/wavebin/issues/new" +
             "?template=bug.md" +
@@ -255,14 +256,3 @@ class MainToolBar(QToolBar):
             waveform.serial
         )
         #TODO: Pass waveform properties to dialog
-
-
-    def log(self, msg: str) -> None:
-        """
-        Print message to console if verbose mode enabled
-
-        Args:
-            msg (str): Message to print to console
-        """
-
-        if self.app.config['verbose']: print(msg)

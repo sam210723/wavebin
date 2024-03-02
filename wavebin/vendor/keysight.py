@@ -6,8 +6,9 @@ Oscilloscope waveform capture viewer
 """
 
 from collections import namedtuple
-import struct
+import logging
 import numpy as np
+import struct
 
 from wavebin.vendor import Vendor, Channel, Unit
 

@@ -5,6 +5,11 @@ https://github.com/sam210723/wavebin
 Oscilloscope waveform capture viewer
 """
 
+from collections import namedtuple
+import logging
+import numpy as np
+import struct
+
 from wavebin.vendor import Vendor
 
 

@@ -6,6 +6,7 @@ Oscilloscope waveform capture viewer
 """
 
 from enum import Enum
+import logging
 import numpy as np
 from pathlib import Path
 import pyqtgraph

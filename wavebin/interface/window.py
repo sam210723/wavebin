@@ -33,20 +33,15 @@ class MainWindow(QApplication):
         super(MainWindow, self).__init__([])
 
         # Setup main Qt application
-        self.log("Initialising Qt application")
+        logging.debug("Initialising Qt application")
         self.setApplicationName(config.app.name)
-        self.setApplicationDisplayName(config.app.name)
+        self.setApplicationDisplayName(f"{config.app.name} v{config.app.version}")
         self.setApplicationVersion(config.app.version)
 
         # Create main Qt window
-        self.log("Creating main Qt window")
+        logging.debug("Creating main Qt window")
         self.window = QMainWindow()
-
-        # Apply window style for Windows platforms
-        try:
-            import pywinstyles
-            pywinstyles.apply_style(self.window, "dark")
-        except ImportError: pass
+        self.window.setFocus()
 
         # Add Inter font
         font_dir = Path(__file__).parent / "assets" / "Inter"
@@ -54,43 +49,50 @@ class MainWindow(QApplication):
         QFontDatabase.addApplicationFont(str( font_dir / "Inter-Bold.ttf"))
 
         # Window styling and state
-        self.log("Updating window style")
+        logging.debug("Updating window style")
         self.icon_path = Path(__file__).parent / "assets" / "icon.ico"
         self.icon_path_multi = Path(__file__).parent / "assets" / "icon-multi.ico"
         self.icon = QIcon(str(self.icon_path_multi))
         self.setWindowIcon(self.icon)
         self.window.setMinimumSize(800, 500)
 
+        # Styling for Windows platforms
+        try:
+            import pywinstyles
+            pywinstyles.apply_style(self.window, "dark")
+        except ImportError: pass
+
         # Add menu bar to main window
-        self.log("Building menu bar")
+        logging.debug("Building menu bar")
         self.menu_bar = MainMenuBar(self)
         self.window.setMenuBar(self.menu_bar)
 
         # Add tool bar to main window
-        self.log("Building tool bar")
+        logging.debug("Building tool bar")
         self.tool_bar = MainToolBar(self)
         self.window.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.tool_bar)
 
         # Create main widget
-        self.log("Creating main widget")
+        logging.debug("Creating main widget")
         self.widget = QWidget()
         self.window.setCentralWidget(self.widget)
         self.widget.setStyleSheet("background-color: #000;")
         self.widget.setContentsMargins(0, 0, 0, 0)
+
+        # Attach event handlers
         self.window.resizeEvent = self.event_resize
         self.window.changeEvent = self.event_change
         self.window.keyPressEvent = self.event_keypress
-        self.window.setFocus()
 
         # Create main layout
-        self.log("Creating main grid layout")
+        logging.debug("Creating main grid layout")
         self.layout = QGridLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSpacing(0)
         self.widget.setLayout(self.layout)
 
         # Create open/save file dialogs
-        self.log("Creating file dialogs")
+        logging.debug("Creating file dialogs")
         self.open_dialog = QFileDialog()
         self.save_dialog = QFileDialog()
 
@@ -108,7 +110,7 @@ class MainWindow(QApplication):
         Launch main application window
         """
 
-        self.log("Starting Qt application")
+        logging.debug("Starting Qt application")
 
         # Get center of primary screen
         screen: QRect = self.primaryScreen().geometry()
@@ -137,7 +139,7 @@ class MainWindow(QApplication):
         Builds welcome screen when no waveforms are loaded
         """
 
-        self.log("Building welcome screen")
+        logging.debug("Building welcome screen")
 
         # Text banner
         banner = QTextEdit()
@@ -238,14 +240,14 @@ class MainWindow(QApplication):
         """
 
         # Clear grid layout
-        self.log("Resetting main grid layout")
+        logging.debug("Resetting main grid layout")
         while self.layout.count():
             child = self.layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
 
         # Set file name in window title
-        self.window.setWindowTitle(f"\"{config.file.name}\"")
+        self.window.setWindowTitle(config.file.name)
 
         # Add plot widget to grid layout
         self.plot = WaveformPlot(config.waveform)
@@ -308,7 +310,7 @@ class MainWindow(QApplication):
 
         # Handle cancelled dialog
         if file_path == "":
-            self.log("Open file dialog cancelled")
+            logging.debug("Open file dialog cancelled")
             return False
         else:
             file_path = Path(file_path)
@@ -345,7 +347,7 @@ class MainWindow(QApplication):
         Open documentation in browser
         """
 
-        self.log("Opening documentation in default web browser")
+        logging.debug("Opening documentation in default web browser")
         return webbrowser.open("https://wavebin.vksdr.com")
 
 
@@ -406,14 +408,3 @@ class MainWindow(QApplication):
         elif mod == None and key == Qt.Key.Key_I:
             # Show waveform properties dialog
             if config.file: self.menu_bar.menu_view_props()
-
-
-    def log(self, msg: str) -> None:
-        """
-        Print message to console if verbose mode enabled
-
-        Args:
-            msg (str): Message to print to console
-        """
-
-        logging.debug(msg)
