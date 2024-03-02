@@ -7,24 +7,23 @@ Oscilloscope waveform capture viewer
 
 import logging
 from PyQt6.QtGui import QAction
-from PyQt6.QtWidgets import QApplication, QMenuBar, QMenu
+from PyQt6.QtWidgets import QMenuBar, QMenu, QToolBar
 import qtawesome as qta
 
+from wavebin import __main__ as main
 
 class MainMenuBar(QMenuBar):
     """
     Main window menu bar
     """
 
-    def __init__(self, app: QApplication) -> None:
+    def __init__(self, tool_bar: QToolBar) -> None:
         # Initialise base class
         super(MainMenuBar, self).__init__()
+        self.tool_bar: QToolBar = tool_bar
 
         # Hide menubar by default
         self.setHidden(True)
-
-        # Parent application instance
-        self.app = app
 
         # Menu actions
         self.menu_actions = {
@@ -83,23 +82,13 @@ class MainMenuBar(QMenuBar):
         self.menu_actions['view']['props'].setEnabled(False)
 
 
-    def menu_file_open(self) -> bool:   return self.app.button_open()
-    def menu_file_cap(self) -> None:    self.app.button_capture()
-    def menu_file_export(self) -> None: self.app.tool_bar.button_export()
-    def menu_file_exit(self) -> None:   self.app.safe_exit(self.app.config)
-    def menu_view_props(self) -> int:   return self.app.tool_bar.props_dialog.exec()
-    def menu_help_docs(self) -> bool:   return self.app.button_docs()
-    def menu_help_bug(self) -> bool:    return self.app.tool_bar.button_bug()
-    def menu_help_update(self) -> bool: return self.app.tool_bar.button_update()
-    def menu_help_about(self) -> None:  print("ABOUT")
-
-
-    def log(self, msg: str) -> None:
-        """
-        Print message to console if verbose mode enabled
-
-        Args:
-            msg (str): Message to print to console
-        """
-
-        if self.app.config['verbose']: print(msg)
+    # Reuse functions from tool bar in menu bar
+    def menu_file_open(self) -> bool:   return self.tool_bar.button_open()
+    def menu_file_cap(self) -> None:    self.tool_bar.button_capture()
+    def menu_file_export(self) -> None: self.tool_bar.button_export()
+    def menu_file_exit(self) -> None:   main.safe_exit()
+    def menu_view_props(self) -> int:   return self.tool_bar.props_dialog.exec()
+    def menu_help_docs(self) -> bool:   return self.tool_bar.button_docs()
+    def menu_help_bug(self) -> bool:    return self.tool_bar.button_bug()
+    def menu_help_update(self) -> bool: return self.tool_bar.button_update()
+    def menu_help_about(self) -> None:  self.tool_bar.button_about()

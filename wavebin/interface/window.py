@@ -45,6 +45,11 @@ class MainWindow(QApplication):
         self.window.raise_()
         self.window.activateWindow()
 
+        # Attach event handlers
+        self.window.resizeEvent = self.event_resize         # type: ignore
+        self.window.changeEvent = self.event_change         # type: ignore
+        self.window.keyPressEvent = self.event_keypress     # type: ignore
+
         # Add Inter font
         font_dir = Path(__file__).parent / "assets" / "Inter"
         QFontDatabase.addApplicationFont(str( font_dir / "Inter-Regular.ttf"))
@@ -64,15 +69,15 @@ class MainWindow(QApplication):
             pywinstyles.apply_style(self.window, "dark")
         except ImportError: pass
 
-        # Add menu bar to main window
-        logging.debug("Building menu bar")
-        self.menu_bar = MainMenuBar(self)
-        self.window.setMenuBar(self.menu_bar)
-
         # Add tool bar to main window
         logging.debug("Building tool bar")
         self.tool_bar = MainToolBar(self)
         self.window.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.tool_bar)
+
+        # Add menu bar to main window
+        logging.debug("Building menu bar")
+        self.menu_bar = MainMenuBar(self.tool_bar)
+        self.window.setMenuBar(self.menu_bar)
 
         # Create main widget
         logging.debug("Creating main widget")
@@ -80,11 +85,6 @@ class MainWindow(QApplication):
         self.window.setCentralWidget(self.widget)
         self.widget.setStyleSheet("background-color: #000;")
         self.widget.setContentsMargins(0, 0, 0, 0)
-
-        # Attach event handlers
-        self.window.resizeEvent = self.event_resize
-        self.window.changeEvent = self.event_change
-        self.window.keyPressEvent = self.event_keypress
 
         # Create main layout
         logging.debug("Creating main grid layout")
