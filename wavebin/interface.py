@@ -179,7 +179,7 @@ class QtApp(qt.QApplication):
             return
 
         # Reset sidebar controls
-        self.sidebar.update(0, False, -1)
+        self.sidebar.update(0, False, -1, 0)
 
         # Parse waveform capture
         if not self.config['wave'].parse(file_path):

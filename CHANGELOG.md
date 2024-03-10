@@ -15,6 +15,10 @@ All notable changes to this project will be documented in this file.
 </details>
 
 
+## [v2.3.1](https://github.com/sam210723/wavebin/releases/tag/v2.3.1) - 2024-03-10
+Fixes issue [#15](https://github.com/sam210723/wavebin/issues/15), missing argument in sidebar update function call.
+
+
 ## [v2.3](https://github.com/sam210723/wavebin/releases/tag/v2.3) - 2024-02-11
 Add support for Rigol DHO800 waveform captures, plus some minor fixes.
 
